@@ -1,0 +1,19 @@
+*{
+  margin: 0;
+  box-sizing: border-box;
+
+  &::before,&::after{
+    box-sizing: border-box;
+
+  }
+}
+
+body{
+  font-family: sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1{
+  background: yellow;
+}
