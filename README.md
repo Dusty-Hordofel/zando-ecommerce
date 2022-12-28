@@ -163,7 +163,75 @@ export default async function handler(req, res) {
 }
 ```
 
-### 4.
+### 4. Setup Redux toolkit with Redux Persist
+
+```bash
+npm i redux react-redux @reduxjs/toolkit redux-devtools-extension redux-persist redux-thunk next-redux-wrapper
+```
+
+- create store folder and use it store to set information available everywhere
+
+```javascript
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
+
+const reducers = combineReducers({});
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const reducer = persistReducer(persistConfig, reducers);
+const store = configureStore({
+  reducer: reducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: [thunk],
+});
+
+export default store;
+```
+
+- wrapp our application in a provider to access the store
+
+```javascript
+import "../styles/globals.scss";
+import { Provider } from "react-redux";
+import { store } from "../store/index";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+
+let persistor = persistStore(store); //to persist the stored information
+export default function App({ Component, pageProps }) {
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Component {...pageProps} />
+      </PersistGate>
+    </Provider>
+  );
+}
+```
+
+- create store/cartSlice.js
+
+```javascript
+import { createSlice } from "@reduxjs/toolkit";
+
+export const cartSlice = createSlice({
+  name: "cart",
+  initialState: [],
+  reducers: {},
+});
+
+// export const {} = cartSlice.actions;
+export default cartSlice.reducer;
+```
+
+`NB: we use persist to see the storechanges immediately on redux-devtools-extension`
 
 ### 5.
 
@@ -216,3 +284,13 @@ export default async function handler(req, res) {
 ### 29.
 
 ### 30.
+
+## external links
+
+[Sass](https://www.npmjs.com/package/sass)
+[Mongoose](https://www.npmjs.com/package/mongoose)
+[Mongodb](https://www.npmjs.com/package/mongodb)
+[Nextjs](https://nextjs.org/docs/getting-started)
+[]()
+[]()
+[]()
