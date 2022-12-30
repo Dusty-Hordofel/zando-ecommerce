@@ -231,9 +231,34 @@ export const cartSlice = createSlice({
 export default cartSlice.reducer;
 ```
 
-`NB: we use persist to see the storechanges immediately on redux-devtools-extension`
+`NB: we use persist to see the store changes immediately`
 
-### 5.
+### 5. Making global variables accessible in next config
+
+- create scss vzariable in base.scss file
+
+```scss
+$red-color: #ff0000b4;
+```
+
+- use scss variable in Home.module.scss
+
+```scss
+@import "./base.scss";
+
+.red {
+  color: $red-color;
+}
+```
+
+- use sassOptions in next.config.js to have variables globally accessible
+
+```js
+ sassOptions: {
+    includePaths: [path.join(__dirname, "styles")],
+    prependData: `@import "./base.scss";`,
+  },
+```
 
 ### 6.
 
