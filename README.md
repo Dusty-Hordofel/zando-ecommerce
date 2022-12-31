@@ -356,13 +356,199 @@ export default Ad;
 
 - create components/footer/index.js
 
-### 7.
+### 7. Ad top
 
-### 8.
+- create `<Top/>`
 
-### 9.
+```js
+import React from "react";
 
-### 10.
+const Top = () => {
+  return <div>Top</div>;
+};
+
+export default Top;
+```
+
+- add react icons && `<Top/>`
+
+```js
+$ npm install react-icons --save
+```
+
+- add scss variables
+
+```scss
+$blue-color: #2f82ff;
+$dark-blue-color: #1a28f1dc;
+$yellow-color: #fac80f;
+$violet-color: #5a31f4;
+$green-color: #3c811f;
+$redish-color: #f15f6f;
+$grey-color: #f8f8f8;
+$light-error-color: #fd010169;
+$error-color: #ed4337;
+$error-secondary-color: #f02f2fd8;
+$success-color: #6cc070;
+$shadow-1: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+$shadow-2: rgba(99, 99, 99, 0.1) 0px 0px 4px 0px;
+$cubic-bezier: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+```
+
+- fill `<Top/>`
+
+```js
+import styles from "./styles.module.scss";
+import { MdSecurity } from "react-icons/md";
+import { BsSuitHeart } from "react-icons/bs";
+import { RiAccountPinCircleLine, RiArrowDropDownFill } from "react-icons/ri";
+import Link from "next/link";
+
+const Top = () => {
+  return (
+    <div className={styles.top}>
+      <div className={styles.top__container}>
+        <div></div>
+        {/*we empty use <div></div> as a trick to push ul to the right*/}
+        <ul className={styles.top__list}>
+          <li className={styles.li}>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png"
+              alt=""
+            />
+            <span>France / EUR</span>
+          </li>
+          <li className={styles.li}>
+            <MdSecurity />
+            <span>Buyer Protection</span>
+          </li>
+          <li className={styles.li}>
+            <span>Customer Service</span>
+          </li>
+          <li className={styles.li}>
+            <span>Help</span>
+          </li>
+          <li className={styles.li}>
+            <BsSuitHeart />
+            <Link href="/profile/whishlist">
+              <span>Whishlist</span>
+            </Link>
+          </li>
+          <li className={styles.li}>
+            <div className={styles.flex}>
+              <RiAccountPinCircleLine />
+              <span>Account</span>
+              <RiArrowDropDownFill />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default Top;
+```
+
+- style `<Top/>`
+
+```scss
+/************************************/
+/* TOP */
+/************************************/
+
+.top {
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+
+  &__container {
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__list {
+    display: flex;
+    gap: 15px;
+
+    .li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #666;
+      cursor: pointer;
+      .flex {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        svg {
+          transform: scale(1.2);
+          margin-right: 3px;
+        }
+      }
+      img {
+        width: 28px;
+        height: 28px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #ccc;
+      }
+      span {
+        font-size: 12px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        background: #ccc;
+        width: 1px;
+        height: 20px;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      // we are in li , so last-of-type  means the last one
+      &:last-of-type {
+        &::after {
+          display: none;
+        }
+      }
+      &:hover {
+        span {
+          color: #222;
+        }
+        svg {
+          fill: #666;
+        }
+      }
+    }
+  }
+}
+```
+
+```scss
+
+```
+
+```js
+
+```
+
+### 8. Top Menu part 1
+
+### 9. Top Menu part 2
+
+### 10. Search component
 
 ### 11.
 
@@ -410,6 +596,6 @@ export default Ad;
 [Mongoose](https://www.npmjs.com/package/mongoose)
 [Mongodb](https://www.npmjs.com/package/mongodb)
 [Nextjs](https://nextjs.org/docs/getting-started)
-[]()
+[React-Icons](https://react-icons.github.io/react-icons/)
 []()
 []()

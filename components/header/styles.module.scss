@@ -1,12 +1,98 @@
-.header{
-height: 100%;
+.header {
+  height: 100%;
+  box-shadow: $shadow-1;
 }
 
-.ad{
-height: 54px;
-width: 100%;
-background-image: url("../../public/images/ad.jpg");
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
+/************************************/
+/* AD */
+/************************************/
+.ad {
+  height: 54px;
+  width: 100%;
+  background-image: url("../../public/images/ad.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/************************************/
+/* TOP */
+/************************************/
+
+.top {
+  background: #f8f8f8;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+
+  &__container {
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__list {
+    display: flex;
+    gap: 15px;
+
+    .li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #666;
+      cursor: pointer;
+      .flex {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        svg {
+          transform: scale(1.2);
+          margin-right: 3px;
+        }
+      }
+      img {
+        width: 28px;
+        height: 28px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #ccc;
+      }
+      span {
+        font-size: 12px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        background: #ccc;
+        width: 1px;
+        height: 20px;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      // we are in li , so last-of-type  means the last one
+      &:last-of-type {
+        &::after {
+          display: none;
+        }
+      }
+      &:hover {
+        span {
+          color: #222;
+        }
+        svg {
+          fill: #666;
+        }
+      }
+    }
+  }
 }
