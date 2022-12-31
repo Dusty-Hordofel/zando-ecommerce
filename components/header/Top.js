@@ -3,8 +3,11 @@ import { MdSecurity } from "react-icons/md";
 import { BsSuitHeart } from "react-icons/bs";
 import { RiAccountPinCircleLine, RiArrowDropDownFill } from "react-icons/ri";
 import Link from "next/link";
+import { useState } from "react";
+import UserMenu from "./UserMenu";
 
 const Top = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   return (
     <div className={styles.top}>
       <div className={styles.top__container}>
@@ -34,12 +37,29 @@ const Top = () => {
               <span>Whishlist</span>
             </Link>
           </li>
-          <li className={styles.li}>
-            <div className={styles.flex}>
-              <RiAccountPinCircleLine />
-              <span>Account</span>
-              <RiArrowDropDownFill />
-            </div>
+          <li>
+            {loggedIn ? (
+              <li className={styles.li}>
+                <div className={styles.flex}>
+                  <img
+                    src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80"
+                    alt=""
+                  />
+                  <span>MOLO</span>
+                  <RiArrowDropDownFill />
+                </div>
+              </li>
+            ) : (
+              <li className={styles.li}>
+                <div className={styles.flex}>
+                  <RiAccountPinCircleLine />
+                  <span>Account</span>
+                  <RiArrowDropDownFill />
+                </div>
+              </li>
+            )}
+
+            <UserMenu loggedIn={loggedIn} />
           </li>
         </ul>
       </div>
