@@ -751,6 +751,127 @@ const [visible, setVisible] = useState(false);
 
 ### 10. Search component
 
+- create `<Main/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { RiSearch2Line } from "react-icons/ri";
+import { FaOpencart } from "react-icons/fa";
+import { useSelector } from "react-redux";
+
+const Main = () => {
+  const { cart } = useSelector((state) => ({ ...state })); //to select the cart from the store
+
+  return (
+    <div className={styles.main}>
+      <div className={styles.main__container}>
+        <Link href="/" className={styles.logo}>
+          <img src="../../../logo.png" alt="" />
+        </Link>
+        <form className={styles.search}>
+          <input type="text" placeholder="Search..." />
+          <button type="submit" className={styles.search__icon}>
+            <RiSearch2Line />
+          </button>
+        </form>
+        <Link href="/cart" className={styles.cart}>
+          <FaOpencart />
+          <span>0</span>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Main;
+```
+
+- style `<Main/>`
+
+```scss
+.main {
+  position: relative;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  &__container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+  }
+  .logo {
+    img {
+      width: 170px;
+      margin-top: 10px;
+    }
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    background: #eeeeeebc;
+    height: 40px;
+    border-radius: 5px;
+    input {
+      border: none;
+      outline: none;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      padding-left: 1rem;
+    }
+    &__icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      background: $blue-color;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      cursor: pointer;
+      svg {
+        width: 21px;
+        height: 21px;
+        fill: #fff;
+      }
+    }
+  }
+}
+
+.cart {
+  position: relative;
+  svg {
+    width: 35px;
+    height: 35px;
+    fill: #666;
+    cursor: pointer;
+    &:hover {
+      fill: $blue-color;
+    }
+  }
+  span {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: $blue-color;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+    color: #fff;
+  }
+}
+```
+
 ### 11.
 
 ### 12.
