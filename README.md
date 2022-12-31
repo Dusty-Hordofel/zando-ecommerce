@@ -1182,7 +1182,135 @@ export default function NewsLetter() {
 }
 ```
 
-### 13.
+### 13. Footer Payment, Copyright & Responsive Footer
+
+- create `<Payment/>`
+
+```js
+import styles from "./styles.module.scss";
+
+const Payment = () => {
+  return (
+    <div className={styles.footer__payment}>
+      <h3>WE ACCPET</h3>
+      <div className={styles.footer__flexwrap}>
+        <img src="../../../images/payment/visa.webp" alt="" />
+        <img src="../../../images/payment/mastercard.webp" alt="" />
+        <img src="../../../images/payment/paypal.webp" alt="" />
+      </div>
+    </div>
+  );
+};
+
+export default Payment;
+```
+
+- style `<Payment/>`
+
+```scss
+&__payment {
+  grid-area: payment;
+}
+&__flexwrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  img {
+    width: 60px;
+    height: 36px;
+    object-fit: cover;
+  }
+}
+```
+
+- create `<Copyright/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { IoLocationSharp } from "react-icons/io5";
+
+const Copyright = ({ country }) => {
+  return (
+    <div className={styles.footer__copyright}>
+      <section>©2022 SHOPPAY All Rights Resereved.</section>
+      <section>
+        <ul>
+          {data.map((link) => (
+            <li>
+              <Link href={link.link}>{link.name}</Link>
+            </li>
+          ))}
+          <li>
+            <a>
+              <IoLocationSharp /> {country.name}
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  );
+};
+const data = [
+  {
+    name: "Privacy Center",
+    link: "",
+  },
+  {
+    name: "Privacy & Cookie Policy",
+    link: "",
+  },
+  {
+    name: "Manage Cookies",
+    link: "",
+  },
+  {
+    name: "Terms & Conditions",
+    link: "",
+  },
+  {
+    name: "Copyright Notice",
+    link: "",
+  },
+];
+
+export default Copyright;
+```
+
+- style `<Copyright/>`
+
+```scss
+&__copyright {
+  grid-area: copyright;
+  section {
+    font-size: 12px;
+    color: #666;
+    padding-bottom: 10px;
+  }
+  ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    li {
+      position: relative;
+      text-decoration: underline;
+      &::after {
+        content: "";
+        width: 1px;
+        height: 15px;
+        background: #666;
+        position: absolute;
+        right: -1rem;
+      }
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+}
+```
 
 ### 14.
 
