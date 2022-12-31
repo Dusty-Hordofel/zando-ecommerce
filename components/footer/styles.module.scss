@@ -39,4 +39,49 @@
       }
     }
   }
+  &__socials {
+    grid-area: socials;
+    section {
+      ul {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        li {
+          font-size: 2rem;
+          color: #666;
+          &:hover {
+            color: $blue-color;
+          }
+        }
+      }
+    }
+  }
+  &__flex {
+    display: flex;
+    margin-top: 10px;
+  }
+  &__newsletter {
+    grid-area: newsletter;
+    input {
+      outline: none;
+      border: 1px solid #999;
+      flex: 1;
+      height: 40px;
+      font-size: 14px;
+      padding-left: 10px;
+    }
+    button {
+      width: 150px;
+    }
+    p {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+      a {
+        color: $blue-color;
+        text-decoration: underline;
+      }
+    }
+  }
 }

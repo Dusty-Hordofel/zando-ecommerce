@@ -1043,7 +1043,144 @@ export default Footer;
 }
 ```
 
-### 12.
+### 12. Footer Socials & Newsletter
+
+- create `<Socials/>`
+
+```js
+import styles from "./styles.module.scss";
+import { FaFacebookF, FaTiktok } from "react-icons/fa";
+import {
+  BsInstagram,
+  BsTwitter,
+  BsYoutube,
+  BsPinterest,
+  BsSnapchat,
+} from "react-icons/bs";
+export default function Socials() {
+  return (
+    <div className={styles.footer__socials}>
+      <section>
+        <h3>STAY CONNECTED</h3>
+        <ul>
+          <li>
+            <a href="/" target="_blank">
+              <FaFacebookF />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsInstagram />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsTwitter />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsYoutube />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsPinterest />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsSnapchat />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <FaTiktok />
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  );
+}
+```
+
+- style `<Socials/>`
+
+```scss
+&__socials {
+  grid-area: socials;
+  section {
+    ul {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      li {
+        font-size: 2rem;
+        color: #666;
+        &:hover {
+          color: $blue-color;
+        }
+      }
+    }
+  }
+}
+&__flex {
+  display: flex;
+  margin-top: 10px;
+}
+```
+
+- create `<NewsLetter/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+export default function NewsLetter() {
+  return (
+    <div className={styles.footer__newsletter}>
+      <h3>SIGN UP FOR OUR NEWSLETTER</h3>
+      <div className={styles.footer__flex}>
+        <input type="text" placeholder="Your Email Address" />
+        <button className={styles.btn_primary}>SUBSCRIBE</button>
+      </div>
+      <p>
+        By clicking the SUBSCRIBE button, you are agreeing to{" "}
+        <Link href="">our Privacy & Cookie Policy</Link>
+      </p>
+    </div>
+  );
+}
+```
+
+- style `<NewsLetter/>`
+
+```scss
+&__newsletter {
+  grid-area: newsletter;
+  input {
+    outline: none;
+    border: 1px solid #999;
+    flex: 1;
+    height: 40px;
+    font-size: 14px;
+    padding-left: 10px;
+  }
+  button {
+    width: 150px;
+  }
+  p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    a {
+      color: $blue-color;
+      text-decoration: underline;
+    }
+  }
+}
+```
 
 ### 13.
 
