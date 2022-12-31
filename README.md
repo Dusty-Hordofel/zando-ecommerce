@@ -872,6 +872,8 @@ export default Main;
 }
 ```
 
+## Section 3. Footer Component
+
 ### 11.
 
 ### 12.
