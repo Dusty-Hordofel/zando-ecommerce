@@ -872,11 +872,445 @@ export default Main;
 }
 ```
 
-### 11.
+## Section 3. Footer Component
 
-### 12.
+### 11. Footer links
 
-### 13.
+- create `<Links/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+
+const Links = () => {
+  return (
+    <div className={styles.footer__links}>
+      {links.map((link, i) => (
+        <ul>
+          {i === 0 ? (
+            <img src="../../../logo.png" alt="" />
+          ) : (
+            <b>{link.heading}</b>
+          )}
+          {link.links.map((link) => (
+            <li>
+              <Link href={link.link}>{link.name}</Link>
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  );
+};
+const links = [
+  {
+    heading: "SHOPPAY",
+    links: [
+      {
+        name: "About us",
+        link: "",
+      },
+      {
+        name: "Contact us",
+        link: "",
+      },
+      {
+        name: "Social Responsibility",
+        link: "",
+      },
+      {
+        name: "",
+        link: "",
+      },
+    ],
+  },
+  {
+    heading: "HELP & SUPPORT",
+    links: [
+      {
+        name: "Shipping Info",
+        link: "",
+      },
+      {
+        name: "Returns",
+        link: "",
+      },
+      {
+        name: "How To Order",
+        link: "",
+      },
+      {
+        name: "How To Track",
+        link: "",
+      },
+      {
+        name: "Size Guide",
+        link: "",
+      },
+    ],
+  },
+  {
+    heading: "Customer service",
+    links: [
+      {
+        name: "Customer service",
+        link: "",
+      },
+      {
+        name: "Terms and Conditions",
+        link: "",
+      },
+      {
+        name: "Consumers (Transactions)",
+        link: "",
+      },
+      {
+        name: "Take our feedback survey",
+        link: "",
+      },
+    ],
+  },
+];
+
+export default Links;
+```
+
+- update `<Footer/>`
+
+```js
+import React from "react";
+import Links from "./Links";
+import styles from "./styles.module.scss";
+
+const Footer = () => {
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.footer__container}>
+        <Links />
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+```
+
+- style `<Links/>`
+
+```scss
+.footer {
+  background: #f8f8f8;
+  &__container {
+    position: relative;
+    width: 100%;
+    display: grid;
+    gap: 3rem;
+    padding: 1rem;
+  }
+  img {
+    width: 140px;
+    height: 40px;
+    object-fit: contain;
+  }
+  h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: #222;
+  }
+
+  &__links {
+    grid-area: links;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    ul {
+      padding: 5px;
+      b {
+        text-transform: uppercase;
+      }
+      li {
+        font-size: 12px;
+        a {
+          color: #666;
+          line-height: 23px;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 12. Footer Socials & Newsletter
+
+- create `<Socials/>`
+
+```js
+import styles from "./styles.module.scss";
+import { FaFacebookF, FaTiktok } from "react-icons/fa";
+import {
+  BsInstagram,
+  BsTwitter,
+  BsYoutube,
+  BsPinterest,
+  BsSnapchat,
+} from "react-icons/bs";
+export default function Socials() {
+  return (
+    <div className={styles.footer__socials}>
+      <section>
+        <h3>STAY CONNECTED</h3>
+        <ul>
+          <li>
+            <a href="/" target="_blank">
+              <FaFacebookF />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsInstagram />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsTwitter />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsYoutube />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsPinterest />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <BsSnapchat />
+            </a>
+          </li>
+          <li>
+            <a href="/" target="_blank">
+              <FaTiktok />
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  );
+}
+```
+
+- style `<Socials/>`
+
+```scss
+&__socials {
+  grid-area: socials;
+  section {
+    ul {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      li {
+        font-size: 2rem;
+        color: #666;
+        &:hover {
+          color: $blue-color;
+        }
+      }
+    }
+  }
+}
+&__flex {
+  display: flex;
+  margin-top: 10px;
+}
+```
+
+- create `<NewsLetter/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+export default function NewsLetter() {
+  return (
+    <div className={styles.footer__newsletter}>
+      <h3>SIGN UP FOR OUR NEWSLETTER</h3>
+      <div className={styles.footer__flex}>
+        <input type="text" placeholder="Your Email Address" />
+        <button className={styles.btn_primary}>SUBSCRIBE</button>
+      </div>
+      <p>
+        By clicking the SUBSCRIBE button, you are agreeing to{" "}
+        <Link href="">our Privacy & Cookie Policy</Link>
+      </p>
+    </div>
+  );
+}
+```
+
+- style `<NewsLetter/>`
+
+```scss
+&__newsletter {
+  grid-area: newsletter;
+  input {
+    outline: none;
+    border: 1px solid #999;
+    flex: 1;
+    height: 40px;
+    font-size: 14px;
+    padding-left: 10px;
+  }
+  button {
+    width: 150px;
+  }
+  p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    a {
+      color: $blue-color;
+      text-decoration: underline;
+    }
+  }
+}
+```
+
+### 13. Footer Payment, Copyright & Responsive Footer
+
+- create `<Payment/>`
+
+```js
+import styles from "./styles.module.scss";
+
+const Payment = () => {
+  return (
+    <div className={styles.footer__payment}>
+      <h3>WE ACCPET</h3>
+      <div className={styles.footer__flexwrap}>
+        <img src="../../../images/payment/visa.webp" alt="" />
+        <img src="../../../images/payment/mastercard.webp" alt="" />
+        <img src="../../../images/payment/paypal.webp" alt="" />
+      </div>
+    </div>
+  );
+};
+
+export default Payment;
+```
+
+- style `<Payment/>`
+
+```scss
+&__payment {
+  grid-area: payment;
+}
+&__flexwrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+  img {
+    width: 60px;
+    height: 36px;
+    object-fit: cover;
+  }
+}
+```
+
+- create `<Copyright/>`
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { IoLocationSharp } from "react-icons/io5";
+
+const Copyright = ({ country }) => {
+  return (
+    <div className={styles.footer__copyright}>
+      <section>©2022 SHOPPAY All Rights Resereved.</section>
+      <section>
+        <ul>
+          {data.map((link) => (
+            <li>
+              <Link href={link.link}>{link.name}</Link>
+            </li>
+          ))}
+          <li>
+            <a>
+              <IoLocationSharp /> {country.name}
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  );
+};
+const data = [
+  {
+    name: "Privacy Center",
+    link: "",
+  },
+  {
+    name: "Privacy & Cookie Policy",
+    link: "",
+  },
+  {
+    name: "Manage Cookies",
+    link: "",
+  },
+  {
+    name: "Terms & Conditions",
+    link: "",
+  },
+  {
+    name: "Copyright Notice",
+    link: "",
+  },
+];
+
+export default Copyright;
+```
+
+- style `<Copyright/>`
+
+```scss
+&__copyright {
+  grid-area: copyright;
+  section {
+    font-size: 12px;
+    color: #666;
+    padding-bottom: 10px;
+  }
+  ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    li {
+      position: relative;
+      text-decoration: underline;
+      &::after {
+        content: "";
+        width: 1px;
+        height: 15px;
+        background: #666;
+        position: absolute;
+        right: -1rem;
+      }
+      &:last-of-type::after {
+        display: none;
+      }
+    }
+  }
+}
+```
 
 ### 14.
 
