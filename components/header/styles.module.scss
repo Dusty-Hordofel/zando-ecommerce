@@ -110,7 +110,7 @@
   min-height: 200px;
   box-shadow: $shadow-1;
   position: absolute;
-  //   top: 100%;
+  top: 100%;
   right: 0;
   background: #fff;
   z-index: 99;
@@ -143,5 +143,17 @@
   &__img {
     width: 100px !important;
     height: 100px !important;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    span {
+      &:last-of-type {
+        font-size: 14px;
+        color: $blue-color;
+        text-decoration: underline;
+      }
+    }
   }
 }

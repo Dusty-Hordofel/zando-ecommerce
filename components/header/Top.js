@@ -7,7 +7,8 @@ import { useState } from "react";
 import UserMenu from "./UserMenu";
 
 const Top = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
+  const [visible, setVisible] = useState(false);
   return (
     <div className={styles.top}>
       <div className={styles.top__container}>
@@ -37,7 +38,11 @@ const Top = () => {
               <span>Whishlist</span>
             </Link>
           </li>
-          <li>
+          <li
+            className={styles.li}
+            onMouseOver={() => setVisible(true)}
+            onMouseLeave={() => setVisible(false)}
+          >
             {loggedIn ? (
               <li className={styles.li}>
                 <div className={styles.flex}>
@@ -59,7 +64,8 @@ const Top = () => {
               </li>
             )}
 
-            <UserMenu loggedIn={loggedIn} />
+            {/* <UserMenu loggedIn={loggedIn} /> */}
+            {visible && <UserMenu loggedIn={loggedIn} />}
           </li>
         </ul>
       </div>

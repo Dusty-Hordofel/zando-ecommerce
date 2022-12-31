@@ -713,15 +713,43 @@ export default UserMenu;
 
 ### 9. Top Menu part 2
 
-### 10. Search component
+- style `<userMenu/>`
 
 ```scss
-
+.menu {
+  .col {
+    display: flex;
+    flex-direction: column;
+    span {
+      &:last-of-type {
+        font-size: 14px;
+        color: $blue-color;
+        text-decoration: underline;
+      }
+    }
+  }
+}
 ```
+
+- add a mouse logic to `<Top/>`
 
 ```js
+const [visible, setVisible] = useState(false);
 
+<li
+  className={styles.li}
+  onMouseOver={() => setVisible(true)}
+  onMouseLeave={() => setVisible(false)}
+>
+  ...
+</li>;
+
+{
+  visible && <UserMenu loggedIn={loggedIn} />;
+}
 ```
+
+### 10. Search component
 
 ### 11.
 
