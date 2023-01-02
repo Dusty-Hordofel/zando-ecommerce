@@ -4,11 +4,11 @@ import Main from "./Main";
 import styles from "./styles.module.scss";
 import Top from "./Top";
 
-const Header = () => {
+const Header = ({ country }) => {
   return (
     <header className={styles.header}>
       <Ad />
-      <Top />
+      <Top country={country} />
       <Main />
     </header>
   );

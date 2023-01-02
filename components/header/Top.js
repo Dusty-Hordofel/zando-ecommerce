@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useState } from "react";
 import UserMenu from "./UserMenu";
 
-const Top = () => {
+const Top = ({ country }) => {
+  console.log(country.flag);
   const [loggedIn, setLoggedIn] = useState(true);
   const [visible, setVisible] = useState(false);
   return (
@@ -16,11 +17,8 @@ const Top = () => {
         {/*we empty use <div></div> as a trick to push ul to the right*/}
         <ul className={styles.top__list}>
           <li className={styles.li}>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png"
-              alt=""
-            />
-            <span>France / EUR</span>
+            <img src={country.flag} alt="" />
+            <span>{country.name} / EUR</span>
           </li>
           <li className={styles.li}>
             <MdSecurity />
