@@ -1514,9 +1514,32 @@ export default NextAuth({
 })
 ```
 
-### 17.
+### 17. [Github Provider](https://next-auth.js.org/providers/github)
 
-### 18.
+- [Configure Github provider](https://github.com/settings/applications/new)
+
+```bash
+http://localhost:3000/api/auth/callback/github
+```
+
+- add Github Provider to NextAuth
+
+```js
+import GitHubProvider from "next-auth/providers/github";
+
+...
+providers: [
+  GitHubProvider({
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET
+  })
+]
+...
+```
+
+- generate a new client secret
+
+### 18. Google provider
 
 ### 19.
 
