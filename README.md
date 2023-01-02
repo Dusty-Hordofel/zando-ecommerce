@@ -1312,7 +1312,55 @@ export default Copyright;
 }
 ```
 
-### 14.
+## Section 4. Location Detection
+
+### 14. Detect user location using IpRegistry
+
+- use [ipregistry](https://ipregistry.co/) to locate visitors by IP address
+- add axios
+
+```bash
+npm i axios
+```
+
+- use nextjs getServerSideProps (Server-Side Rendering)
+
+```js
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import styles from "../styles/Home.module.scss";
+import Header from "../components/header";
+import Footer from "../components/footer";
+import axios from "axios";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export default function Home({ country }) {
+  console.log("🚀 ~ file: index.js:11 ~ Home ~ country", country);
+  return (
+    <>
+      <Header country={country} />
+      <Footer country={country} />
+    </>
+  );
+}
+
+export async function getServerSideProps(context) {
+  let data = await axios
+    .get(`https://api.ipregistry.co/?key=${process.env.IPREGISTRY}`)
+    .then((res) => res.data.location.country)
+    .catch((error) =>
+      console.log("🚀 ~ file: index.js:22 ~ getServerSideProps ~ error", error)
+    );
+  console.log("🚀 ~ file: index.js:26 ~ getServerSideProps ~ data", data);
+  return {
+    props: { country: { name: data.name, flag: data.flag.emojitwo } }, // will be passed to the page component as props
+  };
+}
+```
+
+- use country props in `<Header/>` & `<Footer/>`
+- pass country props from `<Header/>` to <Top country={country} />
 
 ### 15.
 
@@ -1353,5 +1401,5 @@ export default Copyright;
 [Mongodb](https://www.npmjs.com/package/mongodb)
 [Nextjs](https://nextjs.org/docs/getting-started)
 [React-Icons](https://react-icons.github.io/react-icons/)
-[]()
+[ipregistry](https://ipregistry.co/)
 []()
