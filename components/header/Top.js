@@ -2,14 +2,17 @@ import styles from "./styles.module.scss";
 import { MdSecurity } from "react-icons/md";
 import { BsSuitHeart } from "react-icons/bs";
 import { RiAccountPinCircleLine, RiArrowDropDownFill } from "react-icons/ri";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import UserMenu from "./UserMenu";
 
 const Top = ({ country }) => {
   console.log(country.flag);
-  const [loggedIn, setLoggedIn] = useState(true);
+  // const [loggedIn, setLoggedIn] = useState(true);
+  const { data: session } = useSession();
   const [visible, setVisible] = useState(false);
+
   return (
     <div className={styles.top}>
       <div className={styles.top__container}>
@@ -41,14 +44,11 @@ const Top = ({ country }) => {
             onMouseOver={() => setVisible(true)}
             onMouseLeave={() => setVisible(false)}
           >
-            {loggedIn ? (
+            {session ? (
               <li className={styles.li}>
                 <div className={styles.flex}>
-                  <img
-                    src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80"
-                    alt=""
-                  />
-                  <span>MOLO</span>
+                  <img src={session.user.image} alt="" />
+                  <span>{session.user.name}</span>
                   <RiArrowDropDownFill />
                 </div>
               </li>
@@ -63,7 +63,8 @@ const Top = ({ country }) => {
             )}
 
             {/* <UserMenu loggedIn={loggedIn} /> */}
-            {visible && <UserMenu loggedIn={loggedIn} />}
+            {visible && <UserMenu session={session} />}
+            {/* {visible && <UserMenu loggedIn={loggedIn} />} */}
           </li>
         </ul>
       </div>
