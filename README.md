@@ -1541,6 +1541,9 @@ providers: [
 
 ### 18. Google provider
 
+- go to [Google Cloud Console](https://console.cloud.google.com/welcome?project=arched-market-367511&hl=fr) & create a project (Zando)
+- test signing process with google provider
+
 ### 19.
 
 ### 20.
