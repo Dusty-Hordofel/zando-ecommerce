@@ -1419,11 +1419,100 @@ pageProps: { session, ...pageProps }: { session, ...pageProps }
 
 - test the session provider in `<Home/>`
 
-```js
+### 16. JSON web tokens & Mongodb adapter
 
+- udpate NexAuth information
+
+```js
+import NextAuth from "next-auth";
+import AppleProvider from "next-auth/providers/apple";
+import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "./lib/mongodb";
+
+export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
+  providers: [
+    // OAuth authentication providers...
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+  ],
+  pages: {
+    signIn: "/signin",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.JWT_SECRET,
+});
 ```
 
-### 16.
+- Install [MongoDB-adapter ](https://next-auth.js.org/adapters/mongodb) to add user to the database
+
+```bash
+npm install next-auth @next-auth/mongodb-adapter mongodb
+```
+
+- create auth/lib/mongodb.ts
+
+```js
+// This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
+import { MongoClient } from "mongodb";
+
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+}
+
+const uri = process.env.MONGODB_URI;
+const options = {};
+
+let client;
+let clientPromise: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === "development") {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
+
+// Export a module-scoped MongoClient promise. By doing this in a
+// separate module, the client can be shared across functions.
+export default clientPromise;
+```
+
+- Add this adapter to your pages/api/auth/[...nextauth].js next-auth configuration object.
+
+```js
+import NextAuth from "next-auth"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/mongodb"
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
+  ...
+})
+```
 
 ### 17.
 
