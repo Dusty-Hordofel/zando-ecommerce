@@ -1360,9 +1360,68 @@ export async function getServerSideProps(context) {
 ```
 
 - use country props in `<Header/>` & `<Footer/>`
-- pass country props from `<Header/>` to <Top country={country} />
+- pass country props from `<Header/>` to `<Top country={country} />`
+- pass country props from `<Footer/>` to `<Copyright country={country} />`
 
-### 15.
+## Section 5. Next Authentication
+
+### 15. Next auth setup
+
+- add next-auth
+
+```bash
+npm i next-auth
+```
+
+- create server side authentication folder `/pages/api/auth/[...nextauth].js`
+- paste authentication method from (Nextjs)[https://next-auth.js.org/]
+
+```js
+import NextAuth from "next-auth";
+import AppleProvider from "next-auth/providers/apple";
+import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
+
+export default NextAuth({
+  providers: [
+    // OAuth authentication providers...
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    // Passwordless / email sign in
+    EmailProvider({
+      server: process.env.MAIL_SERVER,
+      from: "NextAuth.js <no-reply@example.com>",
+    }), // we will not use EmailProvider
+  ],
+});
+```
+
+- add a session provider to \_app.js
+
+```js
+import { SessionProvider } from "next-auth/react";
+
+pageProps: { session, ...pageProps }: { session, ...pageProps }
+
+<SessionProvider session={session}>...</SessionProvider>;
+```
+
+- test the session provider in `<Home/>`
+
+```js
+
+```
 
 ### 16.
 
