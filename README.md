@@ -1689,13 +1689,181 @@ export default signin;
 }
 ```
 
-### 23.
+### 23. Signing Page 2
+
+- create `<LoginInput/>`
+
+```js
+import styles from "./styles.module.scss";
+import { BiUser } from "react-icons/bi";
+import { SiMinutemailer } from "react-icons/si";
+import { IoKeyOutline } from "react-icons/io5";
+import { ErrorMessage, useField } from "formik";
+
+export default function LoginInput({ icon, placeholder, ...props }) {
+  const [field, meta] = useField(props);
+  return (
+    <div className={styles.input}>
+      {icon == "user" ? (
+        <BiUser />
+      ) : icon == "email" ? (
+        <SiMinutemailer />
+      ) : icon == "password" ? (
+        <IoKeyOutline />
+      ) : (
+        ""
+      )}
+      <input type={field.type} name={field.name} placeholder={placeholder} />
+      {meta.touched && meta.error && (
+        <div className={styles.error__popup}>
+          <span></span>
+          <ErrorMessage name={field.name} />
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+- style `<LoginInput/>`
+
+```scss
+.input {
+  position: relative;
+  max-width: 380px;
+  width: 100%;
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  svg {
+    width: 25px;
+    height: 25px;
+    stroke: #6666669a;
+    fill: #6666669a;
+  }
+  input {
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    &::placeholder {
+      color: #aaa;
+      font-weight: 500;
+    }
+  }
+}
+.error {
+  background: $light-error-color !important;
+  margin-top: 5rem !important;
+  input {
+    color: #fff !important;
+    &::placeholder {
+      color: #fff !important;
+    }
+  }
+  svg {
+    fill: #fff !important;
+    stroke: #fff;
+  }
+}
+.error__popup {
+  position: absolute;
+  top: -70px;
+  background: $error-color;
+  height: 60px;
+  width: 100%;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px;
+  span {
+    position: absolute;
+    bottom: -9px;
+    left: 1rem;
+    border-top: 10px solid $error-color;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+  }
+}
+Footer
+
+```
+
+- create `components/buttons/circledIconBtn/index.js`
+
+  ```js
+  import { BiRightArrowAlt } from "react-icons/bi";
+  import styles from "./styles.module.scss";
+  export default function CircledIconBtn({ type, text, icon }) {
+    return (
+      <button className={styles.button} type={type}>
+        {text}
+        <div className={styles.svg__wrap}>
+          <BiRightArrowAlt />
+        </div>
+      </button>
+    );
+  }
+  ```
+
+- style `<circledIconBtn/>`
+
+```scss
+.button {
+  position: relative;
+  border: none;
+  outline: none;
+  width: 220px;
+  height: 55px;
+  font-weight: 600;
+  color: #fff;
+  background: $blue-color;
+  display: block;
+  border-radius: 55px;
+  cursor: pointer;
+
+  .svg__wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 7.5px;
+    right: 5px;
+    background: $grey-color;
+    svg {
+      fill: $blue-color;
+    }
+  }
+}
+```
+
+- create `Signing Page` form using [Formik](https://www.npmjs.com/package/formik) and [Yup](https://www.npmjs.com/package/yup)
+
+```bash
+npm i formik yup
+```
 
 ```js
 
 ```
 
-```js
+- style `Signing Page`
+
+```css
 
 ```
 
