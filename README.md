@@ -1894,6 +1894,8 @@ export default function DotLoaderSpinner({ loading }) {
 }
 ```
 
+### 25. Sign in page 4 - Custom input with yup
+
 - add yup validation logic
 
 ```js
@@ -1926,9 +1928,7 @@ const registerValidation = Yup.object({
 });
 ```
 
-### 25.
-
-### 26.
+### 26. Sign in page 4 button submit
 
 ### 27.
 
