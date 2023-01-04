@@ -1588,25 +1588,120 @@ providers: [
 - create Nextjs application in [Auth0](https://manage.auth0.com/dashboard/us/dev-3m3vgdiu/applications) choosing `Regular Web Application` and download sample file to get credentials.
 - update [Auth0 settings](XXXXXXXXXXX ADD IMAGES XXXX) section by adding a `callback url` and `allowed logout url`.
 
-### 22.
+### 22. Signing Page 1
+
+- import `<Header/>` and `<Footer/>` signin page
 
 ```js
+import Header from "../components/header";
+import Footer from "../components/footer";
 
+const signin = () => {
+  return (
+    <>
+      <Header />
+      <Footer country="France" />
+    </>
+  );
+};
+
+export default signin;
 ```
 
-```js
+- add content in `Signing Page`
 
+```js
+<>
+  <Header country="France" />
+  <div className={styles.login}>
+    <div className={styles.login__container}>
+      <div className={styles.login__header}>
+        <div className={styles.back__svg}>
+          <BiLeftArrowAlt />
+        </div>
+        <span>
+          We'd be happy to join us ! <Link href="/">Go Store</Link>
+        </span>
+      </div>
+      <div className={styles.login__form}>
+        <h1>Sign in</h1>
+        <p>Get access to one of the best Eshopping services in the world.</p>
+      </div>
+    </div>
+  </div>
+  <Footer country="France" />
+</>
 ```
 
-```js
+- style `Signing Page`
 
-```
+```scss
+.login {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  &__container {
+    padding: 3rem;
+    &:last-of-type {
+      margin-top: 3rem;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 300px;
+    .back__svg {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #66666657;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
 
-```js
-
+      &:hover {
+        border-color: $blue-color;
+        svg {
+          fill: $blue-color;
+        }
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #222;
+      }
+    }
+    span {
+      font-weight: 600;
+      font-size: 14px;
+      //padding-left: 10px;
+      a {
+        color: $blue-color;
+        cursor: pointer;
+        border-bottom: 1px solid $blue-color;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
 ```
 
 ### 23.
+
+```js
+
+```
+
+```js
+
+```
+
+```js
+
+```
 
 ### 24.
 

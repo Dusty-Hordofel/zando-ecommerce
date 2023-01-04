@@ -8,6 +8,7 @@ import { useState } from "react";
 import UserMenu from "./UserMenu";
 
 const Top = ({ country }) => {
+  console.log("🚀 ~ file: Top.js:11 ~ Top ~ country", country);
   console.log(country.flag);
   // const [loggedIn, setLoggedIn] = useState(true);
   const { data: session } = useSession();
