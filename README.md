@@ -1857,21 +1857,74 @@ Footer
 npm i formik yup
 ```
 
-```js
+### 24. Sign in page 3 - Custom input with yup
 
-```
-
-- style `Signing Page`
+- install [react-spinners
+  ](https://www.npmjs.com/package/react-spinners)
 
 ```css
-
+$ npm i react-spinners
 ```
+
+- create <DotLoaderSpinner />
 
 ```js
-
+import styles from "./styles.module.scss";
+import DotLoader from "react-spinners/DotLoader";
+export default function DotLoaderSpinner({ loading }) {
+  return (
+    <div className={styles.loader}>
+      <DotLoader color="#2f82ff" loading={loading} />
+    </div>
+  );
+}
 ```
 
-### 24.
+```scss
+.loader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+```
+
+- add yup validation logic
+
+```js
+const loginValidation = Yup.object({
+  login_email: Yup.string()
+    .required("Email address is required.")
+    .email("Please enter a valid email address."),
+  login_password: Yup.string().required("Please enter a password"),
+});
+const registerValidation = Yup.object({
+  name: Yup.string()
+    .required("What's your name ?")
+    .min(2, "First name must be between 2 and 16 characters.")
+    .max(16, "First name must be between 2 and 16 characters.")
+    .matches(/^[aA-zZ]/, "Numbers and special characters are not allowed."),
+  email: Yup.string()
+    .required(
+      "You'll need this when you log in and if you ever need to reset your password."
+    )
+    .email("Enter a valid email address."),
+  password: Yup.string()
+    .required(
+      "Enter a combination of at least six numbers,letters and punctuation marks(such as ! and &)."
+    )
+    .min(6, "Password must be atleast 6 characters.")
+    .max(36, "Password can't be more than 36 characters"),
+  conf_password: Yup.string()
+    .required("Confirm your password.")
+    .oneOf([Yup.ref("password")], "Passwords must match."),
+});
+```
 
 ### 25.
 
