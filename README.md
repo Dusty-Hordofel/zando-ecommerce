@@ -16,11 +16,26 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 # Zando - An eCommerce Website
 
-Zando is a fully responsive ecommerce website, maximum compatiblities in all mobile devices, built using HTML, CSS, and JavaScript.I have used codewithsadee tutorial for learning purpose and follow all steps to gain new knowledges . Practice makes improvement.
+### Author Links
+
+👋 Hello, I'm Hordofel Dusty BAMANA.
+
+👇 Follow Me:
+
+- [Twitter](https://twitter.com/hordofel)
+- [LinkedIn](https://www.linkedin.com/in/dusty-hordofel-bamana-08389310a)
+
+---
 
 ## Demo
 
-![Zando Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")![Zando Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+## ![Zando Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")![Zando Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+
+### 🚀 Description
+
+Zando is a fully responsive ecommerce website, maximum compatiblities in all mobile devices, built using HTML, CSS, and JavaScript.I have used codewithsadee tutorial for learning purpose and follow all steps to gain new knowledges . Practice makes improvement.
+
+---
 
 ## Section 1. Setup
 
@@ -28,7 +43,8 @@ Zando is a fully responsive ecommerce website, maximum compatiblities in all mob
 
 - create zando - ecommerce folder- install nextjs
 
-```bash $ pnpm create next-app
+```bash
+$ pnpm create next-app
 
 ```
 
@@ -1548,27 +1564,47 @@ providers: [
 
 - update `<Top/> <UserMenu/>` adding user session
 
-```js
+### 20. Twitter provider
 
-```
+- use twitter Provider buy using [Twitter API](https://developer.twitter.com
 
-```js
+### 21. Auth0 provider
 
-```
-
-```js
-
-```
+- use [Auth0 provider](https://next-auth.js.org/providers/auth0)
 
 ```js
-
+import Auth0Provider from "next-auth/providers/auth0";
+...
+providers: [
+  Auth0Provider({
+    clientId: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    issuer: process.env.AUTH0_ISSUER
+  })
+]
+...
 ```
 
-### 20.
-
-### 21.
+- create Nextjs application in [Auth0](https://manage.auth0.com/dashboard/us/dev-3m3vgdiu/applications) choosing `Regular Web Application` and download sample file to get credentials.
+- update [Auth0 settings](XXXXXXXXXXX ADD IMAGES XXXX) section by adding a `callback url` and `allowed logout url`.
 
 ### 22.
+
+```js
+
+```
+
+```js
+
+```
+
+```js
+
+```
+
+```js
+
+```
 
 ### 23.
 
