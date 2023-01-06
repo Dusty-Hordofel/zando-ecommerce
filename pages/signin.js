@@ -50,6 +50,7 @@ export default function signin({ providers }) {
       .email("Please enter a valid email address."),
     login_password: Yup.string().required("Please enter a password"),
   });
+
   const registerValidation = Yup.object({
     name: Yup.string()
       .required("What's your name ?")
