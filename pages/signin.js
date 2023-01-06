@@ -11,6 +11,7 @@ import CircledIconBtn from "../components/buttons/circledIconBtn";
 
 import DotLoaderSpinner from "../components/loaders/dotLoader";
 import Router from "next/router";
+import { getProviders, signIn } from "next-auth/react";
 const initialvalues = {
   login_email: "",
   login_password: "",
@@ -22,7 +23,8 @@ const initialvalues = {
   error: "",
   login_error: "",
 };
-export default function signin({ callbackUrl, csrfToken }) {
+export default function signin({ providers }) {
+  console.log("🚀 ~ file: signin.js:27 ~ signin ~ providers", providers);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(initialvalues);
   const {
@@ -130,7 +132,24 @@ export default function signin({ callbackUrl, csrfToken }) {
             </Formik>
             <div className={styles.login__socials}>
               <span className={styles.or}>Or continue with</span>
-              <div className={styles.login__socials_wrap}></div>
+              <div className={styles.login__socials_wrap}>
+                {providers.map((provider) => {
+                  if (provider.name == "Credentials") {
+                    return;
+                  }
+                  return (
+                    <div key={provider.name}>
+                      <button
+                        className={styles.social__btn}
+                        onClick={() => signIn(provider.id)}
+                      >
+                        <img src={`../../icons/${provider.name}.png`} alt="" />
+                        Sign in with {provider.name}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -184,6 +203,7 @@ export default function signin({ callbackUrl, csrfToken }) {
                 </Form>
               )}
             </Formik>
+
             <div>
               {success && <span className={styles.success}>{success}</span>}
             </div>
@@ -194,4 +214,13 @@ export default function signin({ callbackUrl, csrfToken }) {
       <Footer country="France" />
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
+  return {
+    props: {
+      providers,
+    },
+  };
 }

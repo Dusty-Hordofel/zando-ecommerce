@@ -1928,7 +1928,44 @@ const registerValidation = Yup.object({
 });
 ```
 
-### 26. Sign in page 4 button submit
+### 26. Sign in page 4 button Socials
+
+- add socials Providers pages/signin/getServerSideProps()
+
+```js
+//use social Providers
+<div className={styles.login__socials}>
+  <span className={styles.or}>Or continue with</span>
+  <div className={styles.login__socials_wrap}>
+    {providers.map((provider) => {
+      if (provider.name == "Credentials") {
+        return;
+      }
+      return (
+        <div key={provider.name}>
+          <button
+            className={styles.social__btn}
+            onClick={() => signIn(provider.id)}
+          >
+            <img src={`../../icons/${provider.name}.png`} alt="" />
+            Sign in with {provider.name}
+          </button>
+        </div>
+      );
+    })}
+  </div>
+</div>;
+
+//get social Providers
+export async function getServerSideProps(context) {
+  const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
+  return {
+    props: {
+      providers,
+    },
+  };
+}
+```
 
 ### 27.
 
@@ -1938,12 +1975,16 @@ const registerValidation = Yup.object({
 
 ### 30.
 
-## external links
+## 📚 external links
 
-[Sass](https://www.npmjs.com/package/sass)
-[Mongoose](https://www.npmjs.com/package/mongoose)
-[Mongodb](https://www.npmjs.com/package/mongodb)
-[Nextjs](https://nextjs.org/docs/getting-started)
-[React-Icons](https://react-icons.github.io/react-icons/)
-[ipregistry](https://ipregistry.co/)
-[]()
+- 🔗 [Sass](https://www.npmjs.com/package/sass)
+- 🔗 [Mongoose](https://www.npmjs.com/package/mongoose)
+- 🔗 [Mongodb](https://www.npmjs.com/package/mongodb)
+- 🔗 [Nextjs](https://nextjs.org/docs/getting-started)
+- 🔗 [React-Icons](https://react-icons.github.io/react-icons/)
+- 🔗 [ipregistry](https://ipregistry.co/)
+  []()
+
+## 📚 Knowledge about
+
+- 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
