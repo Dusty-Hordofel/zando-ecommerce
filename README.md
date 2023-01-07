@@ -2098,7 +2098,18 @@ export const createResetToken = (payload) => {
 };
 ```
 
-### 28.
+### 28. Sign up 2 Send email 1
+
+- use [Google Cloud Console](https://console.cloud.google.com/apis/credentials/consent?hl=fr&project=zando-373510) and go to ` Zando ``Écran de consentement OAuth `
+- use `Google credentials` in [Developers Playground](https://developers.google.com/oauthplayground/)
+- add `https://mail.google.com/` and credentials.
+- exchange `Authorization code` to `Exchange authorization code for tokens`
+- add `MAILING_SERVICE_CLIENT_ID`,`MAILING_SERVICE_CLIENT_SECRET`,`MAILING_SERVICE_CLIENT_REFRESH_TOKEN ` & `MAILING_SERVICE_CLIENT_ACCESS_TOKEN` to `.env` file.
+- add google apis and nodemailer
+
+```bash
+npm i googleapis nodemailer
+```
 
 ### 29.
 
