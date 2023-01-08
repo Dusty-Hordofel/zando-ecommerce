@@ -2356,7 +2356,7 @@ export async function getServerSideProps(context) {
 }
 ```
 
-## Section 6.
+## Section 6. forgot,reset password
 
 ### 36.
 
