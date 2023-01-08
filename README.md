@@ -2309,7 +2309,20 @@ setTimeout(async () => {
 }, 2000);
 ```
 
-### 34.
+### 34. Callbacks in Next auth
+
+- add callbacks in `[...nextauth].js`
+
+```js
+  callbacks: {
+    async session({ session, token }) {
+      let user = await User.findById(token.sub); //sub is the id of the user in the data base, it's present in the token
+      session.user.id = token.sub || user._id.toSting();
+      session.user.role = user.role || "user";
+      token.role = user.role || "user";
+      return session;
+    },}
+```
 
 ### 35.
 

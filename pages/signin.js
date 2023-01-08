@@ -117,7 +117,8 @@ export default function signin({ providers }) {
       setLoading(false);
       setUser({ ...user, login_error: res?.error });
     } else {
-      return Router.push(callbackUrl || "/");
+      return Router.push("/");
+      //callbackUrl ||
     }
   };
 
