@@ -10,7 +10,12 @@ import { useState } from "react";
 import CircledIconBtn from "../components/buttons/circledIconBtn";
 import DotLoaderSpinner from "../components/loaders/dotLoader";
 import Router from "next/router";
-import { getProviders, signIn } from "next-auth/react";
+import {
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signIn,
+} from "next-auth/react";
 import axios from "axios";
 const initialvalues = {
   login_email: "",
@@ -23,7 +28,7 @@ const initialvalues = {
   error: "",
   login_error: "",
 };
-export default function signin({ providers }) {
+export default function signin({ providers, callbackUrl, csrfToken }) {
   console.log("🚀 ~ file: signin.js:27 ~ signin ~ providers", providers);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(initialvalues);
@@ -117,8 +122,7 @@ export default function signin({ providers }) {
       setLoading(false);
       setUser({ ...user, login_error: res?.error });
     } else {
-      return Router.push("/");
-      //callbackUrl ||
+      return Router.push(callbackUrl || "/");
     }
   };
 
@@ -154,6 +158,11 @@ export default function signin({ providers }) {
             >
               {(form) => (
                 <Form method="post" action="/api/auth/signin/email">
+                  <input
+                    type="hidden"
+                    name="csrfToken"
+                    defaultValue={csrfToken}
+                  />
                   <LoginInput
                     type="text"
                     name="login_email"
@@ -182,6 +191,7 @@ export default function signin({ providers }) {
               <span className={styles.or}>Or continue with</span>
               <div className={styles.login__socials_wrap}>
                 {providers.map((provider) => {
+                  //every provider has a name
                   if (provider.name == "Credentials") {
                     return;
                   }
@@ -268,10 +278,25 @@ export default function signin({ providers }) {
 }
 
 export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  const session = await getSession({ req });
+  const { callbackUrl } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+      },
+    };
+  }
+  const csrfToken = await getCsrfToken(context);
   const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
   return {
     props: {
       providers,
+      csrfToken,
+      callbackUrl,
     },
   };
 }

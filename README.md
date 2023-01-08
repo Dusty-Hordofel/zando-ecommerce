@@ -2324,7 +2324,39 @@ setTimeout(async () => {
     },}
 ```
 
-### 35.
+### 35. csrfTOken redirect
+
+- `csrfTOken` `redirect `to secure connection and redirect user
+
+```js
+<input type="hidden" name="csrfToken" defaultValue={csrfToken} />;
+
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  const session = await getSession({ req });
+  const { callbackUrl } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+      },
+    };
+  }
+  const csrfToken = await getCsrfToken(context);
+  const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
+  return {
+    props: {
+      providers,
+      csrfToken,
+      callbackUrl,
+    },
+  };
+}
+```
+
+## Section 6.
 
 ### 36.
 
@@ -2355,6 +2387,14 @@ setTimeout(async () => {
 ### 49.
 
 ### 50.
+
+## Section 7.
+
+## Section 8.
+
+## Section 9.
+
+## Section 10.
 
 ## 📚 external links
 
