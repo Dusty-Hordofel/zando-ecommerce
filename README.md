@@ -2195,7 +2195,27 @@ export const sendEmail = (to, url, txt, subject, template) => {
 </html>
 ```
 
-### 31.
+### 31. Sign up 7 submit
+
+- add `signUpHandler()` to add register a new user
+
+```js
+const signUpHandler = async () => {
+  try {
+    setLoading(true);
+    const { data } = await axios.post("/api/auth/signup", {
+      name,
+      email,
+      password,
+    });
+    setUser({ ...user, error: "", success: data.message });
+    setLoading(false);
+  } catch (error) {
+    setLoading(false);
+    setUser({ ...user, success: "", error: error.response.data.message });
+  }
+};
+```
 
 ### 32.
 

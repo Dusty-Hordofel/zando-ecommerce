@@ -36,17 +36,16 @@ handler.post(async (req, res) => {
     });
     //Send Email Notification
     const url = `${process.env.BASE_URL}/activate/${activation_token}`;
-    // res.send(url);
     sendEmail(
       email,
       url,
       "",
       "Activate your account." /*, activateEmailTemplate*/
     );
-    // await db.disconnectDb();
-    // res.json({
-    //   message: "Register success! Please activate your email to start.",
-    // });
+    await db.disconnectDb();
+    res.json({
+      message: "Register success! Please activate your email to start.",
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -8,10 +8,10 @@ import * as Yup from "yup";
 import LoginInput from "../components/inputs/loginInput";
 import { useState } from "react";
 import CircledIconBtn from "../components/buttons/circledIconBtn";
-
 import DotLoaderSpinner from "../components/loaders/dotLoader";
 import Router from "next/router";
 import { getProviders, signIn } from "next-auth/react";
+import axios from "axios";
 const initialvalues = {
   login_email: "",
   login_password: "",
@@ -76,6 +76,22 @@ export default function signin({ providers }) {
   const country = {
     name: "France",
     flag: "https://upload.wikimedia.org/wikipedia/commons/6/62/Flag_of_France.png",
+  };
+
+  const signUpHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/signup", {
+        name,
+        email,
+        password,
+      });
+      setUser({ ...user, error: "", success: data.message });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setUser({ ...user, success: "", error: error.response.data.message });
+    }
   };
 
   return (
@@ -169,6 +185,9 @@ export default function signin({ providers }) {
                 conf_password,
               }}
               validationSchema={registerValidation}
+              onSubmit={() => {
+                signUpHandler();
+              }}
             >
               {(form) => (
                 <Form>
