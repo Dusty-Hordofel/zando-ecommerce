@@ -2217,7 +2217,7 @@ const signUpHandler = async () => {
 };
 ```
 
-### 32. Sign up 8 loader, success, error, redirect ...
+### 32. Sign up 8 Redirect
 
 - redirect user after signUp to login page
 
@@ -2229,7 +2229,85 @@ setTimeout(async () => {
 
 - use a `<DotLoaderSpinner/>`
 
-### 33.
+### 33. Sign in with Next auth and submit
+
+- add [Credentials Provider](https://next-auth.js.org/providers/credentials) to [...nextauth].js
+
+```js
+   CredentialsProvider({
+      // The name to display on the sign in form (e.g. "Sign in with...")
+      name: "Credentials",
+      // `credentials` is used to generate a form on the sign in page.
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
+      // You can pass any HTML attribute to the <input> tag through the object.
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const email = credentials.email;
+        const password = credentials.password;
+        const user = await User.findOne({ email });
+        if (user) {
+          return SignInUser({ password, user });
+        } else {
+          throw new Error("This email does not exist.");
+        }
+      },
+    }),
+```
+
+- create `SignInUser()`
+
+```js
+const SignInUser = async ({ password, user }) => {
+  if (!user.password) {
+    throw new Error("Please enter your password.");
+  }
+  const testPassword = await bcrypt.compare(password, user.password);
+  if (!testPassword) {
+    throw new Error("Email or password is wrong!");
+  }
+  return user;
+};
+```
+
+- create `pages/signin/SignInHandler()`
+
+```js
+const signInHandler = async () => {
+  setLoading(true);
+  let options = {
+    redirect: false,
+    email: login_email,
+    password: login_password,
+  };
+  const res = await signIn("credentials", options);
+  setUser({ ...user, success: "", error: "" });
+  setLoading(false);
+  if (res?.error) {
+    setLoading(false);
+    setUser({ ...user, login_error: res?.error });
+  } else {
+    return Router.push(callbackUrl || "/");
+  }
+};
+```
+
+- update `pages/signin/signUpHandler()`
+
+```js
+setTimeout(async () => {
+  let options = {
+    redirect: false,
+    email: email,
+    password: password,
+  };
+  const res = await signIn("credentials", options);
+  Router.push("/");
+}, 2000);
+```
 
 ### 34.
 
