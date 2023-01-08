@@ -88,6 +88,9 @@ export default function signin({ providers }) {
       });
       setUser({ ...user, error: "", success: data.message });
       setLoading(false);
+      setTimeout(async () => {
+        Router.push("/");
+      }, 2000);
     } catch (error) {
       setLoading(false);
       setUser({ ...user, success: "", error: error.response.data.message });

@@ -2217,7 +2217,17 @@ const signUpHandler = async () => {
 };
 ```
 
-### 32.
+### 32. Sign up 8 loader, success, error, redirect ...
+
+- redirect user after signUp to login page
+
+```js
+setTimeout(async () => {
+  Router.push("/");
+}, 2000);
+```
+
+- use a `<DotLoaderSpinner/>`
 
 ### 33.
 
