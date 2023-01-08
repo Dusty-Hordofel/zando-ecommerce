@@ -16,11 +16,26 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 # Zando - An eCommerce Website
 
-Zando is a fully responsive ecommerce website, maximum compatiblities in all mobile devices, built using HTML, CSS, and JavaScript.I have used codewithsadee tutorial for learning purpose and follow all steps to gain new knowledges . Practice makes improvement.
+### Author Links
+
+👋 Hello, I'm Hordofel Dusty BAMANA.
+
+👇 Follow Me:
+
+- [Twitter](https://twitter.com/hordofel)
+- [LinkedIn](https://www.linkedin.com/in/dusty-hordofel-bamana-08389310a)
+
+---
 
 ## Demo
 
-![Zando Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")![Zando Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+## ![Zando Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")![Zando Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
+
+### 🚀 Description
+
+Zando is a fully responsive ecommerce website, maximum compatiblities in all mobile devices, built using HTML, CSS, and JavaScript.I have used codewithsadee tutorial for learning purpose and follow all steps to gain new knowledges . Practice makes improvement.
+
+---
 
 ## Section 1. Setup
 
@@ -28,7 +43,8 @@ Zando is a fully responsive ecommerce website, maximum compatiblities in all mob
 
 - create zando - ecommerce folder- install nextjs
 
-```bash $ pnpm create next-app
+```bash
+$ pnpm create next-app
 
 ```
 
@@ -1360,46 +1376,1037 @@ export async function getServerSideProps(context) {
 ```
 
 - use country props in `<Header/>` & `<Footer/>`
-- pass country props from `<Header/>` to <Top country={country} />
+- pass country props from `<Header/>` to `<Top country={country} />`
+- pass country props from `<Footer/>` to `<Copyright country={country} />`
 
-### 15.
+## Section 5. Next Authentication
 
-### 16.
+### 15. Next auth setup
 
-### 17.
+- add next-auth
 
-### 18.
+```bash
+npm i next-auth
+```
 
-### 19.
+- create server side authentication folder `/pages/api/auth/[...nextauth].js`
+- paste authentication method from (Nextjs)[https://next-auth.js.org/]
 
-### 20.
+```js
+import NextAuth from "next-auth";
+import AppleProvider from "next-auth/providers/apple";
+import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 
-### 21.
+export default NextAuth({
+  providers: [
+    // OAuth authentication providers...
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    // Passwordless / email sign in
+    EmailProvider({
+      server: process.env.MAIL_SERVER,
+      from: "NextAuth.js <no-reply@example.com>",
+    }), // we will not use EmailProvider
+  ],
+});
+```
 
-### 22.
+- add a session provider to \_app.js
 
-### 23.
+```js
+import { SessionProvider } from "next-auth/react";
 
-### 24.
+pageProps: { session, ...pageProps }: { session, ...pageProps }
 
-### 25.
+<SessionProvider session={session}>...</SessionProvider>;
+```
 
-### 26.
+- test the session provider in `<Home/>`
 
-### 27.
+### 16. JSON web tokens & Mongodb adapter
 
-### 28.
+- udpate NexAuth information
 
-### 29.
+```js
+import NextAuth from "next-auth";
+import AppleProvider from "next-auth/providers/apple";
+import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "./lib/mongodb";
 
-### 30.
+export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
+  providers: [
+    // OAuth authentication providers...
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+  ],
+  pages: {
+    signIn: "/signin",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.JWT_SECRET,
+});
+```
 
-## external links
+- Install [MongoDB-adapter ](https://next-auth.js.org/adapters/mongodb) to add user to the database
 
-[Sass](https://www.npmjs.com/package/sass)
-[Mongoose](https://www.npmjs.com/package/mongoose)
-[Mongodb](https://www.npmjs.com/package/mongodb)
-[Nextjs](https://nextjs.org/docs/getting-started)
-[React-Icons](https://react-icons.github.io/react-icons/)
-[ipregistry](https://ipregistry.co/)
-[]()
+```bash
+npm install next-auth @next-auth/mongodb-adapter mongodb
+```
+
+- create auth/lib/mongodb.ts
+
+```js
+// This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
+import { MongoClient } from "mongodb";
+
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+}
+
+const uri = process.env.MONGODB_URI;
+const options = {};
+
+let client;
+let clientPromise: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === "development") {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
+
+// Export a module-scoped MongoClient promise. By doing this in a
+// separate module, the client can be shared across functions.
+export default clientPromise;
+```
+
+- Add this adapter to your pages/api/auth/[...nextauth].js next-auth configuration object.
+
+```js
+import NextAuth from "next-auth"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/mongodb"
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
+  ...
+})
+```
+
+### 17. [Github Provider](https://next-auth.js.org/providers/github)
+
+- [Configure Github provider](https://github.com/settings/applications/new)
+
+```bash
+http://localhost:3000/api/auth/callback/github
+```
+
+- add Github Provider to NextAuth
+
+```js
+import GitHubProvider from "next-auth/providers/github";
+
+...
+providers: [
+  GitHubProvider({
+    clientId: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET
+  })
+]
+...
+```
+
+- generate a new client secret
+
+### 18. Google provider
+
+- go to [Google Cloud Console](https://console.cloud.google.com/welcome?project=arched-market-367511&hl=fr) & create a project (Zando)
+- test signing process with google provider
+
+### 19. Header session
+
+- update `<Top/> <UserMenu/>` adding user session
+
+### 20. Twitter provider
+
+- use twitter Provider buy using [Twitter API](https://developer.twitter.com
+
+### 21. Auth0 provider
+
+- use [Auth0 provider](https://next-auth.js.org/providers/auth0)
+
+```js
+import Auth0Provider from "next-auth/providers/auth0";
+...
+providers: [
+  Auth0Provider({
+    clientId: process.env.AUTH0_CLIENT_ID,
+    clientSecret: process.env.AUTH0_CLIENT_SECRET,
+    issuer: process.env.AUTH0_ISSUER
+  })
+]
+...
+```
+
+- create Nextjs application in [Auth0](https://manage.auth0.com/dashboard/us/dev-3m3vgdiu/applications) choosing `Regular Web Application` and download sample file to get credentials.
+- update [Auth0 settings](XXXXXXXXXXX ADD IMAGES XXXX) section by adding a `callback url` and `allowed logout url`.
+
+### 22. Signing Page 1
+
+- import `<Header/>` and `<Footer/>` signin page
+
+```js
+import Header from "../components/header";
+import Footer from "../components/footer";
+
+const signin = () => {
+  return (
+    <>
+      <Header />
+      <Footer country="France" />
+    </>
+  );
+};
+
+export default signin;
+```
+
+- add content in `Signing Page`
+
+```js
+<>
+  <Header country="France" />
+  <div className={styles.login}>
+    <div className={styles.login__container}>
+      <div className={styles.login__header}>
+        <div className={styles.back__svg}>
+          <BiLeftArrowAlt />
+        </div>
+        <span>
+          We'd be happy to join us ! <Link href="/">Go Store</Link>
+        </span>
+      </div>
+      <div className={styles.login__form}>
+        <h1>Sign in</h1>
+        <p>Get access to one of the best Eshopping services in the world.</p>
+      </div>
+    </div>
+  </div>
+  <Footer country="France" />
+</>
+```
+
+- style `Signing Page`
+
+```scss
+.login {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  &__container {
+    padding: 3rem;
+    &:last-of-type {
+      margin-top: 3rem;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 300px;
+    .back__svg {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #66666657;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $blue-color;
+        svg {
+          fill: $blue-color;
+        }
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #222;
+      }
+    }
+    span {
+      font-weight: 600;
+      font-size: 14px;
+      //padding-left: 10px;
+      a {
+        color: $blue-color;
+        cursor: pointer;
+        border-bottom: 1px solid $blue-color;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
+```
+
+### 23. Signing Page 2
+
+- create `<LoginInput/>`
+
+```js
+import styles from "./styles.module.scss";
+import { BiUser } from "react-icons/bi";
+import { SiMinutemailer } from "react-icons/si";
+import { IoKeyOutline } from "react-icons/io5";
+import { ErrorMessage, useField } from "formik";
+
+export default function LoginInput({ icon, placeholder, ...props }) {
+  const [field, meta] = useField(props);
+  return (
+    <div className={styles.input}>
+      {icon == "user" ? (
+        <BiUser />
+      ) : icon == "email" ? (
+        <SiMinutemailer />
+      ) : icon == "password" ? (
+        <IoKeyOutline />
+      ) : (
+        ""
+      )}
+      <input type={field.type} name={field.name} placeholder={placeholder} />
+      {meta.touched && meta.error && (
+        <div className={styles.error__popup}>
+          <span></span>
+          <ErrorMessage name={field.name} />
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+- style `<LoginInput/>`
+
+```scss
+.input {
+  position: relative;
+  max-width: 380px;
+  width: 100%;
+  background-color: #f0f0f0;
+  margin: 10px 0;
+  height: 55px;
+  border-radius: 55px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+  align-items: center;
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  svg {
+    width: 25px;
+    height: 25px;
+    stroke: #6666669a;
+    fill: #6666669a;
+  }
+  input {
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+    &::placeholder {
+      color: #aaa;
+      font-weight: 500;
+    }
+  }
+}
+.error {
+  background: $light-error-color !important;
+  margin-top: 5rem !important;
+  input {
+    color: #fff !important;
+    &::placeholder {
+      color: #fff !important;
+    }
+  }
+  svg {
+    fill: #fff !important;
+    stroke: #fff;
+  }
+}
+.error__popup {
+  position: absolute;
+  top: -70px;
+  background: $error-color;
+  height: 60px;
+  width: 100%;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px;
+  span {
+    position: absolute;
+    bottom: -9px;
+    left: 1rem;
+    border-top: 10px solid $error-color;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+  }
+}
+Footer
+
+```
+
+- create `components/buttons/circledIconBtn/index.js`
+
+  ```js
+  import { BiRightArrowAlt } from "react-icons/bi";
+  import styles from "./styles.module.scss";
+  export default function CircledIconBtn({ type, text, icon }) {
+    return (
+      <button className={styles.button} type={type}>
+        {text}
+        <div className={styles.svg__wrap}>
+          <BiRightArrowAlt />
+        </div>
+      </button>
+    );
+  }
+  ```
+
+- style `<circledIconBtn/>`
+
+```scss
+.button {
+  position: relative;
+  border: none;
+  outline: none;
+  width: 220px;
+  height: 55px;
+  font-weight: 600;
+  color: #fff;
+  background: $blue-color;
+  display: block;
+  border-radius: 55px;
+  cursor: pointer;
+
+  .svg__wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 7.5px;
+    right: 5px;
+    background: $grey-color;
+    svg {
+      fill: $blue-color;
+    }
+  }
+}
+```
+
+- create `Signing Page` form using [Formik](https://www.npmjs.com/package/formik) and [Yup](https://www.npmjs.com/package/yup)
+
+```bash
+npm i formik yup
+```
+
+### 24. Sign in page 3 - Custom input with yup
+
+- install [react-spinners
+  ](https://www.npmjs.com/package/react-spinners)
+
+```css
+$ npm i react-spinners
+```
+
+- create <DotLoaderSpinner />
+
+```js
+import styles from "./styles.module.scss";
+import DotLoader from "react-spinners/DotLoader";
+export default function DotLoaderSpinner({ loading }) {
+  return (
+    <div className={styles.loader}>
+      <DotLoader color="#2f82ff" loading={loading} />
+    </div>
+  );
+}
+```
+
+```scss
+.loader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+```
+
+### 25. Sign in page 4 - Custom input with yup
+
+- add yup validation logic
+
+```js
+const loginValidation = Yup.object({
+  login_email: Yup.string()
+    .required("Email address is required.")
+    .email("Please enter a valid email address."),
+  login_password: Yup.string().required("Please enter a password"),
+});
+const registerValidation = Yup.object({
+  name: Yup.string()
+    .required("What's your name ?")
+    .min(2, "First name must be between 2 and 16 characters.")
+    .max(16, "First name must be between 2 and 16 characters.")
+    .matches(/^[aA-zZ]/, "Numbers and special characters are not allowed."),
+  email: Yup.string()
+    .required(
+      "You'll need this when you log in and if you ever need to reset your password."
+    )
+    .email("Enter a valid email address."),
+  password: Yup.string()
+    .required(
+      "Enter a combination of at least six numbers,letters and punctuation marks(such as ! and &)."
+    )
+    .min(6, "Password must be atleast 6 characters.")
+    .max(36, "Password can't be more than 36 characters"),
+  conf_password: Yup.string()
+    .required("Confirm your password.")
+    .oneOf([Yup.ref("password")], "Passwords must match."),
+});
+```
+
+### 26. Sign in page 4 button Socials
+
+- add socials Providers pages/signin/getServerSideProps()
+
+```js
+//use social Providers
+<div className={styles.login__socials}>
+  <span className={styles.or}>Or continue with</span>
+  <div className={styles.login__socials_wrap}>
+    {providers.map((provider) => {
+      if (provider.name == "Credentials") {
+        return;
+      }
+      return (
+        <div key={provider.name}>
+          <button
+            className={styles.social__btn}
+            onClick={() => signIn(provider.id)}
+          >
+            <img src={`../../icons/${provider.name}.png`} alt="" />
+            Sign in with {provider.name}
+          </button>
+        </div>
+      );
+    })}
+  </div>
+</div>;
+
+//get social Providers
+export async function getServerSideProps(context) {
+  const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
+  return {
+    props: {
+      providers,
+    },
+  };
+}
+```
+
+### 27. Sign up backend logic 1
+
+- create pages/api/auth/signup.js
+- use next connec to manage our request
+
+```bash
+npm i next-connect bcrypt jsonwebtoken
+
+```
+
+- create utils/validation.js to validate email
+
+```js
+export const validateEmail = (email) => {
+  const regextSt =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regextSt.test(email);
+};
+```
+
+- create [User model](./models/User.js)
+
+```js
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Schema;
+
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: "Please enter your full name.",
+    },
+    email: {
+      type: String,
+      required: "Please enter your email address.",
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: '"Please enter a password.',
+    },
+    role: {
+      type: String,
+      default: "user",
+    },
+    image: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dmhcnhtng/image/upload/v1664642478/992490_b0iqzq.png",
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    defaultPaymentMethod: {
+      type: String,
+      default: "",
+    },
+    address: [
+      {
+        firstName: {
+          type: String,
+        },
+        lastName: {
+          type: String,
+        },
+        phoneNumber: {
+          type: String,
+        },
+        address1: {
+          type: String,
+        },
+        address2: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        zipCode: {
+          type: String,
+        },
+        state: {
+          type: String,
+        },
+        country: {
+          type: String,
+        },
+        active: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    wishlist: [
+      {
+        product: {
+          type: ObjectId,
+          ref: "Product",
+        },
+        style: {
+          type: String,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export default User;
+```
+
+- create utils/tokens/createActivationToken
+
+```js
+import jwt from "jsonwebtoken";
+export const createActivationToken = (payload) => {
+  return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, {
+    expiresIn: "2d",
+  });
+};
+export const createResetToken = (payload) => {
+  return jwt.sign(payload, process.env.RESET_TOKEN_SECRET, {
+    expiresIn: "6h",
+  });
+};
+```
+
+### 28. Sign up 2 Send email 1
+
+- use [Google Cloud Console](https://console.cloud.google.com/apis/credentials/consent?hl=fr&project=zando-373510) and go to ` Zando ``Écran de consentement OAuth `
+- use `Google credentials` in [Developers Playground](https://developers.google.com/oauthplayground/)
+- add `https://mail.google.com/` and credentials.
+- exchange `Authorization code` to `Exchange authorization code for tokens`
+- add `MAILING_SERVICE_CLIENT_ID`,`MAILING_SERVICE_CLIENT_SECRET`,`MAILING_SERVICE_CLIENT_REFRESH_TOKEN ` & `MAILING_SERVICE_CLIENT_ACCESS_TOKEN` to `.env` file.
+- add google apis and nodemailer
+
+```bash
+npm i googleapis nodemailer
+```
+
+### 29. Sign up 2 Send email 2
+
+- create utils/sendEmail.js
+
+```js
+import nodemailer from "nodemailer";
+import { google } from "googleapis";
+import { activateEmailTemplate } from "../emails/activateEmailTemplate";
+const { OAuth2 } = google.auth;
+const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
+
+const {
+  MAILING_SERVICE_CLIENT_ID,
+  MAILING_SERVICE_CLIENT_SECRET,
+  MAILING_SERVICE_REFRESH_TOKEN,
+  SENDER_EMAIL_ADDRESS,
+} = process.env;
+
+const oauth2Client = new OAuth2(
+  MAILING_SERVICE_CLIENT_ID,
+  MAILING_SERVICE_CLIENT_SECRET,
+  MAILING_SERVICE_REFRESH_TOKEN,
+  OAUTH_PLAYGROUND
+);
+
+//send email
+
+export const sendEmail = (to, url, txt, subject, template) => {
+  oauth2Client.setCredentials({
+    refresh_token: MAILING_SERVICE_REFRESH_TOKEN,
+  });
+  const accessToken = oauth2Client.getAccessToken();
+  const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: SENDER_EMAIL_ADDRESS,
+      clientId: MAILING_SERVICE_CLIENT_ID,
+      clientSecret: MAILING_SERVICE_CLIENT_SECRET,
+      refreshToken: MAILING_SERVICE_REFRESH_TOKEN,
+      accessToken,
+    },
+  });
+  const mailOptions = {
+    from: SENDER_EMAIL_ADDRESS,
+    to: to,
+    subject: subject,
+    html: template(to, url),
+  };
+  smtpTransport.sendMail(mailOptions, (err, infos) => {
+    if (err) return err;
+    return infos;
+  });
+};
+```
+
+### 30. Sign up 6 Send email 3
+
+- use [stripo](https://stripo.email/fr/) to create email template
+
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  style="font-family:Montserrat, sans-serif"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>New Template</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    ...
+  </head>
+  ...
+</html>
+```
+
+### 31. Sign up 7 submit
+
+- add `signUpHandler()` to add register a new user
+
+```js
+const signUpHandler = async () => {
+  try {
+    setLoading(true);
+    const { data } = await axios.post("/api/auth/signup", {
+      name,
+      email,
+      password,
+    });
+    setUser({ ...user, error: "", success: data.message });
+    setLoading(false);
+  } catch (error) {
+    setLoading(false);
+    setUser({ ...user, success: "", error: error.response.data.message });
+  }
+};
+```
+
+### 32. Sign up 8 Redirect
+
+- redirect user after signUp to login page
+
+```js
+setTimeout(async () => {
+  Router.push("/");
+}, 2000);
+```
+
+- use a `<DotLoaderSpinner/>`
+
+### 33. Sign in with Next auth and submit
+
+- add [Credentials Provider](https://next-auth.js.org/providers/credentials) to [...nextauth].js
+
+```js
+   CredentialsProvider({
+      // The name to display on the sign in form (e.g. "Sign in with...")
+      name: "Credentials",
+      // `credentials` is used to generate a form on the sign in page.
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
+      // You can pass any HTML attribute to the <input> tag through the object.
+      credentials: {
+        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const email = credentials.email;
+        const password = credentials.password;
+        const user = await User.findOne({ email });
+        if (user) {
+          return SignInUser({ password, user });
+        } else {
+          throw new Error("This email does not exist.");
+        }
+      },
+    }),
+```
+
+- create `SignInUser()`
+
+```js
+const SignInUser = async ({ password, user }) => {
+  if (!user.password) {
+    throw new Error("Please enter your password.");
+  }
+  const testPassword = await bcrypt.compare(password, user.password);
+  if (!testPassword) {
+    throw new Error("Email or password is wrong!");
+  }
+  return user;
+};
+```
+
+- create `pages/signin/SignInHandler()`
+
+```js
+const signInHandler = async () => {
+  setLoading(true);
+  let options = {
+    redirect: false,
+    email: login_email,
+    password: login_password,
+  };
+  const res = await signIn("credentials", options);
+  setUser({ ...user, success: "", error: "" });
+  setLoading(false);
+  if (res?.error) {
+    setLoading(false);
+    setUser({ ...user, login_error: res?.error });
+  } else {
+    return Router.push(callbackUrl || "/");
+  }
+};
+```
+
+- update `pages/signin/signUpHandler()`
+
+```js
+setTimeout(async () => {
+  let options = {
+    redirect: false,
+    email: email,
+    password: password,
+  };
+  const res = await signIn("credentials", options);
+  Router.push("/");
+}, 2000);
+```
+
+### 34. Callbacks in Next auth
+
+- add callbacks in `[...nextauth].js`
+
+```js
+  callbacks: {
+    async session({ session, token }) {
+      let user = await User.findById(token.sub); //sub is the id of the user in the data base, it's present in the token
+      session.user.id = token.sub || user._id.toSting();
+      session.user.role = user.role || "user";
+      token.role = user.role || "user";
+      return session;
+    },}
+```
+
+### 35. csrfTOken redirect
+
+- `csrfTOken` `redirect `to secure connection and redirect user
+
+```js
+<input type="hidden" name="csrfToken" defaultValue={csrfToken} />;
+
+export async function getServerSideProps(context) {
+  const { req, query } = context;
+
+  const session = await getSession({ req });
+  const { callbackUrl } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+      },
+    };
+  }
+  const csrfToken = await getCsrfToken(context);
+  const providers = Object.values(await getProviders()); //Object.values is use to transform Object to Array
+  return {
+    props: {
+      providers,
+      csrfToken,
+      callbackUrl,
+    },
+  };
+}
+```
+
+## Section 6.
+
+### 36.
+
+### 37.
+
+### 38.
+
+### 39.
+
+### 40.
+
+### 41.
+
+### 42.
+
+### 43.
+
+### 44.
+
+### 45.
+
+### 46.
+
+### 47.
+
+### 48.
+
+### 49.
+
+### 50.
+
+## Section 7.
+
+## Section 8.
+
+## Section 9.
+
+## Section 10.
+
+## 📚 external links
+
+- 🔗 [Sass](https://www.npmjs.com/package/sass)
+- 🔗 [Mongoose](https://www.npmjs.com/package/mongoose)
+- 🔗 [Mongodb](https://www.npmjs.com/package/mongodb)
+- 🔗 [Nextjs](https://nextjs.org/docs/getting-started)
+- 🔗 [React-Icons](https://react-icons.github.io/react-icons/)
+- 🔗 [ipregistry](https://ipregistry.co/)
+- 🔗 [stripo](https://stripo.email/fr/)
+  []()
+
+## 📚 Knowledge about
+
+- 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
