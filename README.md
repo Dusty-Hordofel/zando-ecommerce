@@ -2167,12 +2167,32 @@ export const sendEmail = (to, url, txt, subject, template) => {
 };
 ```
 
-### 30.
+### 30. Sign up 6 Send email 3
 
-- create email template
+- use [stripo](https://stripo.email/fr/) to create email template
 
-```js
-
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  style="font-family:Montserrat, sans-serif"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>New Template</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    ...
+  </head>
+  ...
+</html>
 ```
 
 ### 31.
@@ -2223,6 +2243,7 @@ export const sendEmail = (to, url, txt, subject, template) => {
 - 🔗 [Nextjs](https://nextjs.org/docs/getting-started)
 - 🔗 [React-Icons](https://react-icons.github.io/react-icons/)
 - 🔗 [ipregistry](https://ipregistry.co/)
+- 🔗 [stripo](https://stripo.email/fr/)
   []()
 
 ## 📚 Knowledge about

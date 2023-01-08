@@ -4,7 +4,7 @@ import { validateEmail } from "../../../utils/validation";
 import db from "../../../utils/db";
 import User from "../../../models/User";
 import { createActivationToken } from "../../../utils/tokens";
-// import { sendEmail } from "../../../utils/sendEmails";
+import { sendEmail } from "../../../utils/sendEmails";
 // import { activateEmailTemplate } from "../../../emails/activateEmailTemplate";
 const handler = nc(); //we define the handler to run nc
 
@@ -36,8 +36,13 @@ handler.post(async (req, res) => {
     });
     //Send Email Notification
     const url = `${process.env.BASE_URL}/activate/${activation_token}`;
-    res.send(url);
-    // sendEmail(email, url, "", "Activate your account.", activateEmailTemplate);
+    // res.send(url);
+    sendEmail(
+      email,
+      url,
+      "",
+      "Activate your account." /*, activateEmailTemplate*/
+    );
     // await db.disconnectDb();
     // res.json({
     //   message: "Register success! Please activate your email to start.",
