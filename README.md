@@ -2358,9 +2358,9 @@ export async function getServerSideProps(context) {
 
 ## Section 6. forgot,reset password
 
-### 36. Forgot page 1
+### 36. Forgot Frontend Side
 
-- create pages/auth/forgot.js
+- create pages/auth/`forgot.js`
 
 ```js
 import styles from "../../styles/forgot.module.scss";
@@ -2455,7 +2455,7 @@ export default function forgot() {
 }
 ```
 
-- create styles/forgot.module.scss
+- create styles/`forgot.module.scss`
 
 ```scss
 .forgot {
@@ -2502,7 +2502,95 @@ export default function forgot() {
 }
 ```
 
-### 37.
+### 37. Forgot Backend Side
+
+- create api/auth/`forgot.js`
+
+```js
+import nc from "next-connect";
+import bcrypt from "bcrypt";
+import { validateEmail } from "../../../utils/validation";
+import db from "../../../utils/db";
+import User from "../../../models/User";
+import { createActivationToken, createResetToken } from "../../../utils/tokens";
+import { sendEmail } from "../../../utils/sendEmails";
+import { resetEmailTemplate } from "../../../emails/resetEmailTemplate";
+const handler = nc();
+
+handler.post(async (req, res) => {
+  try {
+    await db.connectDb();
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "This email does not exist." });
+    }
+    const user_id = createResetToken({
+      id: user._id.toString(),
+    });
+    const url = `${process.env.BASE_URL}/auth/reset/${user_id}`;
+    sendEmail(email, url, "", "Reset your password.", resetEmailTemplate);
+    await db.disconnectDb();
+    res.json({
+      message: "An email has been sent to you, use it to reset your password.",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export default handler;
+```
+
+- create a forgot request in postman and test it
+
+```js
+url : http://localhost:xxx/api/auth/forgot;
+body: {
+   "email":"xxxxx@xxxxxx.com"
+}
+```
+
+- create a new [stripo](https://stripo.email/fr/) template
+
+```html
+export const resetEmailTemplate = (to, url) => { return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  style="font-family:arial, 'helvetica neue', helvetica, sans-serif"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>It happens to everyone</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
+    <!--<![endif]-->
+    <style type="text/css">
+      .es-button-border:hover a.es-button,
+      .es-button-border:hover button.es-button {
+        background: #58dfec !important;
+        border-color: #58dfec !important;
+      }
+      .es-button-border:hover {
+        border-color: #26c6da #26c6da #26c6da #26c6da !important;
+        background: #58dfec !important;
+        border-style: solid solid solid solid !important;
+      }
+      [data-ogsb] .es-button.es-button-1 {
+        padding: 5px 15px !important;
+      }
+    </style>
+  </head>
+  ...
+</html>
+```
 
 ### 38.
 
