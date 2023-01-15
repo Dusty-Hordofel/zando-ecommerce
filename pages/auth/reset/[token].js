@@ -16,7 +16,6 @@ import { Router } from "next/router";
 
 export default function reset({ user_id }) {
   console.log("🚀 ~ file: [token].js:18 ~ reset ~ user_id", user_id);
-  //   console.log("user_id", user_id);
   const [password, setPassword] = useState("");
   const [conf_password, setConf_password] = useState("");
   const [error, setError] = useState("");
@@ -39,11 +38,13 @@ export default function reset({ user_id }) {
         user_id,
         password,
       });
+
       let options = {
         redirect: false,
         email: data.email,
         password: password,
       };
+
       await signIn("credentials", options);
       window.location.reload(true);
     } catch (error) {
@@ -112,21 +113,28 @@ export default function reset({ user_id }) {
 //get thte token
 export async function getServerSideProps(context) {
   const { query, req } = context;
-  //   const session = await getSession({ req });
-  //   if (session) {
-  //     return {
-  //       redirect: {
-  //         destination: "/",
-  //       },
-  //     };
-  //   }
+  const session = await getSession({ req });
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+    };
+  }
   const token = query.token;
-  const user_id = jwt.verify(token, process.env.RESET_TOKEN_SECRET); //verify the token
-  //   const user_id = jwt.verify("pojadphjapidja", process.env.RESET_TOKEN_SECRET); //verify the token
-  //   if (user_id == null) {
-  //     console.log("adoajdàihjadiohiodhjioadha");
-  //   }
-  //   console.log(user_id);
+  const user_id = jwt.verify(token, process.env.RESET_TOKEN_SECRET);
+  // const user_id = jwt.verify("pojadphjapidja", process.env.RESET_TOKEN_SECRET);
+  if (user_id == null) {
+    console.log(
+      "🚀 ~ file: [token].js:128 ~ getServerSideProps ~ token",
+      token
+    );
+    //   console.log("adoajdàihjadiohiodhjioadha");
+  }
+  console.log(
+    "🚀 ~ file: [token].js:135 ~ getServerSideProps ~ user_id",
+    user_id
+  );
   return {
     props: {
       user_id: user_id.id,
