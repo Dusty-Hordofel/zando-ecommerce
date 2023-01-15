@@ -2356,15 +2356,410 @@ export async function getServerSideProps(context) {
 }
 ```
 
-## Section 6.
+## Section 6. forgot,reset password
 
-### 36.
+### 36. Forgot Frontend Side
 
-### 37.
+- create pages/auth/`forgot.js`
 
-### 38.
+```js
+import styles from "../../styles/forgot.module.scss";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import CircledIconBtn from "../../components/buttons/circledIconBtn";
+import LoginInput from "../../components/inputs/loginInput";
+import { useState } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import Link from "next/link";
+import DotLoaderSpinner from "../../components/loaders/dotLoader";
+import axios from "axios";
+import { getSession } from "next-auth/react";
 
-### 39.
+export default function forgot() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState("");
+  const emailValidation = Yup.object({
+    email: Yup.string()
+      .required(
+        "You'll need this when you log in and if you ever need to reset your password."
+      )
+      .email("Enter a valid email address."),
+  });
+  const forgotHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/auth/forgot", {
+        email,
+      });
+      setError("");
+      setSuccess(data.message);
+      setLoading(false);
+      setEmail("");
+    } catch (error) {
+      setLoading(false);
+      setSuccess("");
+      setError(error.response.data.message);
+    }
+  };
+  return (
+    <>
+      {loading && <DotLoaderSpinner loading={loading} />}
+      <Header country="" />
+      <div className={styles.forgot}>
+        <div>
+          <div className={styles.forgot__header}>
+            <div className={styles.back__svg}>
+              <BiLeftArrowAlt />
+            </div>
+            <span>
+              Forgot your password ? <Link href="/">Login instead</Link>
+            </span>
+          </div>
+          <Formik
+            enableReinitialize
+            initialValues={{
+              email,
+            }}
+            validationSchema={emailValidation}
+            onSubmit={() => {
+              forgotHandler();
+            }}
+          >
+            {(form) => (
+              <Form>
+                <LoginInput
+                  type="text"
+                  name="email"
+                  icon="email"
+                  placeholder="Email Address"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <CircledIconBtn type="submit" text="Send link" />
+                <div style={{ marginTop: "10px" }}>
+                  {error && <span className={styles.error}>{error}</span>}
+                  {success && <span className={styles.success}>{success}</span>}
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
+      <Footer country="" />
+    </>
+  );
+}
+```
+
+- create styles/`forgot.module.scss`
+
+```scss
+.forgot {
+  min-height: calc(100vh - 540px);
+  display: grid;
+  place-items: center;
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .back__svg {
+      width: 50px;
+      height: 50px;
+      border: 1px solid #66666657;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+
+      &:hover {
+        border-color: $blue-color;
+        svg {
+          fill: $blue-color;
+        }
+      }
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: #222;
+      }
+    }
+    span {
+      font-weight: 600;
+      font-size: 14px;
+      //padding-left: 10px;
+      a {
+        color: $blue-color;
+        cursor: pointer;
+        border-bottom: 1px solid $blue-color;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
+```
+
+### 37. Forgot Backend Side
+
+- create api/auth/`forgot.js`
+
+```js
+import nc from "next-connect";
+import bcrypt from "bcrypt";
+import { validateEmail } from "../../../utils/validation";
+import db from "../../../utils/db";
+import User from "../../../models/User";
+import { createActivationToken, createResetToken } from "../../../utils/tokens";
+import { sendEmail } from "../../../utils/sendEmails";
+import { resetEmailTemplate } from "../../../emails/resetEmailTemplate";
+const handler = nc();
+
+handler.post(async (req, res) => {
+  try {
+    await db.connectDb();
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "This email does not exist." });
+    }
+    const user_id = createResetToken({
+      id: user._id.toString(),
+    });
+    const url = `${process.env.BASE_URL}/auth/reset/${user_id}`;
+    sendEmail(email, url, "", "Reset your password.", resetEmailTemplate);
+    await db.disconnectDb();
+    res.json({
+      message: "An email has been sent to you, use it to reset your password.",
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export default handler;
+```
+
+- create a forgot request in postman and test it
+
+```js
+url : http://localhost:xxx/api/auth/forgot;
+body: {
+   "email":"xxxxx@xxxxxx.com"
+}
+```
+
+- create a new [stripo](https://stripo.email/fr/) template
+
+```html
+export const resetEmailTemplate = (to, url) => { return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  style="font-family:arial, 'helvetica neue', helvetica, sans-serif"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>It happens to everyone</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+      rel="stylesheet"
+    />
+    <!--<![endif]-->
+    <style type="text/css">
+      .es-button-border:hover a.es-button,
+      .es-button-border:hover button.es-button {
+        background: #58dfec !important;
+        border-color: #58dfec !important;
+      }
+      .es-button-border:hover {
+        border-color: #26c6da #26c6da #26c6da #26c6da !important;
+        background: #58dfec !important;
+        border-style: solid solid solid solid !important;
+      }
+      [data-ogsb] .es-button.es-button-1 {
+        padding: 5px 15px !important;
+      }
+    </style>
+  </head>
+  ...
+</html>
+```
+
+-
+
+### 38. Reset password Frontend
+
+- create auth/`reset/[token].js`
+
+```js
+import styles from "../../../styles/forgot.module.scss";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
+import { BiLeftArrowAlt } from "react-icons/bi";
+import CircledIconBtn from "../../../components/buttons/circledIconBtn";
+import LoginInput from "../../../components/inputs/loginInput";
+import { useState } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import Link from "next/link";
+import DotLoaderSpinner from "../../../components/loaders/dotLoader";
+import axios from "axios";
+import { getSession, signIn } from "next-auth/react";
+import jwt from "jsonwebtoken";
+import { Router } from "next/router";
+
+export default function reset({ user_id }) {
+  console.log("🚀 ~ file: README.md:2621 ~ reset ~ user_id", user_id);
+  const [password, setPassword] = useState("");
+  const [conf_password, setConf_password] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState("");
+  const passwordValidation = Yup.object({
+    password: Yup.string()
+      .required("Please enter your new password.")
+      .min(6, "Password must be atleast 6 characters.")
+      .max(36, "Password can't be more than 36 characters"),
+    conf_password: Yup.string()
+      .required("Confirm your password.")
+      .oneOf([Yup.ref("password")], "Passwords must match."),
+  });
+  const resetHandler = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.put("/api/auth/reset", {
+        user_id,
+        password,
+      });
+      let options = {
+        redirect: false,
+        email: data.email,
+        password: password,
+      };
+      await signIn("credentials", options);
+      window.location.reload(true);
+    } catch (error) {
+      setLoading(false);
+      setSuccess("");
+      setError(error.response.data.message);
+    }
+  };
+  return (
+    <>
+      {loading && <DotLoaderSpinner loading={loading} />}
+      <Header country="" />
+      <div className={styles.forgot}>
+        <div>
+          <div className={styles.forgot__header}>
+            <div className={styles.back__svg}>
+              <BiLeftArrowAlt />
+            </div>
+            <span>
+              Reset your password ? <Link href="/">Login instead</Link>
+            </span>
+          </div>
+          <Formik
+            enableReinitialize
+            initialValues={{
+              password,
+              conf_password,
+            }}
+            validationSchema={passwordValidation}
+            onSubmit={() => {
+              resetHandler();
+            }}
+          >
+            {(form) => (
+              <Form>
+                <LoginInput
+                  type="password"
+                  name="password"
+                  icon="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <LoginInput
+                  type="password"
+                  name="conf_password"
+                  icon="password"
+                  placeholder="Confirm Password"
+                  onChange={(e) => setConf_password(e.target.value)}
+                />
+
+                <CircledIconBtn type="submit" text="Submit" />
+                <div style={{ marginTop: "10px" }}>
+                  {error && <span className={styles.error}>{error}</span>}
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
+      <Footer country="" />
+    </>
+  );
+}
+```
+
+- use `getServerSideProps` in auth/`reset/[token].js`
+
+```js
+export async function getServerSideProps(context) {
+  const { query, req } = context;
+  const token = query.token;
+  const user_id = jwt.verify("pojadphjapidja", process.env.
+  console.log(user_id);
+  return {
+    props: {
+      user_id: user_id.id,
+    },
+  };
+}
+```
+
+### 39. Reset password Backend
+
+- create pages/api/auth/[reset.js](./pages/api/auth/reset.js)
+
+````js
+import nc from "next-connect";
+import bcrypt from "bcrypt";
+import { validateEmail } from "../../../utils/validation";
+import db from "../../../utils/db";
+import User from "../../../models/User";
+import { createActivationToken, createResetToken } from "../../../utils/tokens";
+import { sendEmail } from "../../../utils/sendEmails";
+import { resetEmailTemplate } from "../../../emails/resetEmailTemplate";
+const handler = nc();
+
+handler.put(async (req, res) => {
+  try {
+    await db.connectDb();
+    const { user_id, password } = req.body;
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(400).json({ message: "This Account does not exist." });
+    }
+    const cryptedPassword = await bcrypt.hash(password, 12);
+    await user.updateOne({
+      password: cryptedPassword,
+    });
+    res.status(200).json({ email: user.email });
+    await db.disconnectDb();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+export default handler;
+```
 
 ### 40.
 
@@ -2410,3 +2805,4 @@ export async function getServerSideProps(context) {
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+````
