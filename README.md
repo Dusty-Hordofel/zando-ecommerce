@@ -2614,8 +2614,9 @@ import axios from "axios";
 import { getSession, signIn } from "next-auth/react";
 import jwt from "jsonwebtoken";
 import { Router } from "next/router";
+
 export default function reset({ user_id }) {
-  console.log("user_id", user_id);
+  console.log("🚀 ~ file: README.md:2621 ~ reset ~ user_id", user_id);
   const [password, setPassword] = useState("");
   const [conf_password, setConf_password] = useState("");
   const [error, setError] = useState("");
@@ -2712,19 +2713,8 @@ export default function reset({ user_id }) {
 ```js
 export async function getServerSideProps(context) {
   const { query, req } = context;
-  const session = await getSession({ req });
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-    };
-  }
   const token = query.token;
-  const user_id = jwt.verify("pojadphjapidja", process.env.RESET_TOKEN_SECRET);
-  if (user_id == null) {
-    console.log("adoajdàihjadiohiodhjioadha");
-  }
+  const user_id = jwt.verify("pojadphjapidja", process.env.
   console.log(user_id);
   return {
     props: {
@@ -2734,9 +2724,11 @@ export async function getServerSideProps(context) {
 }
 ```
 
-- create auth/api/[reset.js](./pages/api/auth/reset.js)
+### 39. Reset password Backend
 
-```js
+- create pages/api/auth/[reset.js](./pages/api/auth/reset.js)
+
+````js
 import nc from "next-connect";
 import bcrypt from "bcrypt";
 import { validateEmail } from "../../../utils/validation";
@@ -2768,8 +2760,6 @@ handler.put(async (req, res) => {
 
 export default handler;
 ```
-
-### 39. Reset password Backend
 
 ### 40.
 
@@ -2815,3 +2805,4 @@ export default handler;
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+````
