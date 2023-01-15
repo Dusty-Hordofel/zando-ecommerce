@@ -2726,9 +2726,9 @@ export async function getServerSideProps(context) {
 
 ### 39. Reset password Backend
 
-- create pages/api/auth/[reset.js](./pages/api/auth/reset.js)
+- create [reset.js](./pages/api/auth/reset.js)
 
-````js
+```js
 import nc from "next-connect";
 import bcrypt from "bcrypt";
 import { validateEmail } from "../../../utils/validation";
@@ -2761,29 +2761,284 @@ handler.put(async (req, res) => {
 export default handler;
 ```
 
-### 40.
+## Section 7. Home Page
 
-### 41.
+### 40. Home main structure
 
-### 42.
+- create [index.js](./components/home/main/index.js), [Header.js](./components/home/main/index.js), [Menu.js](./components/home/main/index.js) , [swiper.js](./components/home/main/index.js), [User.js](./components/home/main/User.js) and [styles.modules.scss](./components/home/main/styles.module.scss) in `./components/home/main`.
+- style `<Home/>` using [Home.module.scss](./styles/Home.module.scss)
 
-### 43.
+```scss
+.home {
+  min-height: 100vh;
+  background: $grey-color;
+  &__category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    @media (max-width: 850px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .products {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+```
 
-### 44.
+- style `<Main/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 45.
+```scss
+.main {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+    "menu header header"
+    "menu swiper user"
+    "menu offers user";
+  @media (max-width: 1232px) {
+    grid-template-columns: 1fr 3fr;
+  }
+  @media (max-width: 990px) {
+    grid-template-columns: 80px 3fr;
+  }
+  @media (max-width: 730px) {
+    grid-template-areas:
+      "menu"
+      "swiper"
+      "offers";
+    grid-template-columns: 1fr;
+    .menu {
+      width: 100% !important;
+      height: fit-content !important;
+      &__list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        li {
+          transform: translateY(-25px);
+        }
+      }
+    }
+  }
+}
+```
 
-### 46.
+- style `<Menu/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 47.
+```scss
+.menu {
+  grid-area: menu;
+  height: 580px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 990px) {
+    width: 80px;
+    svg {
+      transform: scale(1.5);
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  &__header {
+    width: 100%;
+    height: 35px;
+    background: $grey-color;
+    border-bottom: 1px solid $grey-color;
+    box-shadow: $shadow-2;
+    @media (max-width: 990px) {
+      display: none !important;
+      svg,
+      b {
+        display: none;
+      }
+    }
+    svg {
+      height: 23px;
+      width: 23px;
+    }
+  }
+  &__list {
+    margin-top: 3px;
+  }
+  ul {
+    li {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: $grey-color;
+      }
 
-### 48.
+      a {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #424141;
+        svg {
+          fill: #8c8484;
+          stroke: #8c8484;
+        }
+        span {
+          @media (max-width: 990px) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+```
 
-### 49.
+- style `<Header/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 50.
+```scss
+.header {
+  grid-area: header;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  @media (max-width: 730px) {
+    display: none !important;
+  }
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    li {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 19px;
+      color: $blue-color;
+    }
+  }
+}
+```
 
-## Section 7.
+- style `<swiper/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
+
+```scss
+.swiper {
+  grid-area: swiper;
+  height: 300px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+}
+```
+
+- style `<offers/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
+
+```scss
+.offers {
+  position: relative;
+  grid-area: offers;
+  overflow: hidden;
+  height: 220px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  // background-image: url("../../../public/images/flash.webp");
+  background-image: url("https://img.lovepik.com/background/20211021/large/lovepik-e-commerce-banner-background-image_500366534.jpg");
+  background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20190220/ourmid/pngtree-contrast-color-wave-point-geometric-banner-image_9983.jpg");
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20190221/ourmid/pngtree-color-horn-polygon-pop-wind-image_16349.jpg");
+  //background-position: -275px -135px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  &__text {
+    max-width: 200px;
+    position: absolute;
+    top: 1.3rem;
+    left: 2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.418);
+    padding: 1rem;
+    color: $blue-color;
+    text-align: center;
+    b {
+    }
+    a {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $blue-color;
+      height: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      border: 1px solid #fff;
+      animation: all 0.2s ease-in-out;
+      border-color: #fff;
+      &:hover {
+        transform: scale(1.05);
+        font-size: 16px;
+      }
+    }
+  }
+}
+```
+
+### 41. Home swiper part 1
+
+### 42. Home offers main
+
+### 43. Home menu
+
+### 44. Home user menu markup
+
+### 45. Home user menu markup styles
+
+### 46. Home main header
+
+### 47. Home main responsive
+
+### 48. Flash deals 1
+
+### 49. Flash deals 2
+
+### 50. Flash deals responsive
+
+### 51. Flash deals Countdown
+
+### 52. Category cards
+
+### 53. Category cards responsive
+
+### 54. Home products swiper
+
+### 55. Home products swiper extra
+
+### 56.
+
+### 57.
+
+### 58.
+
+### 59.
+
+### 60.
 
 ## Section 8.
 
@@ -2805,4 +3060,7 @@ export default handler;
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
-````
+
+```
+
+```

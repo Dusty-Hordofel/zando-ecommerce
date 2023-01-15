@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.scss";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Header from "../components/header";
 import Footer from "../components/footer";
+import Main from "../components/home/main";
 import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,7 +16,12 @@ export default function Home({ country }) {
   return (
     <>
       <Header country={country} />
-      {session ? "You are logged in" : "you are not logged in"}
+      {/* {session ? "You are logged in" : "you are not logged in"} */}
+      <div className={styles.home}>
+        <div className={styles.container}>
+          <Main />
+        </div>
+      </div>
       <Footer country={country} />
     </>
   );
