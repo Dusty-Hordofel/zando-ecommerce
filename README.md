@@ -3945,7 +3945,7 @@ export default function Category({ header, products, background }) {
 
 - import [women_dresses](./data/home.js)
 
-### 48. HCategory cards responsive
+### 48. Category cards responsive
 
 - update [Home](./pages/index.js)
 
@@ -3995,6 +3995,116 @@ export default function Category({ header, products, background }) {
 ```
 
 ### 49. Home products swiper
+
+- import [ProductsSwiper](.components/productsSwiper/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Navigation } from "swiper";
+export default function ProductsSwiper({ header, products, bg }) {
+  return (
+    <div className={styles.wrapper}>
+      {header && (
+        <div
+          className={styles.header}
+          style={{ background: `${bg ? bg : ""}` }}
+        >
+          {header}
+        </div>
+      )}
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        navigation={true}
+        modules={[Navigation]}
+        className="products__swiper"
+        breakpoints={{
+          450: {
+            slidesPerView: 2,
+          },
+          630: {
+            slidesPerView: 3,
+          },
+          920: {
+            slidesPerView: 4,
+          },
+          1232: {
+            slidesPerView: 5,
+          },
+          1520: {
+            slidesPerView: 6,
+          },
+        }}
+      >
+        {products.map((product) => (
+          <SwiperSlide>
+            <div className={styles.product}>
+              <div className={styles.product__img}>
+                <img src={product.image} alt="" />
+              </div>
+              <div className={styles.product__infos}>
+                <h1>
+                  {product.name.length > 30
+                    ? `${product.name.slice(0, 30)}...`
+                    : product.name}
+                </h1>
+                {product.price && <span>USD{product.price}$</span>}
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
+```
+
+- styke [ProductsSwiper](components/productsSwiper/styles.module.scss)
+
+```scss
+.wrapper {
+  margin-top: 1rem;
+  .header {
+    height: 50px;
+    background: $yellow-color;
+    color: #fff;
+    font-size: 25px;
+    padding: 1rem 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .product {
+    &__img {
+      height: 350px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    &__infos {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2px;
+      h1 {
+        font-size: 13px;
+        font-weight: normal;
+        color: #222;
+      }
+      span {
+        color: $redish-color;
+      }
+    }
+  }
+}
+```
 
 ### 50. Home products swiper extra
 

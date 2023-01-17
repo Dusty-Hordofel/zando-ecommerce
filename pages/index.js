@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.scss";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Header from "../components/header";
 import Footer from "../components/footer";
-import Main from "../components/home/main";
 import axios from "axios";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Main from "../components/home/main";
 import FlashDeals from "../components/home/flashDeals";
 import Category from "../components/home/category";
+import db from "../utils/db";
 import {
   gamingSwiper,
   homeImprovSwiper,
@@ -17,21 +17,18 @@ import {
   women_swiper,
 } from "../data/home";
 import { useMediaQuery } from "react-responsive";
+import ProductsSwiper from "../components/productsSwiper";
+// import Product from "../models/Product";
+// import ProductCard from "../components/productCard";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home({ country }) {
-  // console.log("🚀 ~ file: index.js:11 ~ Home ~ country", country);
+export default function home({ country, products }) {
+  console.log("products", products);
   const { data: session } = useSession();
-  // console.log("products", products);
-
   const isMedium = useMediaQuery({ query: "(max-width:850px)" });
   const isMobile = useMediaQuery({ query: "(max-width:550px)" });
-  console.log("🚀 ~ file: index.js:14 ~ Home ~ session", session);
   return (
     <>
       <Header country={country} />
-      {/* {session ? "You are logged in" : "you are not logged in"} */}
       <div className={styles.home}>
         <div className={styles.container}>
           <Main />
@@ -62,6 +59,12 @@ export default function Home({ country }) {
               background="#000"
             />
           </div>
+          <ProductsSwiper products={women_swiper} />
+          {/* <div className={styles.products}>
+            {products.map((product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+          </div> */}
         </div>
       </div>
       <Footer country={country} />
