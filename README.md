@@ -3484,21 +3484,369 @@ export default function User() {
 }
 ```
 
-### 45. Flash deals 1
+### 45. Flash deals
 
-### 46. Flash deals 2
+- create [FlashDeals](./components/home/flashDeals/index.js)
 
-### 49. Flash deals responsive
+```js
+import styles from "./styles.module.scss";
+import { MdFlashOn } from "react-icons/md";
+import Countdown from "../../countdown";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
 
-### 50. Flash deals Countdown
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
 
-### 52. Category cards
+// import required modules
+import { Navigation } from "swiper";
+import { flashDealsArray } from "../../../data/home";
+import FlashCard from "./Card";
+export default function FlashDeals() {
+  return (
+    <div className={styles.flashDeals}>
+      <div className={styles.flashDeals__header}>
+        <h1>
+          FLASH SALE
+          <MdFlashOn />
+        </h1>
+        <Countdown date={new Date(2022, 12, 30)} />
+      </div>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        navigation={true}
+        modules={[Navigation]}
+        className="flashDeals__swiper"
+        breakpoints={{
+          450: {
+            slidesPerView: 2,
+          },
+          630: {
+            slidesPerView: 3,
+          },
+          920: {
+            slidesPerView: 4,
+          },
+          1232: {
+            slidesPerView: 5,
+          },
+          1520: {
+            slidesPerView: 6,
+          },
+        }}
+      >
+        <div className={styles.flashDeals__list}>
+          {flashDealsArray.map((product, i) => (
+            <SwiperSlide>
+              <FlashCard product={product} key={i} />
+            </SwiperSlide>
+          ))}
+        </div>
+      </Swiper>
+    </div>
+  );
+}
+```
 
-### 53. Category cards responsive
+- style [FlashDeals](./components/home/flashDeals/index.js)
 
-### 54. Home products swiper
+```scss
+.flashDeals {
+  margin: 2rem 0;
+  background: #fff;
+  &__header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    font-weight: 900;
+    font-size: 25px;
+    text-transform: uppercase;
+    background: $yellow-color;
+    margin-bottom: 10px;
+    @media (max-width: 610px) {
+      font-size: 18px;
+    }
+    @media (max-width: 508px) {
+      font-size: 15px;
+    }
+    @media (max-width: 464px) {
+      flex-direction: column;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    @media (max-width: 600px) {
+      justify-content: center;
+    }
+  }
+}
+.card {
+  height: 420px;
+  width: 283px;
+  &__img {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    cursor: pointer;
+    overflow: hidden;
 
-### 55. Home products swiper extra
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50px;
+      height: 65px;
+      background: $yellow-color;
+      padding: 1rem;
+      span {
+        color: #333;
+        font-weight: 600;
+        font-size: 18px;
+        transform: translateY(18px);
+      }
+      svg {
+        position: absolute;
+        transform: scale(2);
+        fill: #333;
+      }
+    }
+  }
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+    span {
+      font-weight: 700;
+      &:first-of-type {
+        color: $redish-color;
+      }
+      &:last-of-type {
+        font-size: 14px;
+        font-weight: normal;
+        text-decoration: line-through;
+        color: #666;
+      }
+    }
+  }
+  &__bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 10px;
+    background: #ccc;
+    margin-top: 2px;
+    &_inner {
+      background: $yellow-color;
+      border-radius: 10px;
+      height: 100%;
+    }
+  }
+  &__percentage {
+    font-size: 14px;
+    color: #111;
+    margin-top: 2px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+```
+
+- create [Card](./components/home/flashDeals/Card.js)
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { MdFlashOn } from "react-icons/md";
+export default function FlashCard({ product }) {
+  return (
+    <div className={styles.card}>
+      <div className={styles.card__img}>
+        <Link href={product.link}>
+          <img src={product.image} alt="" />
+        </Link>
+        <div className={styles.flash}>
+          <MdFlashOn />
+          <span>-{product.discount}%</span>
+        </div>
+      </div>
+      <div className={styles.card__price}>
+        <span>
+          USD{(product.price - product.price / product.discount).toFixed(2)}$
+        </span>
+        <span>
+          -USD
+          {(
+            product.price -
+            (product.price - product.price / product.discount)
+          ).toFixed(2)}$
+        </span>
+      </div>
+      <div className={styles.card__bar}>
+        <div className={styles.card__bar_inner} style={{ width: "75%" }}></div>
+      </div>
+      <div className={styles.card__percentage}>{product.sold}%</div>
+    </div>
+  );
+}
+```
+
+### 46. Flash deals Countdown
+
+- create [Countdown](./components/countdown/index.js)
+
+```js
+import { useEffect } from "react";
+import { useState } from "react";
+import styles from "./styles.module.scss";
+import { calcaulateDiff } from "./utils";
+const defaultRemainingTime = {
+  seconds: "00",
+  minutes: "00",
+  hours: "00",
+  days: "00",
+};
+export default function Countdown({ date }) {
+  const [timeInMs, setTimeInMs] = useState(date.getTime());
+  const [remainingTime, setRemainingTime] = useState();
+  useEffect(() => {
+    setTimeInMs(date.getTime());
+  }, [date]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateRemainingTime(timeInMs);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timeInMs]);
+  const updateRemainingTime = (timeInMs) => {
+    setRemainingTime(calcaulateDiff(timeInMs));
+  };
+  return (
+    <div className={styles.countdown}>
+      {/*
+      {[...Array(remainingTime?.days.length).keys()].map((d, i) => {
+        if (remainingTime?.days == 0) {
+          return;
+        }
+        return (
+          <>
+            <span>{remainingTime?.days.slice(i, i + 1)}</span> <b>:</b>
+          </>
+        );
+      })}
+      */}
+      <span>{remainingTime?.hours.slice(0, 1)}</span>
+      <span>{remainingTime?.hours.slice(1, 2)}</span>
+      <b>:</b>
+      <span>{remainingTime?.minutes.slice(0, 1)}</span>
+      <span>{remainingTime?.minutes.slice(1, 2)}</span>
+      <b>:</b>
+      <span>{remainingTime?.seconds.slice(0, 1)}</span>
+      <span>{remainingTime?.seconds.slice(1, 2)}</span>
+    </div>
+  );
+}
+```
+
+- style [Countdown](./components/countdown/styles.module.scss)
+
+```scss
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  span {
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 27px;
+  }
+  b {
+    font-size: 20px;
+  }
+}
+```
+
+- install [dayjs]()
+
+```bash
+npm i dayjs
+```
+
+- create[utils](./components/countdown/utils.js)
+
+```js
+import dayjs from "dayjs";
+export function calcaulateDiff(timeInMs) {
+  const timestamDayjs = dayjs(timeInMs);
+  const nowDayjs = dayjs();
+  if (timestamDayjs.isBefore(nowDayjs)) {
+    return {
+      seconds: "00",
+      minutes: "00",
+      hours: "00",
+      days: "00",
+    };
+  }
+  return {
+    seconds: getRemainingSeconds(nowDayjs, timestamDayjs),
+    minutes: getRemainingMinutes(nowDayjs, timestamDayjs),
+    hours: getRemainingHours(nowDayjs, timestamDayjs),
+    days: getRemainingDays(nowDayjs, timestamDayjs),
+  };
+}
+
+function getRemainingSeconds(nowDayjs, timestamDayjs) {
+  const seconds = timestamDayjs.diff(nowDayjs, "seconds") % 60;
+  return padWithZeros(seconds, 2);
+}
+function getRemainingMinutes(nowDayjs, timestamDayjs) {
+  const minutes = timestamDayjs.diff(nowDayjs, "minutes") % 60;
+  return padWithZeros(minutes, 2);
+}
+function getRemainingHours(nowDayjs, timestamDayjs) {
+  const hours = timestamDayjs.diff(nowDayjs, "hours") % 60;
+  return padWithZeros(hours, 2);
+}
+function getRemainingDays(nowDayjs, timestamDayjs) {
+  const days = timestamDayjs.diff(nowDayjs, "days");
+  return days.toString();
+}
+
+function padWithZeros(number, length) {
+  const numberString = number.toString();
+  if (numberString.length >= length) return numberString;
+  return "0".repeat(length - numberString.length) + numberString;
+}
+```
+
+### 47. Category cards
+
+### 48. Category cards responsive
+
+### 49. Home products swiper
+
+### 50. Home products swiper extra
+
+### 54.
+
+### 55.
 
 ### 56.
 
