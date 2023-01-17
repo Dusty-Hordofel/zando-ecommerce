@@ -3935,7 +3935,7 @@ export default function Category({ header, products, background }) {
 }
 ```
 
-- import [Category]() in [Home](./pages/index.js)
+- import [Category](../zando-ecommerce/components/home/category/index.js) in [Home](./pages/index.js)
 
 ```js
 <div className={styles.home__category}>
@@ -3945,11 +3945,58 @@ export default function Category({ header, products, background }) {
 
 - import [women_dresses](./data/home.js)
 
-### 48. Home products swiper
+### 48. HCategory cards responsive
 
-### 49. Home products swiper extra
+- update [Home](./pages/index.js)
 
-### 50.
+```js
+{
+  !isMedium && (
+    <Category header="Shoes" products={women_shoes} background="#3c811f" />
+  );
+}
+{
+  isMobile && (
+    <Category header="Shoes" products={women_shoes} background="#3c811f" />
+  );
+}
+<Category
+  header="Accessories"
+  products={women_accessories}
+  background="#000"
+/>;
+```
+
+- style [Home](./pages/index.js) using [Home.module.scss](./styles/Home.module.scss)
+
+```scss
+.home {
+  min-height: 100vh;
+  background: $grey-color;
+  &__category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    @media (max-width: 850px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .products {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+```
+
+### 49. Home products swiper
+
+### 50. Home products swiper extra
 
 ### 54.
 

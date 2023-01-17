@@ -16,12 +16,17 @@ import {
   women_shoes,
   women_swiper,
 } from "../data/home";
+import { useMediaQuery } from "react-responsive";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({ country }) {
   // console.log("🚀 ~ file: index.js:11 ~ Home ~ country", country);
   const { data: session } = useSession();
+  // console.log("products", products);
+
+  const isMedium = useMediaQuery({ query: "(max-width:850px)" });
+  const isMobile = useMediaQuery({ query: "(max-width:550px)" });
   console.log("🚀 ~ file: index.js:14 ~ Home ~ session", session);
   return (
     <>
@@ -36,6 +41,25 @@ export default function Home({ country }) {
               header="Dresses"
               products={women_dresses}
               background="#5a31f4"
+            />
+            {!isMedium && (
+              <Category
+                header="Shoes"
+                products={women_shoes}
+                background="#3c811f"
+              />
+            )}
+            {isMobile && (
+              <Category
+                header="Shoes"
+                products={women_shoes}
+                background="#3c811f"
+              />
+            )}
+            <Category
+              header="Accessories"
+              products={women_accessories}
+              background="#000"
             />
           </div>
         </div>
