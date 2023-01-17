@@ -3783,7 +3783,7 @@ export default function Countdown({ date }) {
 }
 ```
 
-- install [dayjs]()
+- install [dayjs](https://www.npmjs.com/package/dayjs)
 
 ```bash
 npm i dayjs
@@ -3838,11 +3838,118 @@ function padWithZeros(number, length) {
 
 ### 47. Category cards
 
-### 48. Category cards responsive
+- install [react-responsive](https://www.npmjs.com/package/react-responsive)
 
-### 49. Home products swiper
+```bash
+npm i react-responsive
+```
 
-### 50. Home products swiper extra
+- create [Card](./components/home/category/index.js)
+
+```js
+import { BsArrowRightCircle } from "react-icons/bs";
+import styles from "./styles.module.scss";
+import { useMediaQuery } from "react-responsive";
+
+export default function Category({ header, products, background }) {
+  const isMedium = useMediaQuery({ query: "(max-width:1300px)" });
+  const isMobile = useMediaQuery({ query: "(max-width:550px)" });
+  return (
+    <div className={styles.category} style={{ background: `${background}` }}>
+      <div className={styles.category__header}>
+        <h1>{header}</h1>
+        <BsArrowRightCircle />
+      </div>
+      <div className={styles.category__products}>
+        {products.slice(0, isMobile ? 6 : isMedium ? 4 : 6).map((product) => (
+          <div className={styles.product}>
+            <img src={product.image} alt="" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+- create [styles.module.scss](./components/home/category/styles.module.scss)
+
+```scss
+.category {
+  max-width: 500px;
+  padding: 1rem;
+  border-radius: 10px;
+  h1 {
+    color: #fff;
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    svg {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      fill: #fff;
+      transition: all 0.2s;
+      &:hover {
+        transform: scale(1.1);
+        fill: $yellow-color;
+      }
+    }
+  }
+  &__products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    @media (max-width: 1300px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 1100px) {
+      padding: 5px;
+      gap: 8px;
+    }
+    .product {
+      img {
+        border-radius: 10px;
+        height: 200px;
+        width: 100%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        object-fit: cover;
+        &:hover {
+          transform: scale(1.02);
+        }
+        @media (max-width: 1000px) {
+          height: 150px;
+        }
+        @media (max-width: 850px) {
+          height: 200px;
+        }
+      }
+    }
+  }
+}
+```
+
+- import [Category]() in [Home](./pages/index.js)
+
+```js
+<div className={styles.home__category}>
+  <Category header="Dresses" products={women_dresses} background="#5a31f4" />
+</div>
+```
+
+- import [women_dresses](./data/home.js)
+
+### 48. Home products swiper
+
+### 49. Home products swiper extra
+
+### 50.
 
 ### 54.
 
@@ -3873,7 +3980,8 @@ function padWithZeros(number, length) {
 - 🔗 [React-Icons](https://react-icons.github.io/react-icons/)
 - 🔗 [ipregistry](https://ipregistry.co/)
 - 🔗 [stripo](https://stripo.email/fr/)
-  []()
+- 🔗 [react-responsive](https://www.npmjs.com/package/react-responsive)
+- 🔗 [dayjs](https://www.npmjs.com/package/dayjs)
 
 ## 📚 Knowledge about
 
