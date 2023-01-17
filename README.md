@@ -3148,13 +3148,234 @@ export default function Menu() {
 }
 ```
 
-### 43. Home user menu markup
+### 42. Home user menu markup
 
-### 44. Home user menu markup styles
+- update [User.js](./components/home/main/User.js)
 
-### 45. Home main header
+```js
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { IoSettingsOutline } from "react-icons/io5";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { BsHeart } from "react-icons/bs";
+import { AiOutlineMessage } from "react-icons/ai";
+import React, { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
 
-### 46. Home main responsive
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+// import required modules
+import { EffectCards, Navigation } from "swiper";
+import { userSwiperArray } from "../../../data/home";
+
+export default function User() {
+  const { data: session } = useSession();
+  return (
+    <div className={styles.user}>
+      <img
+        src="../../../images/userHeader.jpg"
+        alt=""
+        className={styles.user__header}
+      />
+      <div className={styles.user__container}>
+        {session ? (
+          <div className={styles.user__infos}>
+            <img src={session.user?.image} alt="" />
+            <h4>{session.user.name}</h4>
+          </div>
+        ) : (
+          <div className={styles.user__infos}>
+            <img
+              src="https://res.cloudinary.com/dmhcnhtng/image/upload/v1664642478/992490_b0iqzq.png"
+              alt=""
+            />
+            <div className={styles.user__infos_btns}>
+              <button>Register</button>
+              <button>Login</button>
+            </div>
+          </div>
+        )}
+        <ul className={styles.user__links}>
+          <li>
+            <Link href="/profile">
+              {/* <a> */}
+              <IoSettingsOutline />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <HiOutlineClipboardList />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <AiOutlineMessage />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <BsHeart />
+              {/* </a> */}
+            </Link>
+          </li>
+        </ul>
+        <div className={styles.user__swiper}>
+          <img
+            src="https://assets.stickpng.com/images/5a5a6d2414d8c4188e0b088d.png"
+            alt=""
+            className={styles.new}
+          />
+          <Swiper
+            effect={"cards"}
+            grabCursor={true}
+            navigation={true}
+            modules={[EffectCards, Navigation]}
+            className="user__swiper"
+            style={{
+              maxWidth: "180px",
+              height: "240px",
+              marginTop: "1rem",
+            }}
+          >
+            {userSwiperArray.map((item) => (
+              <SwiperSlide>
+                <Link href="">
+                  <img src={item.image} alt="" />
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+      <img
+        src="../../../images/userHeader.jpg"
+        alt=""
+        className={styles.user__footer}
+      />
+    </div>
+  );
+}
+```
+
+- style [User.js](./components/home/main/User.js)
+
+```scss
+.user {
+  position: relative;
+  grid-area: user;
+  height: 530px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 1232px) {
+    display: none;
+  }
+  &__header {
+  }
+  &__container {
+    padding: 1rem;
+  }
+  &__infos {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: $shadow-1;
+    }
+    h4 {
+      margin-top: 10px;
+      text-transform: capitalize;
+    }
+    &_btns {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      button {
+        width: 100px;
+        height: 35px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        &:first-of-type {
+          background: linear-gradient($blue-color, #0000ff34);
+          color: #fff;
+        }
+        &:last-of-type {
+          color: #555;
+        }
+      }
+    }
+  }
+  &__links {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    li {
+      width: 50px;
+      height: 50px;
+      background: $grey-color;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: 0.2s;
+      svg {
+        width: 30px;
+        height: 30px;
+        stroke: $blue-color;
+      }
+      &:hover {
+        background: $blue-color;
+        svg {
+          stroke: #fff;
+        }
+      }
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        svg {
+          fill: $blue-color;
+        }
+        &:hover {
+          svg {
+            fill: #fff;
+          }
+        }
+      }
+    }
+  }
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    transform: rotate(180deg);
+  }
+}
+```
+
+### 43. Home user menu markup styles
+
+### 44. Home main header
+
+### 45. Home main responsive
 
 ### 47. Flash deals 1
 
