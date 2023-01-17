@@ -3371,15 +3371,31 @@ export default function User() {
 }
 ```
 
-### 43. Home user menu markup styles
+### 43. Home main header
 
-### 44. Home main header
+- update [Header.js](./components/home/main/User.js)
 
-### 45. Home main responsive
+```js
+<div className={styles.header}>
+  <ul>
+    <li>
+      <Link href="">Store</Link>
+    </li>
+    <li>
+      <Link href="">Electronics</Link>
+    </li>
+    <li>
+      <Link href="">Watches</Link>
+    </li>
+  </ul>
+</div>
+```
 
-### 47. Flash deals 1
+### 44. Home main responsive
 
-### 48. Flash deals 2
+### 45. Flash deals 1
+
+### 46. Flash deals 2
 
 ### 49. Flash deals responsive
 
@@ -3423,6 +3439,10 @@ export default function User() {
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+
+```
+
+```
 
 ```
 
