@@ -3393,6 +3393,97 @@ export default function User() {
 
 ### 44. Home main responsive
 
+- [Main](./components/home/main/index.js)
+
+```scss
+@media (max-width: 1232px) {
+  grid-template-columns: 1fr 3fr;
+}
+@media (max-width: 990px) {
+  grid-template-columns: 80px 3fr;
+}
+@media (max-width: 730px) {
+  grid-template-areas:
+    "menu"
+    "swiper"
+    "offers";
+  grid-template-columns: 1fr;
+  .menu {
+    width: 100% !important;
+    height: fit-content !important;
+    &__list {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap;
+      justify-content: center;
+      li {
+        transform: translateY(-25px);
+      }
+    }
+  }
+}
+```
+
+- [Menu](./components/home/main/Menu.js)
+
+```scss
+@media (max-width: 990px) {
+  width: 80px;
+  svg {
+    transform: scale(1.5);
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+&__header {
+  width: 100%;
+  height: 35px;
+  background: $grey-color;
+  border-bottom: 1px solid $grey-color;
+  box-shadow: $shadow-2;
+  @media (max-width: 990px) {
+    display: none !important;
+    svg,
+    b {
+      display: none;
+    }
+  }
+  svg {
+    height: 23px;
+    width: 23px;
+  }
+}
+
+@media (max-width: 990px) {
+  display: none;
+}
+```
+
+- [Header](./components/home/main/Header.js)
+
+```scss
+@media (max-width: 730px) {
+  display: none !important;
+}
+```
+
+- [Offers](./components/home/main/offers.js)
+
+```scss
+@media (max-width: 1232px) {
+  display: none;
+}
+```
+
 ### 45. Flash deals 1
 
 ### 46. Flash deals 2
