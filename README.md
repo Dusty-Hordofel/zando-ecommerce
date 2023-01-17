@@ -3000,27 +3000,169 @@ export default handler;
 }
 ```
 
-### 41. Home swiper part 1
+### 41. Home menu
 
-### 42. Home offers main
+- create [data](./data/home.js) to `./data/home.js`.
 
-### 43. Home menu
+- add menu information [Menu.js](./components/home/main/Menu.js) .
 
-### 44. Home user menu markup
+```js
+export default function Menu() {
+  return (
+    <div className={styles.menu}>
+      <ul>
+        <li>
+          <a className={styles.menu__header}>
+            <BiCategory />
+            <b>Categories</b>
+          </a>
+        </li>
+        <div className={styles.menu__list}>
+          {menuArray.map((item, i) => (
+            <li>
+              <Link href={item.link}>
+                <a>
+                  {i == 0 ? (
+                    <GiLargeDress />
+                  ) : i == 1 ? (
+                    <GiClothes />
+                  ) : i == 2 ? (
+                    <GiHeadphones />
+                  ) : i == 3 ? (
+                    <GiWatch />
+                  ) : i == 4 ? (
+                    <HiOutlineHome />
+                  ) : i == 5 ? (
+                    <GiHealthCapsule />
+                  ) : i == 6 ? (
+                    <GiBallerinaShoes />
+                  ) : i == 7 ? (
+                    <GiBigDiamondRing />
+                  ) : i == 8 ? (
+                    <GiSportMedal />
+                  ) : i == 9 ? (
+                    <FaBaby />
+                  ) : i == 10 ? (
+                    <BiCameraMovie />
+                  ) : i == 11 ? (
+                    <MdOutlineSportsEsports />
+                  ) : i == 12 ? (
+                    <BsPhoneVibrate />
+                  ) : i == 13 ? (
+                    <MdOutlineSmartToy />
+                  ) : i == 14 ? (
+                    <BiGift />
+                  ) : i == 15 ? (
+                    <Gi3DHammer />
+                  ) : i == 16 ? (
+                    <AiOutlineSecurityScan />
+                  ) : (
+                    ""
+                  )}
+                  <span>{item.name}</span>
+                </a>
+              </Link>
+            </li>
+          ))}
+        </div>
+      </ul>
+    </div>
+  );
+}
+```
 
-### 45. Home user menu markup styles
+- style [Menu.js](./components/home/main/Menu.js) in [styles.module.scss](./components/home/main/styles.module.scss)
 
-### 46. Home main header
+```scss
+.menu {
+  grid-area: menu;
+  height: 580px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 990px) {
+    width: 80px;
+    svg {
+      transform: scale(1.5);
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  &__header {
+    width: 100%;
+    height: 35px;
+    background: $grey-color;
+    border-bottom: 1px solid $grey-color;
+    box-shadow: $shadow-2;
+    @media (max-width: 990px) {
+      display: none !important;
+      svg,
+      b {
+        display: none;
+      }
+    }
+    svg {
+      height: 23px;
+      width: 23px;
+    }
+  }
+  &__list {
+    margin-top: 3px;
+  }
+  ul {
+    li {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: $grey-color;
+      }
 
-### 47. Home main responsive
+      .anchor {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #424141;
+        svg {
+          fill: #8c8484;
+          stroke: #8c8484;
+        }
+        span {
+          @media (max-width: 990px) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+```
 
-### 48. Flash deals 1
+### 43. Home user menu markup
 
-### 49. Flash deals 2
+### 44. Home user menu markup styles
 
-### 50. Flash deals responsive
+### 45. Home main header
 
-### 51. Flash deals Countdown
+### 46. Home main responsive
+
+### 47. Flash deals 1
+
+### 48. Flash deals 2
+
+### 49. Flash deals responsive
+
+### 50. Flash deals Countdown
 
 ### 52. Category cards
 
