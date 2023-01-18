@@ -4497,6 +4497,72 @@ const reviewSchema = new mongoose.Schema({
 
 ### 52. Category and subcategory model
 
+- create [Category](./models/Category.js)
+
+```js
+import mongoose from "mongoose";
+
+const { ObjectId } = mongoose.Schema;
+
+const categorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      minlength: [2, "must be atleast 2 charcters"],
+      maxlength: [32, "must be atleast 2 charcters"],
+    },
+    slug: {
+      type: String,
+      unique: true,
+      lowercase: true,
+      index: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const Category =
+  mongoose.models.Category || mongoose.model("Category", categorySchema);
+
+export default Category;
+```
+
+- create [subcategory](./models/SubCategory.js)
+
+```js
+import mongoose from "mongoose";
+
+const { ObjectId } = mongoose.Schema;
+
+const subSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: [2, "must be atleast 2 charcters"],
+    maxlength: [32, "must be atleast 2 charcters"],
+  },
+  slug: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    index: true,
+  },
+  parent: {
+    type: ObjectId,
+    ref: "Category",
+    required: true,
+  },
+});
+
+const SubCategory =
+  mongoose.models.SubCategory || mongoose.model("SubCategory", subSchema);
+
+export default SubCategory;
+```
+
 ### 53. Add and get products from database
 
 ### 54. Product card 1
