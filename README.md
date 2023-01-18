@@ -4349,11 +4349,161 @@ export default function ProductSwiper({ images }) {
           />
 ```
 
-### 54.
+## Section 8. Product Card
 
-### 55.
+### 51. Product model and explaining the most perfect approach for products
 
-### 56.
+- create [productSchema](./models/Product.js)
+
+```js
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Schema;
+
+const productSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      //lowercase: true,
+    },
+    category: {
+      type: ObjectId,
+      required: true,
+      ref: "Category", //it's refers to the category model
+    },
+    subCategories: [
+      {
+        type: ObjectId,
+        ref: "subCategory", //it's refers to the subCategory model
+      },
+    ],
+    details: [
+      {
+        name: String,
+        value: String,
+      },
+    ],
+    questions: [
+      {
+        question: String,
+        answer: String,
+      },
+    ],
+    reviews: [reviewSchema],
+    refundPolicy: {
+      type: String,
+      default: "30 days",
+    },
+    rating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    shipping: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    subProducts: [
+      {
+        sku: String,
+        images: [],
+        description_images: [],
+        color: {
+          color: {
+            type: String,
+          },
+          image: {
+            type: String,
+          },
+        },
+        sizes: [
+          {
+            size: String,
+            qty: Number,
+            price: Number,
+          },
+        ],
+        discount: {
+          type: Number,
+          default: 0,
+        },
+        sold: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+const Product =
+  mongoose.models.Product || mongoose.model("Product", productSchema);
+
+export default Product;
+```
+
+- add [reviewSchema](./models/Product.js) in [productSchema](./models/Product.js)
+
+```js
+const reviewSchema = new mongoose.Schema({
+  reviewBy: {
+    type: ObjectId,
+    ref: "User",
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  review: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+  },
+  style: {
+    color: String,
+    image: String,
+  },
+  fit: {
+    type: String,
+  },
+  images: [],
+  likes: [],
+});
+```
+
+### 52. Category and subcategory model
+
+### 53. Add and get products from database
+
+### 54. Product card 1
+
+### 55. Product card 2
+
+### 56. Product card 3
 
 ### 57.
 
@@ -4363,7 +4513,27 @@ export default function ProductSwiper({ images }) {
 
 ### 60.
 
-## Section 8.
+### 60.
+
+### 61.
+
+### 62.
+
+### 63.
+
+### 64.
+
+### 65.
+
+### 66.
+
+### 67.
+
+### 68.
+
+### 69.
+
+### 70.
 
 ## Section 9.
 
