@@ -4607,43 +4607,63 @@ export async function getServerSideProps(context) {
 </div>
 ```
 
-## Section 9.
+## Section 9. Product Page
 
-### 55.
+### 55. Get, filter and prepare product data
 
-### 56.
+### 56. product page content start
 
-### 57.
+### 57. product images main swiper
 
-### 58.
+### 58. product infos 1
 
-### 59.
+### 59. product infos 2
 
-### 60.
+### 60. product infos 3
 
-### 60.
+### 60. product infos 4 & share to social media accounts
 
-### 61.
+### 61. product infos 5 accordian
 
-### 62.
+### 62. product simillar swiper
 
-### 63.
+### 63. product reviews overview card
 
-### 64.
+### 64. add review 1
 
-### 65.
+### 65. add review 2
 
-### 66.
+### 66. add review 3
 
-### 67.
+### 67. add review 4 working with images upload form
 
-### 68.
+### 68. reviews table : pagination functionality
 
-### 69.
+### 69. review card
 
-### 70.
+### 70. reviews table header
 
 ## Section 10.
+
+## Section 11.
+
+## Section 12.
+
+## Section 13.
+
+## Section 14.
+
+## Section 15.
+
+## Section 16.
+
+## Section 17.
+
+## Section 18.
+
+## Section 19.
+
+## Section 20.
 
 ## 📚 external links
 
