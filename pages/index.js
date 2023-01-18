@@ -1,21 +1,82 @@
 import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.scss";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import axios from "axios";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Main from "../components/home/main";
+import FlashDeals from "../components/home/flashDeals";
+import Category from "../components/home/category";
+import db from "../utils/db";
+import {
+  gamingSwiper,
+  homeImprovSwiper,
+  women_accessories,
+  women_dresses,
+  women_shoes,
+  women_swiper,
+} from "../data/home";
+import { useMediaQuery } from "react-responsive";
+import ProductsSwiper from "../components/productsSwiper";
+// import Product from "../models/Product";
+import ProductCard from "../components/productCard";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home({ country }) {
-  // console.log("🚀 ~ file: index.js:11 ~ Home ~ country", country);
+export default function home({ country, products }) {
+  console.log("products", products);
   const { data: session } = useSession();
-  console.log("🚀 ~ file: index.js:14 ~ Home ~ session", session);
+  const isMedium = useMediaQuery({ query: "(max-width:850px)" });
+  const isMobile = useMediaQuery({ query: "(max-width:550px)" });
   return (
     <>
       <Header country={country} />
-      {session ? "You are logged in" : "you are not logged in"}
+      <div className={styles.home}>
+        <div className={styles.container}>
+          <Main />
+          <FlashDeals />
+          <div className={styles.home__category}>
+            <Category
+              header="Dresses"
+              products={women_dresses}
+              background="#5a31f4"
+            />
+            {!isMedium && (
+              <Category
+                header="Shoes"
+                products={women_shoes}
+                background="#3c811f"
+              />
+            )}
+            {isMobile && (
+              <Category
+                header="Shoes"
+                products={women_shoes}
+                background="#3c811f"
+              />
+            )}
+            <Category
+              header="Accessories"
+              products={women_accessories}
+              background="#000"
+            />
+          </div>
+          <ProductsSwiper products={women_swiper} />
+          <ProductsSwiper
+            products={gamingSwiper}
+            header="For Gamers"
+            bg="#2f82ff"
+          />
+          <ProductsSwiper
+            products={homeImprovSwiper}
+            header="House Improvements"
+            bg="#f15f6f"
+          />
+          {/* <div className={styles.products}>
+            {products.map((product) => (
+              <ProductCard product={product} key={product._id} />
+            ))}
+          </div> */}
+        </div>
+      </div>
       <Footer country={country} />
     </>
   );

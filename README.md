@@ -2726,9 +2726,9 @@ export async function getServerSideProps(context) {
 
 ### 39. Reset password Backend
 
-- create pages/api/auth/[reset.js](./pages/api/auth/reset.js)
+- create [reset.js](./pages/api/auth/reset.js)
 
-````js
+```js
 import nc from "next-connect";
 import bcrypt from "bcrypt";
 import { validateEmail } from "../../../utils/validation";
@@ -2761,29 +2761,1607 @@ handler.put(async (req, res) => {
 export default handler;
 ```
 
-### 40.
+## Section 7. Home Page
 
-### 41.
+### 40. Home main structure
 
-### 42.
+- create [index.js](./components/home/main/index.js), [Header.js](./components/home/main/index.js), [Menu.js](./components/home/main/index.js) , [swiper.js](./components/home/main/index.js), [User.js](./components/home/main/User.js) and [styles.modules.scss](./components/home/main/styles.module.scss) in `./components/home/main`.
+- style `<Home/>` using [Home.module.scss](./styles/Home.module.scss)
 
-### 43.
+```scss
+.home {
+  min-height: 100vh;
+  background: $grey-color;
+  &__category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    @media (max-width: 850px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .products {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+```
 
-### 44.
+- style `<Main/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 45.
+```scss
+.main {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 10px;
+  grid-template-areas:
+    "menu header header"
+    "menu swiper user"
+    "menu offers user";
+  @media (max-width: 1232px) {
+    grid-template-columns: 1fr 3fr;
+  }
+  @media (max-width: 990px) {
+    grid-template-columns: 80px 3fr;
+  }
+  @media (max-width: 730px) {
+    grid-template-areas:
+      "menu"
+      "swiper"
+      "offers";
+    grid-template-columns: 1fr;
+    .menu {
+      width: 100% !important;
+      height: fit-content !important;
+      &__list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        li {
+          transform: translateY(-25px);
+        }
+      }
+    }
+  }
+}
+```
 
-### 46.
+- style `<Menu/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 47.
+```scss
+.menu {
+  grid-area: menu;
+  height: 580px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 990px) {
+    width: 80px;
+    svg {
+      transform: scale(1.5);
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  &__header {
+    width: 100%;
+    height: 35px;
+    background: $grey-color;
+    border-bottom: 1px solid $grey-color;
+    box-shadow: $shadow-2;
+    @media (max-width: 990px) {
+      display: none !important;
+      svg,
+      b {
+        display: none;
+      }
+    }
+    svg {
+      height: 23px;
+      width: 23px;
+    }
+  }
+  &__list {
+    margin-top: 3px;
+  }
+  ul {
+    li {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: $grey-color;
+      }
 
-### 48.
+      a {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #424141;
+        svg {
+          fill: #8c8484;
+          stroke: #8c8484;
+        }
+        span {
+          @media (max-width: 990px) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+```
 
-### 49.
+- style `<Header/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
 
-### 50.
+```scss
+.header {
+  grid-area: header;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  @media (max-width: 730px) {
+    display: none !important;
+  }
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    li {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 19px;
+      color: $blue-color;
+    }
+  }
+}
+```
 
-## Section 7.
+- style `<swiper/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
+
+```scss
+.swiper {
+  grid-area: swiper;
+  height: 300px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+}
+```
+
+- style `<offers/>`using [styles.modules.scss](./components/home/main/styles.module.scss)
+
+```scss
+.offers {
+  position: relative;
+  grid-area: offers;
+  overflow: hidden;
+  height: 220px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  // background-image: url("../../../public/images/flash.webp");
+  background-image: url("https://img.lovepik.com/background/20211021/large/lovepik-e-commerce-banner-background-image_500366534.jpg");
+  background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20190220/ourmid/pngtree-contrast-color-wave-point-geometric-banner-image_9983.jpg");
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/background/20190221/ourmid/pngtree-color-horn-polygon-pop-wind-image_16349.jpg");
+  //background-position: -275px -135px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  &__text {
+    max-width: 200px;
+    position: absolute;
+    top: 1.3rem;
+    left: 2rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.418);
+    padding: 1rem;
+    color: $blue-color;
+    text-align: center;
+    b {
+    }
+    a {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $blue-color;
+      height: 40px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #fff;
+      border: 1px solid #fff;
+      animation: all 0.2s ease-in-out;
+      border-color: #fff;
+      &:hover {
+        transform: scale(1.05);
+        font-size: 16px;
+      }
+    }
+  }
+}
+```
+
+### 41. Home menu
+
+- create [data](./data/home.js) to `./data/home.js`.
+
+- add menu information [Menu.js](./components/home/main/Menu.js) .
+
+```js
+export default function Menu() {
+  return (
+    <div className={styles.menu}>
+      <ul>
+        <li>
+          <a className={styles.menu__header}>
+            <BiCategory />
+            <b>Categories</b>
+          </a>
+        </li>
+        <div className={styles.menu__list}>
+          {menuArray.map((item, i) => (
+            <li>
+              <Link href={item.link}>
+                <a>
+                  {i == 0 ? (
+                    <GiLargeDress />
+                  ) : i == 1 ? (
+                    <GiClothes />
+                  ) : i == 2 ? (
+                    <GiHeadphones />
+                  ) : i == 3 ? (
+                    <GiWatch />
+                  ) : i == 4 ? (
+                    <HiOutlineHome />
+                  ) : i == 5 ? (
+                    <GiHealthCapsule />
+                  ) : i == 6 ? (
+                    <GiBallerinaShoes />
+                  ) : i == 7 ? (
+                    <GiBigDiamondRing />
+                  ) : i == 8 ? (
+                    <GiSportMedal />
+                  ) : i == 9 ? (
+                    <FaBaby />
+                  ) : i == 10 ? (
+                    <BiCameraMovie />
+                  ) : i == 11 ? (
+                    <MdOutlineSportsEsports />
+                  ) : i == 12 ? (
+                    <BsPhoneVibrate />
+                  ) : i == 13 ? (
+                    <MdOutlineSmartToy />
+                  ) : i == 14 ? (
+                    <BiGift />
+                  ) : i == 15 ? (
+                    <Gi3DHammer />
+                  ) : i == 16 ? (
+                    <AiOutlineSecurityScan />
+                  ) : (
+                    ""
+                  )}
+                  <span>{item.name}</span>
+                </a>
+              </Link>
+            </li>
+          ))}
+        </div>
+      </ul>
+    </div>
+  );
+}
+```
+
+- style [Menu.js](./components/home/main/Menu.js) in [styles.module.scss](./components/home/main/styles.module.scss)
+
+```scss
+.menu {
+  grid-area: menu;
+  height: 580px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 990px) {
+    width: 80px;
+    svg {
+      transform: scale(1.5);
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+  &__header {
+    width: 100%;
+    height: 35px;
+    background: $grey-color;
+    border-bottom: 1px solid $grey-color;
+    box-shadow: $shadow-2;
+    @media (max-width: 990px) {
+      display: none !important;
+      svg,
+      b {
+        display: none;
+      }
+    }
+    svg {
+      height: 23px;
+      width: 23px;
+    }
+  }
+  &__list {
+    margin-top: 3px;
+  }
+  ul {
+    li {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: $grey-color;
+      }
+
+      .anchor {
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #424141;
+        svg {
+          fill: #8c8484;
+          stroke: #8c8484;
+        }
+        span {
+          @media (max-width: 990px) {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### 42. Home user menu markup
+
+- update [User.js](./components/home/main/User.js)
+
+```js
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { IoSettingsOutline } from "react-icons/io5";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { BsHeart } from "react-icons/bs";
+import { AiOutlineMessage } from "react-icons/ai";
+import React, { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-cards";
+// import required modules
+import { EffectCards, Navigation } from "swiper";
+import { userSwiperArray } from "../../../data/home";
+
+export default function User() {
+  const { data: session } = useSession();
+  return (
+    <div className={styles.user}>
+      <img
+        src="../../../images/userHeader.jpg"
+        alt=""
+        className={styles.user__header}
+      />
+      <div className={styles.user__container}>
+        {session ? (
+          <div className={styles.user__infos}>
+            <img src={session.user?.image} alt="" />
+            <h4>{session.user.name}</h4>
+          </div>
+        ) : (
+          <div className={styles.user__infos}>
+            <img
+              src="https://res.cloudinary.com/dmhcnhtng/image/upload/v1664642478/992490_b0iqzq.png"
+              alt=""
+            />
+            <div className={styles.user__infos_btns}>
+              <button>Register</button>
+              <button>Login</button>
+            </div>
+          </div>
+        )}
+        <ul className={styles.user__links}>
+          <li>
+            <Link href="/profile">
+              {/* <a> */}
+              <IoSettingsOutline />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <HiOutlineClipboardList />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <AiOutlineMessage />
+              {/* </a> */}
+            </Link>
+          </li>
+          <li>
+            <Link href="">
+              {/* <a> */}
+              <BsHeart />
+              {/* </a> */}
+            </Link>
+          </li>
+        </ul>
+        <div className={styles.user__swiper}>
+          <img
+            src="https://assets.stickpng.com/images/5a5a6d2414d8c4188e0b088d.png"
+            alt=""
+            className={styles.new}
+          />
+          <Swiper
+            effect={"cards"}
+            grabCursor={true}
+            navigation={true}
+            modules={[EffectCards, Navigation]}
+            className="user__swiper"
+            style={{
+              maxWidth: "180px",
+              height: "240px",
+              marginTop: "1rem",
+            }}
+          >
+            {userSwiperArray.map((item) => (
+              <SwiperSlide>
+                <Link href="">
+                  <img src={item.image} alt="" />
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+      <img
+        src="../../../images/userHeader.jpg"
+        alt=""
+        className={styles.user__footer}
+      />
+    </div>
+  );
+}
+```
+
+- style [User.js](./components/home/main/User.js)
+
+```scss
+.user {
+  position: relative;
+  grid-area: user;
+  height: 530px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: $shadow-1;
+  @media (max-width: 1232px) {
+    display: none;
+  }
+  &__header {
+  }
+  &__container {
+    padding: 1rem;
+  }
+  &__infos {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: $shadow-1;
+    }
+    h4 {
+      margin-top: 10px;
+      text-transform: capitalize;
+    }
+    &_btns {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      button {
+        width: 100px;
+        height: 35px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        &:first-of-type {
+          background: linear-gradient($blue-color, #0000ff34);
+          color: #fff;
+        }
+        &:last-of-type {
+          color: #555;
+        }
+      }
+    }
+  }
+  &__links {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    li {
+      width: 50px;
+      height: 50px;
+      background: $grey-color;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: 0.2s;
+      svg {
+        width: 30px;
+        height: 30px;
+        stroke: $blue-color;
+      }
+      &:hover {
+        background: $blue-color;
+        svg {
+          stroke: #fff;
+        }
+      }
+      &:nth-of-type(3),
+      &:nth-of-type(4) {
+        svg {
+          fill: $blue-color;
+        }
+        &:hover {
+          svg {
+            fill: #fff;
+          }
+        }
+      }
+    }
+  }
+  &__footer {
+    position: absolute;
+    bottom: 0;
+    transform: rotate(180deg);
+  }
+}
+```
+
+### 43. Home main header
+
+- update [Header.js](./components/home/main/User.js)
+
+```js
+<div className={styles.header}>
+  <ul>
+    <li>
+      <Link href="">Store</Link>
+    </li>
+    <li>
+      <Link href="">Electronics</Link>
+    </li>
+    <li>
+      <Link href="">Watches</Link>
+    </li>
+  </ul>
+</div>
+```
+
+### 44. Home main responsive
+
+- [Main](./components/home/main/index.js)
+
+```scss
+@media (max-width: 1232px) {
+  grid-template-columns: 1fr 3fr;
+}
+@media (max-width: 990px) {
+  grid-template-columns: 80px 3fr;
+}
+@media (max-width: 730px) {
+  grid-template-areas:
+    "menu"
+    "swiper"
+    "offers";
+  grid-template-columns: 1fr;
+  .menu {
+    width: 100% !important;
+    height: fit-content !important;
+    &__list {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap;
+      justify-content: center;
+      li {
+        transform: translateY(-25px);
+      }
+    }
+  }
+}
+```
+
+- [Menu](./components/home/main/Menu.js)
+
+```scss
+@media (max-width: 990px) {
+  width: 80px;
+  svg {
+    transform: scale(1.5);
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+&__header {
+  width: 100%;
+  height: 35px;
+  background: $grey-color;
+  border-bottom: 1px solid $grey-color;
+  box-shadow: $shadow-2;
+  @media (max-width: 990px) {
+    display: none !important;
+    svg,
+    b {
+      display: none;
+    }
+  }
+  svg {
+    height: 23px;
+    width: 23px;
+  }
+}
+
+@media (max-width: 990px) {
+  display: none;
+}
+```
+
+- [Header](./components/home/main/Header.js)
+
+```scss
+@media (max-width: 730px) {
+  display: none !important;
+}
+```
+
+- [Offers](./components/home/main/offers.js)
+
+```scss
+@media (max-width: 1232px) {
+  display: none;
+}
+```
+
+### 45. Flash deals
+
+- create [FlashDeals](./components/home/flashDeals/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import { MdFlashOn } from "react-icons/md";
+import Countdown from "../../countdown";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+// import required modules
+import { Navigation } from "swiper";
+import { flashDealsArray } from "../../../data/home";
+import FlashCard from "./Card";
+export default function FlashDeals() {
+  return (
+    <div className={styles.flashDeals}>
+      <div className={styles.flashDeals__header}>
+        <h1>
+          FLASH SALE
+          <MdFlashOn />
+        </h1>
+        <Countdown date={new Date(2022, 12, 30)} />
+      </div>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        navigation={true}
+        modules={[Navigation]}
+        className="flashDeals__swiper"
+        breakpoints={{
+          450: {
+            slidesPerView: 2,
+          },
+          630: {
+            slidesPerView: 3,
+          },
+          920: {
+            slidesPerView: 4,
+          },
+          1232: {
+            slidesPerView: 5,
+          },
+          1520: {
+            slidesPerView: 6,
+          },
+        }}
+      >
+        <div className={styles.flashDeals__list}>
+          {flashDealsArray.map((product, i) => (
+            <SwiperSlide>
+              <FlashCard product={product} key={i} />
+            </SwiperSlide>
+          ))}
+        </div>
+      </Swiper>
+    </div>
+  );
+}
+```
+
+- style [FlashDeals](./components/home/flashDeals/index.js)
+
+```scss
+.flashDeals {
+  margin: 2rem 0;
+  background: #fff;
+  &__header {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    font-weight: 900;
+    font-size: 25px;
+    text-transform: uppercase;
+    background: $yellow-color;
+    margin-bottom: 10px;
+    @media (max-width: 610px) {
+      font-size: 18px;
+    }
+    @media (max-width: 508px) {
+      font-size: 15px;
+    }
+    @media (max-width: 464px) {
+      flex-direction: column;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 1rem;
+    @media (max-width: 600px) {
+      justify-content: center;
+    }
+  }
+}
+.card {
+  height: 420px;
+  width: 283px;
+  &__img {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    cursor: pointer;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50px;
+      height: 65px;
+      background: $yellow-color;
+      padding: 1rem;
+      span {
+        color: #333;
+        font-weight: 600;
+        font-size: 18px;
+        transform: translateY(18px);
+      }
+      svg {
+        position: absolute;
+        transform: scale(2);
+        fill: #333;
+      }
+    }
+  }
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 2px;
+    span {
+      font-weight: 700;
+      &:first-of-type {
+        color: $redish-color;
+      }
+      &:last-of-type {
+        font-size: 14px;
+        font-weight: normal;
+        text-decoration: line-through;
+        color: #666;
+      }
+    }
+  }
+  &__bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 10px;
+    background: #ccc;
+    margin-top: 2px;
+    &_inner {
+      background: $yellow-color;
+      border-radius: 10px;
+      height: 100%;
+    }
+  }
+  &__percentage {
+    font-size: 14px;
+    color: #111;
+    margin-top: 2px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+```
+
+- create [Card](./components/home/flashDeals/Card.js)
+
+```js
+import Link from "next/link";
+import styles from "./styles.module.scss";
+import { MdFlashOn } from "react-icons/md";
+export default function FlashCard({ product }) {
+  return (
+    <div className={styles.card}>
+      <div className={styles.card__img}>
+        <Link href={product.link}>
+          <img src={product.image} alt="" />
+        </Link>
+        <div className={styles.flash}>
+          <MdFlashOn />
+          <span>-{product.discount}%</span>
+        </div>
+      </div>
+      <div className={styles.card__price}>
+        <span>
+          USD{(product.price - product.price / product.discount).toFixed(2)}$
+        </span>
+        <span>
+          -USD
+          {(
+            product.price -
+            (product.price - product.price / product.discount)
+          ).toFixed(2)}$
+        </span>
+      </div>
+      <div className={styles.card__bar}>
+        <div className={styles.card__bar_inner} style={{ width: "75%" }}></div>
+      </div>
+      <div className={styles.card__percentage}>{product.sold}%</div>
+    </div>
+  );
+}
+```
+
+### 46. Flash deals Countdown
+
+- create [Countdown](./components/countdown/index.js)
+
+```js
+import { useEffect } from "react";
+import { useState } from "react";
+import styles from "./styles.module.scss";
+import { calcaulateDiff } from "./utils";
+const defaultRemainingTime = {
+  seconds: "00",
+  minutes: "00",
+  hours: "00",
+  days: "00",
+};
+export default function Countdown({ date }) {
+  const [timeInMs, setTimeInMs] = useState(date.getTime());
+  const [remainingTime, setRemainingTime] = useState();
+  useEffect(() => {
+    setTimeInMs(date.getTime());
+  }, [date]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateRemainingTime(timeInMs);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [timeInMs]);
+  const updateRemainingTime = (timeInMs) => {
+    setRemainingTime(calcaulateDiff(timeInMs));
+  };
+  return (
+    <div className={styles.countdown}>
+      {/*
+      {[...Array(remainingTime?.days.length).keys()].map((d, i) => {
+        if (remainingTime?.days == 0) {
+          return;
+        }
+        return (
+          <>
+            <span>{remainingTime?.days.slice(i, i + 1)}</span> <b>:</b>
+          </>
+        );
+      })}
+      */}
+      <span>{remainingTime?.hours.slice(0, 1)}</span>
+      <span>{remainingTime?.hours.slice(1, 2)}</span>
+      <b>:</b>
+      <span>{remainingTime?.minutes.slice(0, 1)}</span>
+      <span>{remainingTime?.minutes.slice(1, 2)}</span>
+      <b>:</b>
+      <span>{remainingTime?.seconds.slice(0, 1)}</span>
+      <span>{remainingTime?.seconds.slice(1, 2)}</span>
+    </div>
+  );
+}
+```
+
+- style [Countdown](./components/countdown/styles.module.scss)
+
+```scss
+.countdown {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  span {
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 27px;
+  }
+  b {
+    font-size: 20px;
+  }
+}
+```
+
+- install [dayjs](https://www.npmjs.com/package/dayjs)
+
+```bash
+npm i dayjs
+```
+
+- create[utils](./components/countdown/utils.js)
+
+```js
+import dayjs from "dayjs";
+export function calcaulateDiff(timeInMs) {
+  const timestamDayjs = dayjs(timeInMs);
+  const nowDayjs = dayjs();
+  if (timestamDayjs.isBefore(nowDayjs)) {
+    return {
+      seconds: "00",
+      minutes: "00",
+      hours: "00",
+      days: "00",
+    };
+  }
+  return {
+    seconds: getRemainingSeconds(nowDayjs, timestamDayjs),
+    minutes: getRemainingMinutes(nowDayjs, timestamDayjs),
+    hours: getRemainingHours(nowDayjs, timestamDayjs),
+    days: getRemainingDays(nowDayjs, timestamDayjs),
+  };
+}
+
+function getRemainingSeconds(nowDayjs, timestamDayjs) {
+  const seconds = timestamDayjs.diff(nowDayjs, "seconds") % 60;
+  return padWithZeros(seconds, 2);
+}
+function getRemainingMinutes(nowDayjs, timestamDayjs) {
+  const minutes = timestamDayjs.diff(nowDayjs, "minutes") % 60;
+  return padWithZeros(minutes, 2);
+}
+function getRemainingHours(nowDayjs, timestamDayjs) {
+  const hours = timestamDayjs.diff(nowDayjs, "hours") % 60;
+  return padWithZeros(hours, 2);
+}
+function getRemainingDays(nowDayjs, timestamDayjs) {
+  const days = timestamDayjs.diff(nowDayjs, "days");
+  return days.toString();
+}
+
+function padWithZeros(number, length) {
+  const numberString = number.toString();
+  if (numberString.length >= length) return numberString;
+  return "0".repeat(length - numberString.length) + numberString;
+}
+```
+
+### 47. Category cards
+
+- install [react-responsive](https://www.npmjs.com/package/react-responsive)
+
+```bash
+npm i react-responsive
+```
+
+- create [Card](./components/home/category/index.js)
+
+```js
+import { BsArrowRightCircle } from "react-icons/bs";
+import styles from "./styles.module.scss";
+import { useMediaQuery } from "react-responsive";
+
+export default function Category({ header, products, background }) {
+  const isMedium = useMediaQuery({ query: "(max-width:1300px)" });
+  const isMobile = useMediaQuery({ query: "(max-width:550px)" });
+  return (
+    <div className={styles.category} style={{ background: `${background}` }}>
+      <div className={styles.category__header}>
+        <h1>{header}</h1>
+        <BsArrowRightCircle />
+      </div>
+      <div className={styles.category__products}>
+        {products.slice(0, isMobile ? 6 : isMedium ? 4 : 6).map((product) => (
+          <div className={styles.product}>
+            <img src={product.image} alt="" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+- create [styles.module.scss](./components/home/category/styles.module.scss)
+
+```scss
+.category {
+  max-width: 500px;
+  padding: 1rem;
+  border-radius: 10px;
+  h1 {
+    color: #fff;
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    svg {
+      width: 22px;
+      height: 22px;
+      cursor: pointer;
+      fill: #fff;
+      transition: all 0.2s;
+      &:hover {
+        transform: scale(1.1);
+        fill: $yellow-color;
+      }
+    }
+  }
+  &__products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    @media (max-width: 1300px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 1100px) {
+      padding: 5px;
+      gap: 8px;
+    }
+    .product {
+      img {
+        border-radius: 10px;
+        height: 200px;
+        width: 100%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        object-fit: cover;
+        &:hover {
+          transform: scale(1.02);
+        }
+        @media (max-width: 1000px) {
+          height: 150px;
+        }
+        @media (max-width: 850px) {
+          height: 200px;
+        }
+      }
+    }
+  }
+}
+```
+
+- import [Category](../zando-ecommerce/components/home/category/index.js) in [Home](./pages/index.js)
+
+```js
+<div className={styles.home__category}>
+  <Category header="Dresses" products={women_dresses} background="#5a31f4" />
+</div>
+```
+
+- import [women_dresses](./data/home.js)
+
+### 48. Category cards responsive
+
+- update [Home](./pages/index.js)
+
+```js
+{
+  !isMedium && (
+    <Category header="Shoes" products={women_shoes} background="#3c811f" />
+  );
+}
+{
+  isMobile && (
+    <Category header="Shoes" products={women_shoes} background="#3c811f" />
+  );
+}
+<Category
+  header="Accessories"
+  products={women_accessories}
+  background="#000"
+/>;
+```
+
+- style [Home](./pages/index.js) using [Home.module.scss](./styles/Home.module.scss)
+
+```scss
+.home {
+  min-height: 100vh;
+  background: $grey-color;
+  &__category {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    @media (max-width: 850px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 550px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .products {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+```
+
+### 49. Home products swiper
+
+- import [ProductsSwiper](.components/productsSwiper/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Navigation } from "swiper";
+export default function ProductsSwiper({ header, products, bg }) {
+  return (
+    <div className={styles.wrapper}>
+      {header && (
+        <div
+          className={styles.header}
+          style={{ background: `${bg ? bg : ""}` }}
+        >
+          {header}
+        </div>
+      )}
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        navigation={true}
+        modules={[Navigation]}
+        className="products__swiper"
+        breakpoints={{
+          450: {
+            slidesPerView: 2,
+          },
+          630: {
+            slidesPerView: 3,
+          },
+          920: {
+            slidesPerView: 4,
+          },
+          1232: {
+            slidesPerView: 5,
+          },
+          1520: {
+            slidesPerView: 6,
+          },
+        }}
+      >
+        {products.map((product) => (
+          <SwiperSlide>
+            <div className={styles.product}>
+              <div className={styles.product__img}>
+                <img src={product.image} alt="" />
+              </div>
+              <div className={styles.product__infos}>
+                <h1>
+                  {product.name.length > 30
+                    ? `${product.name.slice(0, 30)}...`
+                    : product.name}
+                </h1>
+                {product.price && <span>USD{product.price}$</span>}
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
+```
+
+- styke [ProductsSwiper](components/productsSwiper/styles.module.scss)
+
+```scss
+.wrapper {
+  margin-top: 1rem;
+  .header {
+    height: 50px;
+    background: $yellow-color;
+    color: #fff;
+    font-size: 25px;
+    padding: 1rem 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .product {
+    &__img {
+      height: 350px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    &__infos {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2px;
+      h1 {
+        font-size: 13px;
+        font-weight: normal;
+        color: #222;
+      }
+      span {
+        color: $redish-color;
+      }
+    }
+  }
+}
+```
+
+<!-- - add [ProductCard]() -->
+
+### 50. Home products swiper extra
+
+- create [ProductCard](./components/ProductCard/index.js)
+
+```js
+import Link from "next/link";
+import { useEffect } from "react";
+import { useState } from "react";
+import ProductSwiper from "./ProductSwiper";
+import styles from "./styles.module.scss";
+
+export default function ProductCard({ product }) {
+  const [active, setActive] = useState(0);
+  const [images, setImages] = useState(product.subProducts[active]?.images);
+  const [prices, setPrices] = useState(
+    product.subProducts[active]?.sizes
+      .map((s) => {
+        return s.price;
+      })
+      .sort((a, b) => {
+        return a - b;
+      })
+  );
+  const [styless, setStyless] = useState(
+    product.subProducts.map((p) => {
+      return p.color;
+    })
+  );
+  useEffect(() => {
+    setImages(product.subProducts[active].images);
+    setPrices(
+      product.subProducts[active]?.sizes
+        .map((s) => {
+          return s.price;
+        })
+        .sort((a, b) => {
+          return a - b;
+        })
+    );
+  }, [active, product]);
+  return (
+    <div className={styles.product}>
+      <div className={styles.product__container}>
+        <a href={`/product/${product.slug}?style=${active}`} target="_blank">
+          <div>
+            <ProductSwiper images={images} />
+          </div>
+        </a>
+        {product.subProducts[active].discount ? (
+          <div className={styles.product__discount}>
+            -{product.subProducts[active].discount}%
+          </div>
+        ) : (
+          ""
+        )}
+        <div className={styles.product__infos}>
+          <h1>
+            {product.name.length > 45
+              ? `${product.name.substring(0, 45)}...`
+              : product.name}
+          </h1>
+          <span>
+            {prices.length === 1
+              ? `USD${prices[0]}$`
+              : `USD${prices[0]}-${prices[prices.length - 1]}$`}
+          </span>
+          <div className={styles.product__colors}>
+            {styless &&
+              styless.map((style, i) =>
+                style.image ? (
+                  <img
+                    src={style.image}
+                    className={i == active && styles.active}
+                    onMouseOver={() => {
+                      setImages(product.subProducts[i].images);
+                      setActive(i);
+                    }}
+                    alt=""
+                  />
+                ) : (
+                  <span
+                    style={{ backgroundColor: `${style.color}` }}
+                    onMouseOver={() => {
+                      setImages(product.subProducts[i].images);
+                      setActive(i);
+                    }}
+                  ></span>
+                )
+              )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+- create[ProductSwiper](./components/ProductCard/ProductSwiper.js)
+
+```js
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Autoplay } from "swiper";
+import { useEffect } from "react";
+
+export default function ProductSwiper({ images }) {
+  const swiperRef = useRef(null);
+  useEffect(() => {
+    swiperRef.current.swiper.autoplay.stop();
+  }, [swiperRef]);
+  return (
+    <div
+      className={styles.swiper}
+      onMouseEnter={() => {
+        swiperRef.current.swiper.autoplay.start();
+      }}
+      onMouseLeave={() => {
+        swiperRef.current.swiper.autoplay.stop();
+        swiperRef.current.swiper.slideTo(0);
+      }}
+    >
+      <Swiper
+        ref={swiperRef}
+        centeredSlides={true}
+        autoplay={{ delay: 500, stopOnLastSlide: false }}
+        speed={500}
+        modules={[Autoplay]}
+      >
+        {images.map((img) => (
+          <SwiperSlide>
+            <img src={img.url} alt="" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
+```
+
+- style [ProductCard & ProductSwiper](./components/ProductCard/styles.module.scss)
+
+```scss
+.product {
+  position: relative;
+  width: 290px;
+  height: 500px;
+  &__infos {
+    width: 100%;
+    margin-top: 1px;
+    h1 {
+      font-size: 13px;
+      font-weight: normal;
+      color: #222;
+    }
+    span {
+      color: $redish-color;
+      font-weight: 600;
+    }
+  }
+  &__colors {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: $shadow-1;
+      cursor: pointer;
+      outline-offset: 2px;
+      &:hover {
+        outline: 1px solid #000;
+      }
+    }
+    .active {
+      outline: 1px solid #000;
+    }
+    span {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      box-shadow: $shadow-1;
+      overflow: hidden;
+    }
+  }
+  &__discount {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 1;
+    background: $yellow-color;
+    color: #333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+.swiper {
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+  img {
+    height: 390px;
+    display: block;
+    border-radius: 10px;
+  }
+}
+```
+
+- update [home page](./pages/index.js)
+
+```js
+   <ProductsSwiper products={women_swiper} />
+          <ProductsSwiper
+            products={gamingSwiper}
+            header="For Gamers"
+            bg="#2f82ff"
+          />
+          <ProductsSwiper
+            products={homeImprovSwiper}
+            header="House Improvements"
+            bg="#f15f6f"
+          />
+```
+
+### 54.
+
+### 55.
+
+### 56.
+
+### 57.
+
+### 58.
+
+### 59.
+
+### 60.
 
 ## Section 8.
 
@@ -2800,9 +4378,17 @@ export default handler;
 - 🔗 [React-Icons](https://react-icons.github.io/react-icons/)
 - 🔗 [ipregistry](https://ipregistry.co/)
 - 🔗 [stripo](https://stripo.email/fr/)
-  []()
+- 🔗 [react-responsive](https://www.npmjs.com/package/react-responsive)
+- 🔗 [dayjs](https://www.npmjs.com/package/dayjs)
 
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
-````
+
+```
+
+```
+
+```
+
+```
