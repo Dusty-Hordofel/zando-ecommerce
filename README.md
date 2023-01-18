@@ -4595,11 +4595,23 @@ export async function getServerSideProps(context) {
 }
 ```
 
-### 54. Product card 1
+### 54. Product card
 
-### 55. Product card 2
+- update [home](./pages/index.js) using [ProductCard](./components/ProductCard/index.js) and [ProductSwiper](./components/ProductCard/ProductSwiper.js)
 
-### 56. Product card 3
+```js
+<div className={styles.products}>
+  {products.map((product) => (
+    <ProductCard product={product} key={product._id} />
+  ))}
+</div>
+```
+
+## Section 9.
+
+### 55.
+
+### 56.
 
 ### 57.
 
@@ -4631,8 +4643,6 @@ export async function getServerSideProps(context) {
 
 ### 70.
 
-## Section 9.
-
 ## Section 10.
 
 ## 📚 external links
@@ -4650,7 +4660,7 @@ export async function getServerSideProps(context) {
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
-- 🔗 [lean - MongoDB]()
+- 🔗 [lean,sku - MongoDB]()
 
 ```
 
