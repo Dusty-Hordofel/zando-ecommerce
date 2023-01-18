@@ -4565,6 +4565,36 @@ export default SubCategory;
 
 ### 53. Add and get products from database
 
+- create [products.json](./data/products.json) file in [data](./data) folder.
+- create `products` and `categories` collections in mongo compass and import data in theses collection.
+
+- get products in [home](./pages/index.js) and pass it as a `props` in [home](./pages/index.js)
+
+```js
+export async function getServerSideProps(context) {
+  db.connectDb();
+  let products = await Product.find().sort({ createdAt: -1 }).lean(); //lean is used to
+  console.log(
+    "🚀 ~ file: index.js:88 ~ getServerSideProps ~ products",
+    products
+  );
+
+  let data = await axios
+    .get(`https://api.ipregistry.co/?key=${process.env.IPREGISTRY}`)
+    .then((res) => res.data.location.country)
+    .catch((error) =>
+      console.log("🚀 ~ file: index.js:22 ~ getServerSideProps ~ error", error)
+    );
+
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)), //serialize to JSON
+      country: { name: data.name, flag: data.flag.emojitwo },
+    }, // will be passed to the page component as props
+  };
+}
+```
+
 ### 54. Product card 1
 
 ### 55. Product card 2
@@ -4620,6 +4650,7 @@ export default SubCategory;
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+- 🔗 [lean - MongoDB]()
 
 ```
 

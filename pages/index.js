@@ -18,11 +18,12 @@ import {
 } from "../data/home";
 import { useMediaQuery } from "react-responsive";
 import ProductsSwiper from "../components/productsSwiper";
-// import Product from "../models/Product";
+import Product from "../models/Product";
 import ProductCard from "../components/productCard";
 
 export default function home({ country, products }) {
-  console.log("products", products);
+  console.log("🚀 ~ file: index.js:25 ~ home ~ products", products);
+  // console.log("products", products);
   const { data: session } = useSession();
   const isMedium = useMediaQuery({ query: "(max-width:850px)" });
   const isMobile = useMediaQuery({ query: "(max-width:550px)" });
@@ -60,7 +61,7 @@ export default function home({ country, products }) {
             />
           </div>
           <ProductsSwiper products={women_swiper} />
-          <ProductsSwiper
+          {/* <ProductsSwiper
             products={gamingSwiper}
             header="For Gamers"
             bg="#2f82ff"
@@ -69,7 +70,7 @@ export default function home({ country, products }) {
             products={homeImprovSwiper}
             header="House Improvements"
             bg="#f15f6f"
-          />
+          /> */}
           {/* <div className={styles.products}>
             {products.map((product) => (
               <ProductCard product={product} key={product._id} />
@@ -83,6 +84,13 @@ export default function home({ country, products }) {
 }
 
 export async function getServerSideProps(context) {
+  db.connectDb();
+  let products = await Product.find().sort({ createdAt: -1 }).lean(); //lean is used to
+  console.log(
+    "🚀 ~ file: index.js:88 ~ getServerSideProps ~ products",
+    products
+  );
+
   let data = await axios
     .get(`https://api.ipregistry.co/?key=${process.env.IPREGISTRY}`)
     .then((res) => res.data.location.country)
@@ -90,8 +98,12 @@ export async function getServerSideProps(context) {
       console.log("🚀 ~ file: index.js:22 ~ getServerSideProps ~ error", error)
     );
   // console.log("🚀 ~ file: index.js:26 ~ getServerSideProps ~ data", data);
+
   return {
-    props: { country: { name: data.name, flag: data.flag.emojitwo } }, // will be passed to the page component as props
+    props: {
+      products: JSON.parse(JSON.stringify(products)), //serialize to JSON
+      country: { name: data.name, flag: data.flag.emojitwo },
+    }, // will be passed to the page component as props
     // props: {
     //   country: {
     //     name: "France",
