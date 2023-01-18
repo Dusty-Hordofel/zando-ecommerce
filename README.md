@@ -4106,7 +4106,248 @@ export default function ProductsSwiper({ header, products, bg }) {
 }
 ```
 
+<!-- - add [ProductCard]() -->
+
 ### 50. Home products swiper extra
+
+- create [ProductCard](./components/ProductCard/index.js)
+
+```js
+import Link from "next/link";
+import { useEffect } from "react";
+import { useState } from "react";
+import ProductSwiper from "./ProductSwiper";
+import styles from "./styles.module.scss";
+
+export default function ProductCard({ product }) {
+  const [active, setActive] = useState(0);
+  const [images, setImages] = useState(product.subProducts[active]?.images);
+  const [prices, setPrices] = useState(
+    product.subProducts[active]?.sizes
+      .map((s) => {
+        return s.price;
+      })
+      .sort((a, b) => {
+        return a - b;
+      })
+  );
+  const [styless, setStyless] = useState(
+    product.subProducts.map((p) => {
+      return p.color;
+    })
+  );
+  useEffect(() => {
+    setImages(product.subProducts[active].images);
+    setPrices(
+      product.subProducts[active]?.sizes
+        .map((s) => {
+          return s.price;
+        })
+        .sort((a, b) => {
+          return a - b;
+        })
+    );
+  }, [active, product]);
+  return (
+    <div className={styles.product}>
+      <div className={styles.product__container}>
+        <a href={`/product/${product.slug}?style=${active}`} target="_blank">
+          <div>
+            <ProductSwiper images={images} />
+          </div>
+        </a>
+        {product.subProducts[active].discount ? (
+          <div className={styles.product__discount}>
+            -{product.subProducts[active].discount}%
+          </div>
+        ) : (
+          ""
+        )}
+        <div className={styles.product__infos}>
+          <h1>
+            {product.name.length > 45
+              ? `${product.name.substring(0, 45)}...`
+              : product.name}
+          </h1>
+          <span>
+            {prices.length === 1
+              ? `USD${prices[0]}$`
+              : `USD${prices[0]}-${prices[prices.length - 1]}$`}
+          </span>
+          <div className={styles.product__colors}>
+            {styless &&
+              styless.map((style, i) =>
+                style.image ? (
+                  <img
+                    src={style.image}
+                    className={i == active && styles.active}
+                    onMouseOver={() => {
+                      setImages(product.subProducts[i].images);
+                      setActive(i);
+                    }}
+                    alt=""
+                  />
+                ) : (
+                  <span
+                    style={{ backgroundColor: `${style.color}` }}
+                    onMouseOver={() => {
+                      setImages(product.subProducts[i].images);
+                      setActive(i);
+                    }}
+                  ></span>
+                )
+              )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+- create[ProductSwiper](./components/ProductCard/ProductSwiper.js)
+
+```js
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Autoplay } from "swiper";
+import { useEffect } from "react";
+
+export default function ProductSwiper({ images }) {
+  const swiperRef = useRef(null);
+  useEffect(() => {
+    swiperRef.current.swiper.autoplay.stop();
+  }, [swiperRef]);
+  return (
+    <div
+      className={styles.swiper}
+      onMouseEnter={() => {
+        swiperRef.current.swiper.autoplay.start();
+      }}
+      onMouseLeave={() => {
+        swiperRef.current.swiper.autoplay.stop();
+        swiperRef.current.swiper.slideTo(0);
+      }}
+    >
+      <Swiper
+        ref={swiperRef}
+        centeredSlides={true}
+        autoplay={{ delay: 500, stopOnLastSlide: false }}
+        speed={500}
+        modules={[Autoplay]}
+      >
+        {images.map((img) => (
+          <SwiperSlide>
+            <img src={img.url} alt="" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
+```
+
+- style [ProductCard & ProductSwiper](./components/ProductCard/styles.module.scss)
+
+```scss
+.product {
+  position: relative;
+  width: 290px;
+  height: 500px;
+  &__infos {
+    width: 100%;
+    margin-top: 1px;
+    h1 {
+      font-size: 13px;
+      font-weight: normal;
+      color: #222;
+    }
+    span {
+      color: $redish-color;
+      font-weight: 600;
+    }
+  }
+  &__colors {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    img {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: $shadow-1;
+      cursor: pointer;
+      outline-offset: 2px;
+      &:hover {
+        outline: 1px solid #000;
+      }
+    }
+    .active {
+      outline: 1px solid #000;
+    }
+    span {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      box-shadow: $shadow-1;
+      overflow: hidden;
+    }
+  }
+  &__discount {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 1;
+    background: $yellow-color;
+    color: #333;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+.swiper {
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+  img {
+    height: 390px;
+    display: block;
+    border-radius: 10px;
+  }
+}
+```
+
+- update [home page](./pages/index.js)
+
+```js
+   <ProductsSwiper products={women_swiper} />
+          <ProductsSwiper
+            products={gamingSwiper}
+            header="For Gamers"
+            bg="#2f82ff"
+          />
+          <ProductsSwiper
+            products={homeImprovSwiper}
+            header="House Improvements"
+            bg="#f15f6f"
+          />
+```
 
 ### 54.
 
