@@ -4611,6 +4611,8 @@ export async function getServerSideProps(context) {
 
 ### 55. Get, filter and prepare product data
 
+- create[[sulg].js](./pages/product/[slug].js)
+
 ### 56. product page content start
 
 ### 57. product images main swiper
@@ -4681,6 +4683,7 @@ export async function getServerSideProps(context) {
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
 - 🔗 [lean,sku - MongoDB]()
+- 🔗 [query,lean, populate - Nextjs]()
 
 ```
 
