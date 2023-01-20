@@ -4936,6 +4936,53 @@ export default function Share() {
 
 ### 62. product simillar swiper
 
+- create [SimillarSwiper](./components/productPage/infos/SimillarSwiper.js)
+
+```js
+import Link from "next/Link";
+import { simillar_products } from "../../../data/products";
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Navigation } from "swiper";
+export default function SimillarSwiper() {
+  return (
+    <Swiper
+      slidesPerView={4}
+      spaceBetween={5}
+      slidesPerGroup={3}
+      navigation={true}
+      modules={[Navigation]}
+      className="swiper simillar_swiper products__swiper"
+      breakpoints={{
+        640: {
+          width: 640,
+          slidesPerView: 5,
+        },
+      }}
+    >
+      {simillar_products.map((p) => (
+        <SwiperSlide>
+          <Link href="">
+            <img src={p} alt="" />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+}
+```
+
+- create [products.js](./data/products.js)
+
 ### 63. product reviews overview card
 
 ### 64. add review 1

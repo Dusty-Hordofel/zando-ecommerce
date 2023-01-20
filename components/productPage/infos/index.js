@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { BsHandbagFill, BsHeart } from "react-icons/bs";
 import Share from "./share";
 import Accordian from "./Accordian";
-// import SimillarSwiper from "./SimillarSwiper";
+import SimillarSwiper from "./SimillarSwiper";
 // import axios from "axios";
 // import DialogModal from "../../dialogModal";
 // import { useDispatch, useSelector } from "react-redux";
@@ -145,7 +145,7 @@ const Infos = ({ product, setActiveImg }) => {
         {success && <span className={styles.success}>{success}</span>}
         <Share />
         <Accordian details={[product.description, ...product.details]} />
-        {/* <SimillarSwiper /> */}
+        <SimillarSwiper />
       </div>
     </div>
   );
