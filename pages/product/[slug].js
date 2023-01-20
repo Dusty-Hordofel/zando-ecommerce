@@ -17,8 +17,8 @@ import { useState } from "react";
 export default function product({ product, related }) {
   const [activeImg, setActiveImg] = useState("");
   const country = {
-    name: "Morocco",
-    flag: "https://cdn-icons-png.flaticon.com/512/197/197551.png?w=360",
+    name: "France",
+    flag: "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg",
   };
   return (
     <>
