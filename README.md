@@ -4775,6 +4775,141 @@ export default function MainSwiper({ images, activeImg }) {
 
 ### 58. product infos 1
 
+- create [Share](./components/productPage/mainSwiper/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import {
+  FacebookShareButton,
+  FacebookMessengerShareButton,
+  EmailShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+
+import {
+  EmailIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
+
+export default function Share() {
+  return (
+    <div className={styles.share}>
+      <FacebookShareButton url={window?.location.href}>
+        <FacebookIcon size={38} />
+      </FacebookShareButton>
+      <FacebookMessengerShareButton url={window?.location.href}>
+        <FacebookMessengerIcon size={38} />
+      </FacebookMessengerShareButton>
+      <TwitterShareButton url={window?.location.href}>
+        <TwitterIcon size={38} />
+      </TwitterShareButton>
+      <LinkedinShareButton url={window?.location.href}>
+        <LinkedinIcon size={38} />
+      </LinkedinShareButton>
+      <RedditShareButton url={window?.location.href}>
+        <RedditIcon size={38} />
+      </RedditShareButton>
+      <TelegramShareButton url={window?.location.href}>
+        <TelegramIcon size={38} />
+      </TelegramShareButton>
+      <WhatsappShareButton url={window?.location.href}>
+        <WhatsappIcon size={38} />
+      </WhatsappShareButton>
+      <PinterestShareButton url={window?.location.href}>
+        <PinterestIcon size={38} />
+      </PinterestShareButton>
+      <EmailShareButton url={window?.location.href}>
+        <EmailIcon size={38} />
+      </EmailShareButton>
+    </div>
+  );
+}
+```
+
+- style [Share](./components/productPage/mainSwiper/index.js)
+
+```scss
+.swiper {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 500px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  @media (min-width: 800px) {
+    flex-direction: column;
+  }
+  @media (min-width: 1000px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  &__list {
+    margin-top: 7px;
+    display: flex;
+    gap: 10px;
+    height: 130px;
+    max-width: 500px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    @media (min-width: 500px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+    @media (min-width: 800px) {
+      flex-direction: row;
+      gap: 10px;
+      height: 130px;
+      max-width: 500px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 1000px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+  }
+  &__active {
+    z-index: 99;
+  }
+}
+.active {
+  outline: 1px solid #000;
+  outline-offset: 3px;
+}
+```
+
+-
+
 ### 59. product infos 2
 
 ### 60. product infos 3
