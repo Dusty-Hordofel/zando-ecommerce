@@ -4773,7 +4773,7 @@ export default function MainSwiper({ images, activeImg }) {
 }
 ```
 
-### 58. product infos 1
+### 58. product infos 1 & share to social media accounts
 
 - create [Share](./components/productPage/mainSwiper/index.js)
 
@@ -4908,13 +4908,21 @@ export default function Share() {
 }
 ```
 
--
-
 ### 59. product infos 2
+
+- install [material ui](https://mui.com/)
+
+```bash
+  npm i @mui/material @emotion/react @emotion/styled --legacy-peer-deps
+```
+
+- style [Infos](./components/productPage/infos/styles.module.scss)
+
+- update style [Infos](./components/productPage/infos/index.js)
 
 ### 60. product infos 3
 
-### 60. product infos 4 & share to social media accounts
+### 60. product infos 4
 
 ### 61. product infos 5 accordian
 
@@ -4970,12 +4978,17 @@ export default function Share() {
 - 🔗 [react-responsive](https://www.npmjs.com/package/react-responsive)
 - 🔗 [dayjs](https://www.npmjs.com/package/dayjs)
 - 🔗 [react-image-magnify](https://www.npmjs.com/package/react-image-magnify)
+- 🔗 [material ui](https://mui.com/)
 
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
 - 🔗 [lean,sku - MongoDB]()
 - 🔗 [query,lean, populate - Nextjs]()
+
+```
+
+```
 
 ```
 
