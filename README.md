@@ -4775,6 +4775,12 @@ export default function MainSwiper({ images, activeImg }) {
 
 ### 58. product infos 1 & share to social media accounts
 
+- install [react-share](https://www.npmjs.com/package/react-share)
+
+```bash
+npm i react-share --force
+```
+
 - create [Share](./components/productPage/mainSwiper/index.js)
 
 ```js
@@ -4922,7 +4928,7 @@ export default function Share() {
 
 ### 60. product infos 3
 
-### 60. product infos 4
+- update style [Infos](./components/productPage/infos/index.js)
 
 ### 61. product infos 5 accordian
 

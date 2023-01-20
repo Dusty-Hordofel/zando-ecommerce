@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import Link from "next/Link";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useEffect } from "react";
-// import { BsHandbagFill, BsHeart } from "react-icons/bs";
-// import Share from "./share";
+import { BsHandbagFill, BsHeart } from "react-icons/bs";
+import Share from "./share";
 // import Accordian from "./Accordian";
 // import SimillarSwiper from "./SimillarSwiper";
 // import axios from "axios";
@@ -124,6 +124,28 @@ const Infos = ({ product, setActiveImg }) => {
             <TbPlus />
           </button>
         </div>
+        {/* Actions information */}
+        <div className={styles.infos__actions}>
+          <button
+            disabled={product.quantity < 1}
+            style={{ cursor: `${product.quantity < 1 ? "not-allowed" : ""}` }}
+            // onClick={() => addToCartHandler()}
+          >
+            <BsHandbagFill />
+            <b>ADD TO CART</b>
+          </button>
+          <button
+          //   onClick={() => handleWishlist()}
+          >
+            <BsHeart />
+            WISHLIST
+          </button>
+        </div>
+        {error && <span className={styles.error}>{error}</span>}
+        {success && <span className={styles.success}>{success}</span>}
+        <Share />
+        {/* <Accordian details={[product.description, ...product.details]} /> */}
+        {/* <SimillarSwiper /> */}
       </div>
     </div>
   );
