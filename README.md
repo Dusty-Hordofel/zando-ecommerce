@@ -4648,6 +4648,131 @@ export async function getServerSideProps(context) {
 
 ### 57. product images main swiper
 
+- install [react-image-magnify](https://www.npmjs.com/package/react-image-magnify)
+
+```bash
+npm i react-image-magnify --legacy-peer-deps
+```
+
+- create [MainSwiper](./components/productPage/mainSwiper/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import ReactImageMagnify from "react-image-magnify";
+import { useState } from "react";
+
+export default function MainSwiper({ images, activeImg }) {
+  const [active, setActive] = useState(0);
+  return (
+    <div className={styles.swiper}>
+      <div className={styles.swiper__active}>
+        <ReactImageMagnify
+          {...{
+            smallImage: {
+              alt: "",
+              isFluidWidth: true,
+              src: activeImg || images[active].url,
+            },
+            largeImage: {
+              src: activeImg || images[active].url,
+              width: 1500,
+              height: 2000,
+            },
+            enlargedImageContainerDimensions: {
+              width: "200%",
+              height: "100%",
+            },
+          }}
+        />
+      </div>
+      <div className={styles.swiper__list}>
+        {images.map((img, i) => (
+          <div
+            className={`${styles.swiper__list_item} ${
+              i == active && styles.active
+            }`}
+            key={i}
+            onMouseOver={() => setActive(i)}
+          >
+            <img src={img.url} alt="" key={i} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+- Style [MainSwiper](./components/productPage/mainSwiper/styles.module.scss)
+
+```scss
+.swiper {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 500px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  @media (min-width: 800px) {
+    flex-direction: column;
+  }
+  @media (min-width: 1000px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  &__list {
+    margin-top: 7px;
+    display: flex;
+    gap: 10px;
+    height: 130px;
+    max-width: 500px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    @media (min-width: 500px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+    @media (min-width: 800px) {
+      flex-direction: row;
+      gap: 10px;
+      height: 130px;
+      max-width: 500px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 1000px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+  }
+  &__active {
+    z-index: 99;
+  }
+}
+.active {
+  outline: 1px solid #000;
+  outline-offset: 3px;
+}
+```
+
 ### 58. product infos 1
 
 ### 59. product infos 2
@@ -4709,6 +4834,7 @@ export async function getServerSideProps(context) {
 - 🔗 [stripo](https://stripo.email/fr/)
 - 🔗 [react-responsive](https://www.npmjs.com/package/react-responsive)
 - 🔗 [dayjs](https://www.npmjs.com/package/dayjs)
+- 🔗 [react-image-magnify](https://www.npmjs.com/package/react-image-magnify)
 
 ## 📚 Knowledge about
 

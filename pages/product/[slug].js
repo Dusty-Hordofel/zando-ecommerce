@@ -8,7 +8,7 @@ import Head from "next/head";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import { produceWithPatches } from "immer";
-// import MainSwiper from "../../components/productPage/mainSwiper";
+import MainSwiper from "../../components/productPage/mainSwiper";
 import { useState } from "react";
 // import Infos from "../../components/productPage/infos";
 // import Reviews from "../../components/productPage/reviews";
@@ -35,7 +35,7 @@ export default function product({ product, related }) {
             ))}
           </div>
           <div className={styles.product__main}>
-            {/* <MainSwiper images={product.images} activeImg={activeImg} /> */}
+            <MainSwiper images={product.images} activeImg={activeImg} />
             {/* <Infos product={product} setActiveImg={setActiveImg} /> */}
           </div>
           {/* <Reviews product={product} /> */}
