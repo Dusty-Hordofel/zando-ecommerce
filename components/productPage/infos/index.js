@@ -7,7 +7,7 @@ import { TbPlus, TbMinus } from "react-icons/tb";
 import { useEffect } from "react";
 import { BsHandbagFill, BsHeart } from "react-icons/bs";
 import Share from "./share";
-// import Accordian from "./Accordian";
+import Accordian from "./Accordian";
 // import SimillarSwiper from "./SimillarSwiper";
 // import axios from "axios";
 // import DialogModal from "../../dialogModal";
@@ -144,7 +144,7 @@ const Infos = ({ product, setActiveImg }) => {
         {error && <span className={styles.error}>{error}</span>}
         {success && <span className={styles.success}>{success}</span>}
         <Share />
-        {/* <Accordian details={[product.description, ...product.details]} /> */}
+        <Accordian details={[product.description, ...product.details]} />
         {/* <SimillarSwiper /> */}
       </div>
     </div>

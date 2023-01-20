@@ -4930,7 +4930,9 @@ export default function Share() {
 
 - update style [Infos](./components/productPage/infos/index.js)
 
-### 61. product infos 5 accordian
+### 61. product infos 4 accordian
+
+- create [Accordian](./components/productPage/infos/Accordian.js)
 
 ### 62. product simillar swiper
 
