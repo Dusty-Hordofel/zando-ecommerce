@@ -4,7 +4,7 @@ import { useState } from "react";
 // import AddReview from "./AddReview";
 // import Select from "./Select";
 import styles from "./styles.module.scss";
-// import Table from "./Table";
+import Table from "./Table";
 
 export default function Reviews({ product }) {
   const { data: session } = useSession();
@@ -51,18 +51,18 @@ export default function Reviews({ product }) {
             ))}
           </div>
         </div>
-        {/* {session ? (
+        {session ? (
           <AddReview product={product} setReviews={setReviews} />
         ) : (
           <button onClick={() => signIn()} className={styles.login_btn}>
             Login to add review
           </button>
-        )} */}
-        {/* <Table
+        )}
+        <Table
           reviews={reviews}
           allSizes={product.allSizes}
           colors={product.colors}
-        /> */}
+        />
       </div>
     </div>
   );

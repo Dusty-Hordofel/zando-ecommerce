@@ -4991,6 +4991,10 @@ export default function SimillarSwiper() {
 
 ### 64. add review 1
 
+- add a contionnnal rendering to [AddReview](/components/productPage/reviews/index.js)
+- create [AddReview](./components/productPage/reviews/AddReview.js)
+- create [Select.js ](./components/productPage/reviews/Select.js) to select the size and style of the product we want to review.
+
 ### 65. add review 2
 
 ### 66. add review 3
