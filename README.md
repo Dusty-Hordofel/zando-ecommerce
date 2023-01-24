@@ -4985,6 +4985,10 @@ export default function SimillarSwiper() {
 
 ### 63. product reviews overview card
 
+- create [Reviews](./components/productPage/reviews/index.js) && [[slug.js]](./pages/product/[slug].js)
+
+- create [styles.module.scss](./components/productPage/reviews/styles.module.scss)
+
 ### 64. add review 1
 
 ### 65. add review 2

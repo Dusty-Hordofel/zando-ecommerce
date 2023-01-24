@@ -11,7 +11,7 @@ import { produceWithPatches } from "immer";
 import MainSwiper from "../../components/productPage/mainSwiper";
 import { useState } from "react";
 import Infos from "../../components/productPage/infos";
-// import Reviews from "../../components/productPage/reviews";
+import Reviews from "../../components/productPage/reviews";
 // import ProductsSwiper from "../../components/productsSwiper";
 
 export default function product({ product, related }) {
@@ -38,7 +38,7 @@ export default function product({ product, related }) {
             <MainSwiper images={product.images} activeImg={activeImg} />
             <Infos product={product} setActiveImg={setActiveImg} />
           </div>
-          {/* <Reviews product={product} /> */}
+          <Reviews product={product} />
           {/*
           <ProductsSwiper products={related} />
           */}
