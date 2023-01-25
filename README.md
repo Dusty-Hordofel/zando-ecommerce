@@ -4607,33 +4607,530 @@ export async function getServerSideProps(context) {
 </div>
 ```
 
-## Section 9.
+## Section 9. Product Page
 
-### 55.
+### 55. Get, filter and prepare product data
 
-### 56.
+- create[[sulg].js](./pages/product/[slug].js)
 
-### 57.
+### 56. product page content start
 
-### 58.
+- style [Product](styles/product.module.scss)
 
-### 59.
+```scss
+.product {
+  min-height: 100vh;
+  &__container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .path {
+    font-size: 14px;
+    color: #666;
+  }
+  &__main {
+    position: relative;
+    display: grid;
+    margin-top: 1rem;
+    gap: 1rem;
+    @media (min-width: 800px) {
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
+    @media (min-width: 1160px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+  }
+}
+```
 
-### 60.
+### 57. product images main swiper
 
-### 60.
+- install [react-image-magnify](https://www.npmjs.com/package/react-image-magnify)
 
-### 61.
+```bash
+npm i react-image-magnify --legacy-peer-deps
+```
 
-### 62.
+- create [MainSwiper](./components/productPage/mainSwiper/index.js)
 
-### 63.
+```js
+import styles from "./styles.module.scss";
+import ReactImageMagnify from "react-image-magnify";
+import { useState } from "react";
 
-### 64.
+export default function MainSwiper({ images, activeImg }) {
+  const [active, setActive] = useState(0);
+  return (
+    <div className={styles.swiper}>
+      <div className={styles.swiper__active}>
+        <ReactImageMagnify
+          {...{
+            smallImage: {
+              alt: "",
+              isFluidWidth: true,
+              src: activeImg || images[active].url,
+            },
+            largeImage: {
+              src: activeImg || images[active].url,
+              width: 1500,
+              height: 2000,
+            },
+            enlargedImageContainerDimensions: {
+              width: "200%",
+              height: "100%",
+            },
+          }}
+        />
+      </div>
+      <div className={styles.swiper__list}>
+        {images.map((img, i) => (
+          <div
+            className={`${styles.swiper__list_item} ${
+              i == active && styles.active
+            }`}
+            key={i}
+            onMouseOver={() => setActive(i)}
+          >
+            <img src={img.url} alt="" key={i} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
 
-### 65.
+- Style [MainSwiper](./components/productPage/mainSwiper/styles.module.scss)
 
-### 66.
+```scss
+.swiper {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 500px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  @media (min-width: 800px) {
+    flex-direction: column;
+  }
+  @media (min-width: 1000px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  &__list {
+    margin-top: 7px;
+    display: flex;
+    gap: 10px;
+    height: 130px;
+    max-width: 500px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    @media (min-width: 500px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+    @media (min-width: 800px) {
+      flex-direction: row;
+      gap: 10px;
+      height: 130px;
+      max-width: 500px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 1000px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+  }
+  &__active {
+    z-index: 99;
+  }
+}
+.active {
+  outline: 1px solid #000;
+  outline-offset: 3px;
+}
+```
+
+### 58. product infos 1 & share to social media accounts
+
+- install [react-share](https://www.npmjs.com/package/react-share)
+
+```bash
+npm i react-share --force
+```
+
+- create [Share](./components/productPage/mainSwiper/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import {
+  FacebookShareButton,
+  FacebookMessengerShareButton,
+  EmailShareButton,
+  LinkedinShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+
+import {
+  EmailIcon,
+  FacebookIcon,
+  FacebookMessengerIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
+
+export default function Share() {
+  return (
+    <div className={styles.share}>
+      <FacebookShareButton url={window?.location.href}>
+        <FacebookIcon size={38} />
+      </FacebookShareButton>
+      <FacebookMessengerShareButton url={window?.location.href}>
+        <FacebookMessengerIcon size={38} />
+      </FacebookMessengerShareButton>
+      <TwitterShareButton url={window?.location.href}>
+        <TwitterIcon size={38} />
+      </TwitterShareButton>
+      <LinkedinShareButton url={window?.location.href}>
+        <LinkedinIcon size={38} />
+      </LinkedinShareButton>
+      <RedditShareButton url={window?.location.href}>
+        <RedditIcon size={38} />
+      </RedditShareButton>
+      <TelegramShareButton url={window?.location.href}>
+        <TelegramIcon size={38} />
+      </TelegramShareButton>
+      <WhatsappShareButton url={window?.location.href}>
+        <WhatsappIcon size={38} />
+      </WhatsappShareButton>
+      <PinterestShareButton url={window?.location.href}>
+        <PinterestIcon size={38} />
+      </PinterestShareButton>
+      <EmailShareButton url={window?.location.href}>
+        <EmailIcon size={38} />
+      </EmailShareButton>
+    </div>
+  );
+}
+```
+
+- style [Share](./components/productPage/mainSwiper/index.js)
+
+```scss
+.swiper {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 500px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  @media (min-width: 800px) {
+    flex-direction: column;
+  }
+  @media (min-width: 1000px) {
+    flex-direction: row-reverse;
+    justify-self: flex-start;
+    gap: 10px;
+  }
+  &__list {
+    margin-top: 7px;
+    display: flex;
+    gap: 10px;
+    height: 130px;
+    max-width: 500px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    @media (min-width: 500px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+    @media (min-width: 800px) {
+      flex-direction: row;
+      gap: 10px;
+      height: 130px;
+      max-width: 500px;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+    }
+    @media (min-width: 1000px) {
+      margin-top: 0;
+      flex-direction: column;
+      height: 100%;
+      img {
+        width: 100px;
+      }
+    }
+  }
+  &__active {
+    z-index: 99;
+  }
+}
+.active {
+  outline: 1px solid #000;
+  outline-offset: 3px;
+}
+```
+
+### 59. product infos 2
+
+- install [material ui](https://mui.com/)
+
+```bash
+  npm i @mui/material @emotion/react @emotion/styled --legacy-peer-deps
+```
+
+- style [Infos](./components/productPage/infos/styles.module.scss)
+
+- update style [Infos](./components/productPage/infos/index.js)
+
+### 60. product infos 3
+
+- update style [Infos](./components/productPage/infos/index.js)
+
+### 61. product infos 4 accordian
+
+- create [Accordian](./components/productPage/infos/Accordian.js)
+
+### 62. product simillar swiper
+
+- create [SimillarSwiper](./components/productPage/infos/SimillarSwiper.js)
+
+```js
+import Link from "next/Link";
+import { simillar_products } from "../../../data/products";
+import styles from "./styles.module.scss";
+import { useRef, useState } from "react";
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Navigation } from "swiper";
+export default function SimillarSwiper() {
+  return (
+    <Swiper
+      slidesPerView={4}
+      spaceBetween={5}
+      slidesPerGroup={3}
+      navigation={true}
+      modules={[Navigation]}
+      className="swiper simillar_swiper products__swiper"
+      breakpoints={{
+        640: {
+          width: 640,
+          slidesPerView: 5,
+        },
+      }}
+    >
+      {simillar_products.map((p) => (
+        <SwiperSlide>
+          <Link href="">
+            <img src={p} alt="" />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+}
+```
+
+- create [products.js](./data/products.js)
+
+### 63. product reviews overview card
+
+- create [Reviews](./components/productPage/reviews/index.js) && [[slug.js]](./pages/product/[slug].js)
+
+- create [styles.module.scss](./components/productPage/reviews/styles.module.scss)
+
+### 64. add review
+
+- add a contionnnal rendering to [AddReview](/components/productPage/reviews/index.js)
+- create [AddReview](./components/productPage/reviews/AddReview.js) to add review.
+- create [Select.js ](./components/productPage/reviews/Select.js) to select the size and style of the product we want to review.
+
+### 65. add review 4 working with images upload form
+
+- create [Images ](./components/productPage/reviews/Images.js)
+
+```js
+import { useState } from "react";
+import { useRef } from "react";
+import { MdOutlineRemoveCircle } from "react-icons/md";
+import styles from "./styles.module.scss";
+
+export default function Images({ images, setImages }) {
+  const [error, setError] = useState("");
+  const inputRef = useRef(null);
+  const handleImages = (e) => {
+    let files = Array.from(e.target.files);
+    console.log(files);
+    files.forEach((img, i) => {
+      if (images.length == 3 || i == 2) {
+        setError("Maximum 3 images are allowed.");
+        return;
+      }
+      if (
+        img.type !== "image/jpeg" &&
+        img.type !== "image/png" &&
+        img.type !== "image/webp"
+      ) {
+        setError(
+          `${img.name} format is unsupported ! only JPEG, PNG, WEBP are allowed.`
+        );
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else if (img.size > 1024 * 1024 * 5) {
+        setError(`${img.name} size is too large max 5mb allowed.`);
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else {
+        setError("");
+        const reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onload = (e) => {
+          setImages((images) => [...images, e.target.result]);
+        };
+      }
+    });
+  };
+  const removeImage = (image) => {
+    setImages((images) => images.filter((img) => img !== image));
+    if (images.length <= 3) {
+      setError("");
+    }
+  };
+  return (
+    <div>
+      <input
+        type="file"
+        ref={inputRef}
+        hidden
+        onChange={handleImages}
+        multiple
+        accept="image/png,image/jpeg,image/webp"
+      />
+      <button
+        className={styles.login_btn}
+        style={{ width: "150px" }}
+        onClick={() => inputRef.current.click()}
+      >
+        Add images
+      </button>
+      {error && <div className={styles.error}>{error}</div>}
+      <div className={styles.imgs_wrap}>
+        {images.length > 0 &&
+          images.map((img, i) => (
+            <span key={i}>
+              <MdOutlineRemoveCircle onClick={() => removeImage(img)} />
+              <img src={img} alt="" />
+            </span>
+          ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### 66. reviews table : pagination functionality
+
+- create [Table](./components/productPage/reviews/Table.js)
+
+```js
+import { Pagination } from "@mui/material";
+import { useState } from "react";
+import usePagination from "./Pagination";
+import Review from "./Review";
+import styles from "./styles.module.scss";
+import TableHeader from "./TableHeader";
+
+export default function Table({ reviews, allSizes, colors }) {
+  //{ reviews, allSizes, colors } from <Reviews/>
+  const [page, setPage] = useState(1);
+  const PER_PAGE = 3;
+  const count = Math.ceil(reviews.length / PER_PAGE);
+  const _DATA = usePagination(reviews, PER_PAGE);
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+  return (
+    <div className={styles.table}>
+      <TableHeader
+        reviews={reviews}
+        allSizes={[{ size: "All" }, ...allSizes]}
+        colors={[{ color: "", image: "" }, ...colors]}
+      />
+      <div className={styles.table__data}>
+        {_DATA.currentData().map((review, i) => (
+          <Review review={review} key={i} />
+        ))}
+      </div>
+      <div className={styles.pagination}>
+        <Pagination
+          count={count}
+          page={page}
+          variant="round"
+          shape="rounded"
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+- create [usePagination](./components/productPage/reviews/Pagination.js)
+- create [TableHeader ](./components/productPage/reviews/TableHeader.js)
+- create [Review](./components/productPage/reviews/Review.js)
+
+- create [TableSelect ](./components/productPage/reviews/TableSelect.js) basing on [Select.js ](./components/productPage/reviews/Select.js).
 
 ### 67.
 
@@ -4644,6 +5141,26 @@ export async function getServerSideProps(context) {
 ### 70.
 
 ## Section 10.
+
+## Section 11.
+
+## Section 12.
+
+## Section 13.
+
+## Section 14.
+
+## Section 15.
+
+## Section 16.
+
+## Section 17.
+
+## Section 18.
+
+## Section 19.
+
+## Section 20.
 
 ## 📚 external links
 
@@ -4656,11 +5173,19 @@ export async function getServerSideProps(context) {
 - 🔗 [stripo](https://stripo.email/fr/)
 - 🔗 [react-responsive](https://www.npmjs.com/package/react-responsive)
 - 🔗 [dayjs](https://www.npmjs.com/package/dayjs)
+- 🔗 [react-image-magnify](https://www.npmjs.com/package/react-image-magnify)
+- 🔗 [material ui](https://mui.com/)
 
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+- 🔗 [ Array.from()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 - 🔗 [lean,sku - MongoDB]()
+- 🔗 [query,lean, populate - Nextjs]()
+
+```
+
+```
 
 ```
 
