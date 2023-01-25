@@ -4992,18 +4992,105 @@ export default function SimillarSwiper() {
 ### 64. add review 1
 
 - add a contionnnal rendering to [AddReview](/components/productPage/reviews/index.js)
-- create [AddReview](./components/productPage/reviews/AddReview.js)
+- create [AddReview](./components/productPage/reviews/AddReview.js) to add review.
 - create [Select.js ](./components/productPage/reviews/Select.js) to select the size and style of the product we want to review.
 
 ### 65. add review 2
 
-### 66. add review 3
+- create [Images ](./components/productPage/reviews/Images.js)
 
-### 67. add review 4 working with images upload form
+```js
+import { useState } from "react";
+import { useRef } from "react";
+import { MdOutlineRemoveCircle } from "react-icons/md";
+import styles from "./styles.module.scss";
 
-### 68. reviews table : pagination functionality
+export default function Images({ images, setImages }) {
+  const [error, setError] = useState("");
+  const inputRef = useRef(null);
+  const handleImages = (e) => {
+    let files = Array.from(e.target.files);
+    console.log(files);
+    files.forEach((img, i) => {
+      if (images.length == 3 || i == 2) {
+        setError("Maximum 3 images are allowed.");
+        return;
+      }
+      if (
+        img.type !== "image/jpeg" &&
+        img.type !== "image/png" &&
+        img.type !== "image/webp"
+      ) {
+        setError(
+          `${img.name} format is unsupported ! only JPEG, PNG, WEBP are allowed.`
+        );
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else if (img.size > 1024 * 1024 * 5) {
+        setError(`${img.name} size is too large max 5mb allowed.`);
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else {
+        setError("");
+        const reader = new FileReader();
+        reader.readAsDataURL(img);
+        reader.onload = (e) => {
+          setImages((images) => [...images, e.target.result]);
+        };
+      }
+    });
+  };
+  const removeImage = (image) => {
+    setImages((images) => images.filter((img) => img !== image));
+    if (images.length <= 3) {
+      setError("");
+    }
+  };
+  return (
+    <div>
+      <input
+        type="file"
+        ref={inputRef}
+        hidden
+        onChange={handleImages}
+        multiple
+        accept="image/png,image/jpeg,image/webp"
+      />
+      <button
+        className={styles.login_btn}
+        style={{ width: "150px" }}
+        onClick={() => inputRef.current.click()}
+      >
+        Add images
+      </button>
+      {error && <div className={styles.error}>{error}</div>}
+      <div className={styles.imgs_wrap}>
+        {images.length > 0 &&
+          images.map((img, i) => (
+            <span key={i}>
+              <MdOutlineRemoveCircle onClick={() => removeImage(img)} />
+              <img src={img} alt="" />
+            </span>
+          ))}
+      </div>
+    </div>
+  );
+}
+```
 
-### 69. review card
+- create [Table](./components/productPage/reviews/Table.js)
+- create [usePagination](./components/productPage/reviews/Pagination.js)
+- create [Review](./components/productPage/reviews/Review.js)
+- create [TableHeader ](./components/productPage/reviews/TableHeader.js)
+- create [TableSelect ](./components/productPage/reviews/TableSelect.js)
+
+### 66. add review 4 working with images upload form
+
+### 67. reviews table : pagination functionality
+
+### 68. review card
+
+### 69. reviews table header
 
 ### 70. reviews table header
 
@@ -5046,6 +5133,7 @@ export default function SimillarSwiper() {
 ## 📚 Knowledge about
 
 - 🔗 [Object.values()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Object/values)
+- 🔗 [ Array.from()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 - 🔗 [lean,sku - MongoDB]()
 - 🔗 [query,lean, populate - Nextjs]()
 
