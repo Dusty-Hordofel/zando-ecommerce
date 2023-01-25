@@ -1,12 +1,14 @@
 import { Rating } from "@mui/material";
 import { useSession, signIn } from "next-auth/react";
 import { useState } from "react";
-// import AddReview from "./AddReview";
-// import Select from "./Select";
+import AddReview from "./AddReview";
+import Select from "./Select";
 import styles from "./styles.module.scss";
 import Table from "./Table";
 
 export default function Reviews({ product }) {
+  //product from [slug].js
+
   const { data: session } = useSession();
   const [rating, setRating] = useState("");
   const [reviews, setReviews] = useState(product.reviews);

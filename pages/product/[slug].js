@@ -16,10 +16,16 @@ import Reviews from "../../components/productPage/reviews";
 
 export default function product({ product, related }) {
   const [activeImg, setActiveImg] = useState("");
+
+  console.log(
+    "🚀 ~ file: [slug].js:18 ~ product ~ product",
+    product.reviews[0]
+  );
   const country = {
     name: "France",
     flag: "https://upload.wikimedia.org/wikipedia/en/c/c3/Flag_of_France.svg",
   };
+
   return (
     <>
       <Head>

@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import Images from "./Images";
 import Select from "./Select";
 import styles from "./styles.module.scss";
-import { hideDialog, showDialog } from "../../../store/DialogSlice";
-import DialogModal from "../../../components/dialogModal";
-import dataURItoBlob from "../../../utils/dataURItoBlob";
-import { uploadImages } from "../../../requests/upload";
+// import { hideDialog, showDialog } from "../../../store/DialogSlice";
+// import DialogModal from "../../../components/dialogModal";
+// import dataURItoBlob from "../../../utils/dataURItoBlob";
+// import { uploadImages } from "../../../requests/upload";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { FaLastfmSquare } from "react-icons/fa";
@@ -27,6 +27,7 @@ export default function AddReview({ product, setReviews }) {
   const [rating, setRating] = useState();
   const [images, setImages] = useState([]);
   let uploaded_images = [];
+
   const handleSubmit = async () => {
     setLoading(true);
     let msgs = [];
@@ -78,16 +79,16 @@ export default function AddReview({ product, setReviews }) {
         temp.forEach((img) => {
           formData.append("file", img);
         });
-        uploaded_images = await uploadImages(formData);
+        // uploaded_images = await uploadImages(formData);
       }
-      const { data } = await axios.put(`/api/product/${product._id}/review`, {
-        size,
-        style,
-        fit,
-        rating,
-        review,
-        images: uploaded_images,
-      });
+      //   const { data } = await axios.put(`/api/product/${product._id}/review`, {
+      //     size,
+      //     style,
+      //     fit,
+      //     rating,
+      //     review,
+      //     images: uploaded_images,
+      //   });
       setReviews(data.reviews);
       setStyle("");
       setSize("");
@@ -98,9 +99,10 @@ export default function AddReview({ product, setReviews }) {
     }
     setLoading(false);
   };
+
   return (
     <div className={styles.reviews__add}>
-      <DialogModal />
+      {/* <DialogModal /> */}
       <div className={styles.reviews__add_wrap}>
         <div className={styles.flex} style={{ gap: "10px" }}>
           <Select

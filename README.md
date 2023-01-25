@@ -4989,13 +4989,13 @@ export default function SimillarSwiper() {
 
 - create [styles.module.scss](./components/productPage/reviews/styles.module.scss)
 
-### 64. add review 1
+### 64. add review
 
 - add a contionnnal rendering to [AddReview](/components/productPage/reviews/index.js)
 - create [AddReview](./components/productPage/reviews/AddReview.js) to add review.
 - create [Select.js ](./components/productPage/reviews/Select.js) to select the size and style of the product we want to review.
 
-### 65. add review 2
+### 65. add review 4 working with images upload form
 
 - create [Images ](./components/productPage/reviews/Images.js)
 
@@ -5078,21 +5078,67 @@ export default function Images({ images, setImages }) {
 }
 ```
 
+### 66. reviews table : pagination functionality
+
 - create [Table](./components/productPage/reviews/Table.js)
+
+```js
+import { Pagination } from "@mui/material";
+import { useState } from "react";
+import usePagination from "./Pagination";
+import Review from "./Review";
+import styles from "./styles.module.scss";
+import TableHeader from "./TableHeader";
+
+export default function Table({ reviews, allSizes, colors }) {
+  //{ reviews, allSizes, colors } from <Reviews/>
+  const [page, setPage] = useState(1);
+  const PER_PAGE = 3;
+  const count = Math.ceil(reviews.length / PER_PAGE);
+  const _DATA = usePagination(reviews, PER_PAGE);
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+  return (
+    <div className={styles.table}>
+      <TableHeader
+        reviews={reviews}
+        allSizes={[{ size: "All" }, ...allSizes]}
+        colors={[{ color: "", image: "" }, ...colors]}
+      />
+      <div className={styles.table__data}>
+        {_DATA.currentData().map((review, i) => (
+          <Review review={review} key={i} />
+        ))}
+      </div>
+      <div className={styles.pagination}>
+        <Pagination
+          count={count}
+          page={page}
+          variant="round"
+          shape="rounded"
+          onChange={handleChange}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
 - create [usePagination](./components/productPage/reviews/Pagination.js)
-- create [Review](./components/productPage/reviews/Review.js)
 - create [TableHeader ](./components/productPage/reviews/TableHeader.js)
-- create [TableSelect ](./components/productPage/reviews/TableSelect.js)
+- create [Review](./components/productPage/reviews/Review.js)
 
-### 66. add review 4 working with images upload form
+- create [TableSelect ](./components/productPage/reviews/TableSelect.js) basing on [Select.js ](./components/productPage/reviews/Select.js).
 
-### 67. reviews table : pagination functionality
+### 67.
 
-### 68. review card
+### 68.
 
-### 69. reviews table header
+### 69.
 
-### 70. reviews table header
+### 70.
 
 ## Section 10.
 

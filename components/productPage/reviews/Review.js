@@ -3,6 +3,8 @@ import styles from "./styles.module.scss";
 import { AiOutlineLike } from "react-icons/ai";
 
 export default function Review({ review }) {
+  console.log("🚀 ~ file: Review.js:6 ~ Review ~ review", review);
+  //review from  <Table/>
   const { name, image } = review.reviewBy;
   return (
     <div className={styles.review}>

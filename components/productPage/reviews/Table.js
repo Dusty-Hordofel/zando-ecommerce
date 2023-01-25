@@ -6,6 +6,8 @@ import styles from "./styles.module.scss";
 import TableHeader from "./TableHeader";
 
 export default function Table({ reviews, allSizes, colors }) {
+  console.log("🚀 ~ file: Table.js:9 ~ Table ~ reviews", reviews);
+  //{ reviews, allSizes, colors } from <Reviews/>
   const [page, setPage] = useState(1);
   const PER_PAGE = 3;
   const count = Math.ceil(reviews.length / PER_PAGE);
@@ -21,11 +23,11 @@ export default function Table({ reviews, allSizes, colors }) {
         allSizes={[{ size: "All" }, ...allSizes]}
         colors={[{ color: "", image: "" }, ...colors]}
       />
-      <div className={styles.table__data}>
+      {/* <div className={styles.table__data}>
         {_DATA.currentData().map((review, i) => (
           <Review review={review} key={i} />
         ))}
-      </div>
+      </div> */}
       <div className={styles.pagination}>
         <Pagination
           count={count}

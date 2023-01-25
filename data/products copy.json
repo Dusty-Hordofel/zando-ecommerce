@@ -236,8 +236,8 @@
       "reviews": [
         {
           "reviewBy": {
-            "$oid": "62b33178fbcc6f0282db0606",
-            "name":"Farelia"
+            "$oid": "62b33178fbcc6f0282db0606"
+
           },
           "rating": 1,
           "review": "aaaaaaaaaaaaaaa",
@@ -265,8 +265,7 @@
         },
         {
           "reviewBy": {
-            "$oid": "62c69fc002820c409dcce9ea",
-            "name":"Alvyn"
+            "$oid": "62c69fc002820c409dcce9ea"
           },
           "rating": 4,
           "review": "i like it  a lot but a bit large for me for size L",
@@ -289,8 +288,7 @@
         },
         {
           "reviewBy": {
-            "$oid": "62a22b5cd0e120974f5c866e",
-            "name":"Jonathan"
+            "$oid": "62a22b5cd0e120974f5c866e"
           },
           "rating": 5,
           "review": "amaaaaaaaaaaaaaaaaaaaaaaazing",
@@ -318,8 +316,7 @@
         },
         {
           "reviewBy": {
-            "$oid": "62a22d98d0e120974f5c8671",
-            "name":"Olivier"
+            "$oid": "62a22d98d0e120974f5c8671"
           },
           "rating": 2.5,
           "review": "aaaaaaaa",
@@ -342,8 +339,7 @@
         },
         {
           "reviewBy": {
-            "$oid": "62a2281cd0e120974f5c866c",
-            "name":"Manase"
+            "$oid": "62a2281cd0e120974f5c866c"
           },
           "rating": 5,
           "review": "bbbbbbbbbbbbbb",
