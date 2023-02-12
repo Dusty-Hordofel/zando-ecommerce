@@ -39,11 +39,44 @@ const Infos = ({ product, setActiveImg }) => {
   }, [router.query.size]);
 
   const addToCartHandler = async () => {
+    if (!router.query.size) {
+      setError("Please Select a size");
+      return;
+    }
     console.log("first equipe ");
     //we have to create API endPoint before to get the data
     const { data } = await axios.get(
       `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`
     );
+    if (qty > data.quantity) {
+      setError(
+        "The Quantity you have choosed is more than in stock. Try and lower the Qty"
+      );
+    } else if (data.quantity < 1) {
+      setError("This Product is out of stock.");
+      return;
+    } else {
+      let _uid = `${data._id}_${product.style}_${router.query.size}`; //every single product is unique, if size or style is different ,it's another product. we create that id to identify theme. It's unique until we select the same item with the same size...
+      let exist = cart.cartItems.find((p) => p._uid === _uid);
+      if (exist) {
+        let newCart = cart.cartItems.map((p) => {
+          if (p._uid == exist._uid) {
+            return { ...p, qty: qty };
+          }
+          return p;
+        });
+        dispatch(updateCart(newCart));
+      } else {
+        dispatch(
+          addToCart({
+            ...data,
+            qty,
+            size: data.size,
+            _uid,
+          })
+        );
+      }
+    }
   };
 
   return (
