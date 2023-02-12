@@ -5434,7 +5434,65 @@ const addToCartHandler = async () => {
 };
 ```
 
-### 70.
+### 70. cart product card markup
+
+- create [Product](./components/cart/product/index.js)
+
+```js
+
+```
+
+- update [Product](./components/cart/product/styles.module.scss)
+
+-create [\_base.scss](components/cart/_base.scss)
+
+```scss
+.card {
+  background: #fff;
+  padding: 1rem;
+  // margin-top: 1rem;
+}
+.active {
+  background-image: url("../../public/images/selected.png");
+  background-size: cover;
+}
+.header {
+  color: #2222 !important;
+  font-size: 22px;
+}
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid #cccccc;
+  cursor: pointer;
+  &:hover {
+    border-color: $blue-color;
+  }
+}
+```
+
+- update [cart page](./pages/cart.js)
+
+### 71.
+
+### 72.
+
+### 73.
+
+### 74.
+
+### 75.
+
+### 76.
+
+### 77.
+
+### 78.
+
+### 79.
+
+### 80.
 
 ## Section 11.
 

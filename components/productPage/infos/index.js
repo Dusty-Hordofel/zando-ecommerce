@@ -48,6 +48,8 @@ const Infos = ({ product, setActiveImg }) => {
     const { data } = await axios.get(
       `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`
     );
+    console.log("🚀 ~ file: index.js:51 ~ addToCartHandler ~ data", data);
+
     if (qty > data.quantity) {
       setError(
         "The Quantity you have choosed is more than in stock. Try and lower the Qty"
