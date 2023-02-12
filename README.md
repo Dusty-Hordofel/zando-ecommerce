@@ -5300,7 +5300,92 @@ const cart = () => {
 export default cart;
 ```
 
-### 68.
+### 68. cart slice & add to cart 1
+
+- add [actions to the cartSlice](./store/cartSlice.js)
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+const initialState = {
+  cartItems: [],
+};
+export const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  reducers: {
+    addToCart(state, action) {
+      state.cartItems.push(action.payload); //action.payload is what we send in the function
+    },
+    updateCart(state, action) {
+      state.cartItems = action.payload;
+    },
+    emptyCart(state, action) {
+      state.cartItems = [];
+    },
+  },
+});
+
+export const { addToCart, updateCart, emptyCart } = cartSlice.actions;
+
+export default cartSlice.reducer;
+```
+
+- create [Product API endPoint](./pages/api/product/[id].js) to get the data.
+
+```js
+import nc from "next-connect";
+import Product from "../../../../models/Product";
+import db from "../../../../utils/db";
+const handler = nc();
+
+handler.get(async (req, res) => {
+  try {
+    db.connectDb();
+    const id = req.query.id;
+    const style = req.query.style || 0;
+    const size = req.query.size || 0;
+    const product = await Product.findById(id).lean();
+    let discount = product.subProducts[style].discount;
+    let priceBefore = product.subProducts[style].sizes[size].price;
+    let price = discount ? priceBefore - priceBefore / discount : priceBefore;
+    db.disconnectDb();
+    return res.json({
+      _id: product._id,
+      style: Number(style),
+      name: product.name,
+      description: product.description,
+      slug: product.slug,
+      sku: product.subProducts[style].sku,
+      brand: product.brand,
+      category: product.category,
+      subCategories: product.subCategories,
+      shipping: product.shipping,
+      images: product.subProducts[style].images,
+      color: product.subProducts[style].color,
+      size: product.subProducts[style].sizes[size].size,
+      price,
+      priceBefore,
+      quantity: product.subProducts[style].sizes[size].qty,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+export default handler;
+```
+
+- update [Infos](./components/productPage/infos/index.js)
+
+```js
+const addToCartHandler = async () => {
+  console.log("first equipe ");
+  //we have to create API endPoint before to get the data
+  const { data } = await axios.get(
+    `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`
+  );
+};
+```
 
 ### 69.
 

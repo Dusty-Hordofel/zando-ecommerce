@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import TableHeader from "./TableHeader";
 
 export default function Table({ reviews, allSizes, colors }) {
-  console.log("🚀 ~ file: Table.js:9 ~ Table ~ reviews", reviews);
+  // console.log("🚀 ~ file: Table.js:9 ~ Table ~ reviews", reviews);
   //{ reviews, allSizes, colors } from <Reviews/>
   const [page, setPage] = useState(1);
   const PER_PAGE = 3;

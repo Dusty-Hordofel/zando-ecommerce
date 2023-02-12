@@ -55,6 +55,7 @@ export default function product({ product, related }) {
 }
 
 export async function getServerSideProps(context) {
+  //we get these info from the url
   const { query } = context;
   const slug = query.slug;
   const style = query.style;

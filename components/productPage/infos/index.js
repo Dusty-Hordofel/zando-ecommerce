@@ -6,11 +6,13 @@ import Link from "next/link";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useEffect } from "react";
 import { BsHandbagFill, BsHeart } from "react-icons/bs";
-import Share from "./share";
+// import Share from "./share";
 import Accordian from "./Accordian";
 import SimillarSwiper from "./SimillarSwiper";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart, updateCart } from "../../../store/cartSlice";
 import { signIn, useSession } from "next-auth/react";
+import axios from "axios";
 
 const Infos = ({ product, setActiveImg }) => {
   const router = useRouter();
@@ -21,6 +23,7 @@ const Infos = ({ product, setActiveImg }) => {
   const [qty, setQty] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
   const { cart } = useSelector((state) => ({ ...state }));
   console.log("🚀 ~ file: index.js:30 ~ Infos ~ cart", cart);
 
@@ -34,6 +37,14 @@ const Infos = ({ product, setActiveImg }) => {
       setQty(product.quantity);
     }
   }, [router.query.size]);
+
+  const addToCartHandler = async () => {
+    console.log("first equipe ");
+    //we have to create API endPoint before to get the data
+    const { data } = await axios.get(
+      `/api/product/${product._id}?style=${product.style}&size=${router.query.size}`
+    );
+  };
 
   return (
     <div className={styles.infos}>
@@ -127,7 +138,7 @@ const Infos = ({ product, setActiveImg }) => {
           <button
             disabled={product.quantity < 1}
             style={{ cursor: `${product.quantity < 1 ? "not-allowed" : ""}` }}
-            // onClick={() => addToCartHandler()}
+            onClick={() => addToCartHandler()}
           >
             <BsHandbagFill />
             <b>ADD TO CART</b>
@@ -141,7 +152,7 @@ const Infos = ({ product, setActiveImg }) => {
         </div>
         {error && <span className={styles.error}>{error}</span>}
         {success && <span className={styles.success}>{success}</span>}
-        <Share />
+        {/* <Share /> */}
         <Accordian details={[product.description, ...product.details]} />
         <SimillarSwiper />
       </div>

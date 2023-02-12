@@ -11,11 +11,13 @@ const persistConfig = {
   storage,
 };
 
-const reducer = persistReducer(persistConfig, reducers);
+// const reducer = persistReducer(persistConfig, reducers);
 const store = configureStore({
-  reducer: reducer,
+  // reducer: reducer,
+  reducer: reducers,
   devTools: process.env.NODE_ENV !== "production",
   middleware: [thunk],
 });
+console.log("🚀 ~ file: index.js:21 ~ store", store);
 
 export default store;

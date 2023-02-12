@@ -2,11 +2,13 @@ import "../styles/globals.scss";
 import Head from "next/head";
 import { Provider } from "react-redux";
 import store from "../store";
-import { PersistGate } from "redux-persist/integration/react";
+// import { PersistGate } from "redux-persist/integration/react";
 import { SessionProvider } from "next-auth/react";
-import { persistStore } from "redux-persist";
+// import { persistStore } from "redux-persist";
 
-let persistor = persistStore(store); //to persist the stored information
+// let persistor = persistStore(store); //to persist the stored information
+console.log("🚀 ~ file: _app.js:5 ~ store", store);
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -24,9 +26,9 @@ export default function App({
       </Head>
       <SessionProvider session={session}>
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <Component {...pageProps} />
-          </PersistGate>
+          {/* <PersistGate loading={null} persistor={persistor}> */}
+          <Component {...pageProps} />
+          {/* </PersistGate> */}
         </Provider>
       </SessionProvider>
     </>
