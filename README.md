@@ -5132,15 +5132,179 @@ export default function Table({ reviews, allSizes, colors }) {
 
 - create [TableSelect ](./components/productPage/reviews/TableSelect.js) basing on [Select.js ](./components/productPage/reviews/Select.js).
 
-### 67.
+## Section 10. Cart (Add to Cart)
+
+### 67. cart page 1
+
+- create [header Cart ](./components/cart/header/index.js) && [car.js](./pages/cart.js)
+
+```js
+import styles from "./styles.module.scss";
+import Link from "next/link";
+import { MdPlayArrow } from "react-icons/md";
+export default function Header() {
+  return (
+    <div className={styles.header}>
+      <div className={styles.header__container}>
+        <div className={styles.header__left}>
+          <Link href="/">
+            <img src="../../../logo.png" alt="" />
+          </Link>
+        </div>
+        <div className={styles.header__right}>
+          <Link href="/browse">
+            Continue Shopping
+            <MdPlayArrow />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+- style [header ](./components/cart/header/styles.module.scss)
+
+```scss
+.header {
+  height: 48px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__left {
+    display: flex;
+    align-items: center;
+    img {
+      height: 35px;
+      cursor: pointer;
+    }
+  }
+  &__right {
+    a {
+      display: flex;
+      align-items: center;
+      color: #666;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    svg {
+      fill: #666;
+      width: 12px;
+      height: 12px;
+    }
+    &:hover {
+      text-decoration: underline;
+      color: #000;
+      cursor: pointer;
+    }
+  }
+}
+```
+
+- create [Empty](./components/cart/empty/index.js)
+
+```js
+import styles from "./styles.module.scss";
+import { useSession, signIn } from "next-auth/react";
+import Link from "next/link";
+export default function Empty() {
+  const { data: session } = useSession();
+  return (
+    <div className={styles.empty}>
+      <img src="../../../images/empty.png" alt="" />
+      <h1>Cart is empty</h1>
+      {!session && (
+        <button onClick={() => signIn()} className={styles.empty__btn}>
+          SIGN IN / REGISTER
+        </button>
+      )}
+      <Link href="/browse">
+        <a>
+          <button className={`${styles.empty__btn} ${styles.empty__btn_v2}`}>
+            SHOP NOW
+          </button>
+        </a>
+      </Link>
+    </div>
+  );
+}
+```
+
+- create [Empty](./components/cart/empty/styles.module.scss)
+
+```scss
+.empty {
+  position: relative;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #222;
+  img {
+    width: 100px;
+    object-fit: cover;
+  }
+  h1 {
+    margin-top: 1rem;
+  }
+  &__btn {
+    margin-top: 1rem;
+    height: 50px;
+    width: 300px;
+    background: $yellow-color;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    &_v2 {
+      background: #000;
+      color: #fff;
+    }
+  }
+}
+```
+
+- update [cart page](./pages/cart.js)
+
+```js
+import React from "react";
+import Empty from "../components/cart/empty";
+import Header from "../components/cart/header";
+import styles from "../styles/cart.module.scss";
+
+const cart = () => {
+  const cart = [];
+  return (
+    <>
+      <Header />
+      <div className={styles.cart}>
+        {cart.length > 0 ? (
+          <div className={styles.cart__container}></div>
+        ) : (
+          <Empty />
+        )}
+      </div>
+    </>
+  );
+};
+
+export default cart;
+```
 
 ### 68.
 
 ### 69.
 
 ### 70.
-
-## Section 10.
 
 ## Section 11.
 

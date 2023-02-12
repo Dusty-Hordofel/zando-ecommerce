@@ -2,29 +2,27 @@ import styles from "./styles.module.scss";
 import Rating from "@mui/material/Rating";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/Link";
+import Link from "next/link";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useEffect } from "react";
 import { BsHandbagFill, BsHeart } from "react-icons/bs";
 import Share from "./share";
 import Accordian from "./Accordian";
 import SimillarSwiper from "./SimillarSwiper";
-// import axios from "axios";
-// import DialogModal from "../../dialogModal";
-// import { useDispatch, useSelector } from "react-redux";
-// import { addToCart, updateCart } from "../../../store/cartSlice";
-// import { hideDialog, showDialog } from "../../../store/DialogSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { signIn, useSession } from "next-auth/react";
 
-//images and activeImg come from [[slug].js](./pages/product/[slug].js)
 const Infos = ({ product, setActiveImg }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const { data: session } = useSession();
   const [size, setSize] = useState(router.query.size);
   const [qty, setQty] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { cart } = useSelector((state) => ({ ...state }));
+  console.log("🚀 ~ file: index.js:30 ~ Infos ~ cart", cart);
 
   useEffect(() => {
     setSize("");
